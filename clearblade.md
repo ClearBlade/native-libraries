@@ -1153,13 +1153,13 @@ To instantiate a Messaging object all you need to do is call:
 
 The available methods for the Messaging class and examples of how to use them are listed below:
 
-## Messaging.getMessageHistory(topic, last, count, callback)
+## Messaging.getMessageHistory(topic, start, count, callback)
 
 Retrieves the message history for a topic within the specified parameters.
 
 * @param {string} topic - String that signifies which topic to search
+* @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
 * @param {int} count - Number that signifies how many messages to return; 0 returns all messages
-* @param {int} last - Epoch timestamp in seconds that will retrieve 'count' number of messages before that timestamp
 * @param {function} callback - Function that handles the response from the server
 
 **Example:**
@@ -1167,7 +1167,8 @@ Retrieves the message history for a topic within the specified parameters.
 ~~~javascript
 	var msg = ClearBlade.Messaging();
     var unixTimeNano = new Date().getTime()
-    var unixTimeMilli = unixTimeNano / 1000
+    // Get messages from last 60 seconds
+    var unixTimeMilli = unixTimeNano / 1000 - 60
 	msg.getMessageHistory("coolTopic", unixTimeMilli, 25, function(err, data) {
 		if(err) {
 			resp.error("message history error : " + JSON.stringify(data));
