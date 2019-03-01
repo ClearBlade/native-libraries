@@ -10,6 +10,7 @@ The geo library provides core functionality used to calculate geometric spacial 
 * geo.Nearest()
 * geo.Farthest()
 * geo.Distance()
+* geo.BearingTo()
 
 ## geo(options)		
 
@@ -231,6 +232,23 @@ Calculates the distance in meters between two points.
 	var distance = geoObj.Distance(point1, point2); // Distance in designated units
 ~~~
 
+## geoObj.BearingTo(Point1, Point2)
 
+Calculates the forward azimuth between two points in degrees.
+Note that this function is only allowed in polar mode.
 
+**Parameters**
 
+ - Point1 = Point object for bearing start calculation
+ - Point2 = Point object for bearing end calculation
+
+**Example**
+
+```javascript
+var geoObj = new geo('polar');
+var pointAustin  = geoObj.Point( 34.26675,  -91.742439 );		// Austin, Texas, USA
+var pointLincoln = geoObj.Point( 40.825763, -96.685198 );  		// Lincoln, Nebraska, USA
+
+var bearing = geoObj.BearingTo(pointAustin, pointLincoln);
+// bearing will tell you direction from Austin to Lincoln in degrees
+```

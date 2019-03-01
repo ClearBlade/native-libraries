@@ -21,7 +21,7 @@ ClearBlade.js Library enables users to:
 >4. Create a timer or trigger
 >5. Register new users
 >6. Log users in or out
-
+>1. Delete users
 
 
 # ClearBlade
@@ -244,6 +244,41 @@ Example:
 		}
 	});
 ~~~
+
+## ClearBlade.deleteUser(email, callback)
+
+This method is used to delete a user by email.
+
+Example:
+
+```javascript
+ClearBlade.init(req);
+ClearBlade.deleteUser("<USER_EMAIL>", function(err, body) {
+	if(err) {
+		resp.error("user deletion failure: " + JSON.stringify(body));
+	} else {
+		resp.success(body);
+	}
+});
+```
+
+## ClearBlade.deleteUsers(listOfEmails, callback)
+
+This method is used to delete multiple users by email.
+
+Example:
+
+```javascript
+ClearBlade.init(req);
+emailsToDelete = ["<USER_EMAIL_ONE>", "<USER_EMAIL_TWO>", "<USER_EMAIL_THREE>"];
+ClearBlade.deleteUsers(emailsToDelete, function(err, body) {
+	if(err) {
+		resp.error("user deletion failure: " + JSON.stringify(body));
+	} else {
+		resp.success(body);
+	}
+});
+```
 
 ## Device
 
