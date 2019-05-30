@@ -667,6 +667,7 @@ __NOTE:__ This is currently only supported for MongoDB. Also note that if you us
 all other query operations like equalTo, lessThan, greaterThan etc. You can still use ___Query.ascending___,
 ___Query.descending___ or ___Query.setPage___ to set sort order or paging.   
 ~~~~javascript
+	// MongoDB query example
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.rawQuery('{"age": {"$exists": true, "$lt": 45}}');
 ~~~~
