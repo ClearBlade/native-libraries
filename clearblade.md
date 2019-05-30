@@ -520,7 +520,7 @@ If unsuccessful, an error will be returned in the __data__ parameter passed to t
 Example:  
 ~~~javascript
     ClearBlade.init({request: req});
-    
+
 	// Default is true, so device table changes can trigger code services
 	var DEVICE_TRIGGER_ENABLED = true
 
@@ -655,12 +655,20 @@ This method is used to filter the data by using a not equal to operator on a giv
 
 ## Query.like(field, value)
 This method is used to filter the data by using a SQL __*LIKE*__ clause.
-{{< warning title="Case Insensitive" >}}
-__Like__ comparisons are __NOT__ case sensitive. 
-{{< /warning >}}
+__Like__ comparisons are __NOT__ case sensitive.  
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.matches("YOUR_COLUMN_OF_TYPE_STRING", "mustContainThis");
+~~~~
+
+## Query.rawQuery(rawQueryString)
+This method is used to supply a raw query string to the query object.  
+__NOTE:__ This is currently only supported for MongoDB. Also note that if you use this, it will override
+all other query operations like equalTo, lessThan, greaterThan etc. You can still use ___Query.ascending___,
+___Query.descending___ or ___Query.setPage___ to set sort order or paging.   
+~~~~javascript
+	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
+	query.rawQuery('{"age": {"$exists": true, "$lt": 45}}');
 ~~~~
 
 ### Wildcards
@@ -705,7 +713,7 @@ This method is used to filter the data by using a regular expression against a g
 	query.matches("YOUR_COLUMN_OF_TYPE_STRING", ".*mustContainThis.*");
 ~~~~
 {{< note title="Regex Flags" >}}
-If regex flags are needed, the regular expression should be preceded by __(?_flags_)__. For example, a regular expression for a case insenstive match would resemble __(?i).\*This is a case insensitive match.\*__ 
+If regex flags are needed, the regular expression should be preceded by __(?_flags_)__. For example, a regular expression for a case insenstive match would resemble __(?i).\*This is a case insensitive match.\*__
 {{< /note >}}
 
 {{< note title="Regex Parameter Type" >}}
@@ -735,11 +743,11 @@ Many characters used in regular expressions have special meanings in the context
 	// the second parameter is a string literal
 	query.matches("column1", "(?i).*zard");
 	query.fetch(function(err, data){
-		// the second parameter, "(?i).*zard", will be executed as /(?i).*zard/ 
+		// the second parameter, "(?i).*zard", will be executed as /(?i).*zard/
 		// and will match any column value that ends with "zard" (ignoring case)
 		//
 		// The single row { column1:"charizard", column2:"holographic"} will match and be returned
-		
+
 	})
 ~~~~
 
@@ -1081,11 +1089,11 @@ Example with Query:
     };
 
     var dev = ClearBlade.Device();
-    
+
     var query = ClearBlade.Query();
     query.columns(["name", "type", "state"]);
     query.equalTo("type", "Weight Sensor");
-    
+
     dev.fetch(query, callback);
 ~~~
 
@@ -1117,7 +1125,7 @@ Example:
         "type": "",
         "active_key": ""
     }
-    
+
     dev.create(newDevice, callback);
 ~~~~
 
@@ -1141,11 +1149,11 @@ Example:
     };
 
     var dev = ClearBlade.Device();
-    
+
     var query = ClearBlade.Query();
     query.columns(["name", "type", "state"]);
     query.equalTo("type", "Weight Sensor");
-    
+
     dev.fetch(query, callback);
 ~~~
 
@@ -1168,10 +1176,10 @@ Example:
     };
 
     var dev = ClearBlade.Device();
-    
+
     var thequery = ClearBlade.Query();
     thequery.equalTo("name", "Device 2");
-    
+
     dev.delete(thequery, callback);
 ~~~
 
@@ -1536,4 +1544,3 @@ function myService(req, resp){
 	resp.success("Edge Id: " + edgeId)
 }
 ~~~
-
