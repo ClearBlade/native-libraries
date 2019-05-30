@@ -3,16 +3,16 @@ The module offers a way to send SMTP based emails from a ClearBlade service.
 * mailer().createTransport(options)
 * transport.sendMail(options)
 * transport.close()
-	
-_Search for `mailer-example` at [ipm.clearblade.com](ipm.clearblade.com) for an installable example._ 
+
+_Search for `mailer-example` at [ipm.clearblade.com](ipm.clearblade.com) for an installable example._
 
 ## mailer().createTransport(options)
 
-options 
+options
 
 - host : [HOSTNAME]
 - port : [PORT]
-		
+
 
 Creates and returns a transport object used for sending mail to an appropriate SMTP server.
 
@@ -32,6 +32,8 @@ Sends a mail object to the SMTP server for delivery
 mail_options
 
  - from: 		[FROM_ADDRESS]
+ - username: [ACCOUNT_USERNAME]
+ - secure: [STARTTLS(false), TLS(true)]
  - password: 	[ACCOUNT_PASSWORD]
  - to:			[TO_ADDRESS]
  - subject:		[MAIL_SUBJECT_TEXT]
@@ -56,7 +58,7 @@ callback = function(error, response)
             resp.success("Success");
         }
     });
-};	
+};
 ~~~
 
 ## transport.close()
@@ -75,7 +77,7 @@ Below is a complete example that will use a gmail based address.
         host:"smtp.gmail.com",
         port:"587"
     });
-    
+
     function sendEmail(requestObj){
         transport.sendMail({
             from: "your_gmail_id",
@@ -92,8 +94,8 @@ Below is a complete example that will use a gmail based address.
             }
         });
     }
-    
+
     ClearBlade.init({request:req});
     sendEmail();
-};	
+};
 ~~~
