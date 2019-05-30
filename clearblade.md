@@ -669,7 +669,8 @@ ___Query.descending___ or ___Query.setPage___ to set sort order or paging.
 ~~~~javascript
 	// MongoDB query example
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-	query.rawQuery('{"age": {"$exists": true, "$lt": 45}}');
+	var rawQueryJson = {"age": {"$exists": true, "$lt": 45}}
+	query.rawQuery(JSON.stringify(rawQueryJson));
 ~~~~
 
 ### Wildcards
