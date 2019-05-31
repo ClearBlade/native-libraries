@@ -661,18 +661,6 @@ __Like__ comparisons are __NOT__ case sensitive.
 	query.matches("YOUR_COLUMN_OF_TYPE_STRING", "mustContainThis");
 ~~~~
 
-## Query.rawQuery(rawQueryString)
-This method is used to supply a raw query string to the query object.  
-__NOTE:__ This is currently only supported for MongoDB. Also note that if you use this, it will override
-all other query operations like equalTo, lessThan, greaterThan etc. You can still use ___Query.ascending___,
-___Query.descending___ or ___Query.setPage___ to set sort order or paging.   
-~~~~javascript
-	// MongoDB query example
-	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-	var rawQueryJson = {"age": {"$exists": true, "$lt": 45}}
-	query.rawQuery(JSON.stringify(rawQueryJson));
-~~~~
-
 ### Wildcards
 The _value_ string can contain any number of the standard SQL wildcard characters _%_ and _\__.  
 
@@ -705,6 +693,18 @@ The % character has special meaning in the context of URL's and HTTP payloads. I
 		//
 		// The single row { column1:"charizard", column2:"holographic"} will match and be returned
 	})
+~~~~
+
+## Query.rawQuery(rawQueryString)
+This method is used to supply a raw query string to the query object.  
+__NOTE:__ This is currently only supported for MongoDB. Also note that if you use this, it will override
+all other query operations like equalTo, lessThan, greaterThan etc. You can still use ___Query.ascending___,
+___Query.descending___ or ___Query.setPage___ to set sort order or paging.   
+~~~~javascript
+	// MongoDB query example
+	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
+	var rawQueryJson = {"age": {"$exists": true, "$lt": 45}}
+	query.rawQuery(JSON.stringify(rawQueryJson));
 ~~~~
 
 ## Query.matches(field, value)
