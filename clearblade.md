@@ -1223,6 +1223,73 @@ Retrieves the message history for a topic within the specified parameters.
 	});
 ~~~
 
+## Messaging.subscribe(topic, callback)
+
+Subscribes to a MQTT message topic. 
+
+Prereq: The user's role should have permissions to subscribe to that topic. Verify on the `Roles` Page of `ClearBlade Console`.
+
+* Callback subscribe
+* @callback subscribeCallback
+* @param {boolean} err - Is true if there is an error.
+* @param {Object} data - the response from the MQTT broker.
+
+* @param {string} topic - String that signifies which topic to subscribe
+* @param {function} subscribeCallback - Function that handles the response from the mqtt broker
+
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+  
+	msg.subscribe("coolTopic", function(err, data) {
+		if(err) {
+			resp.error("subscribe error : " + JSON.stringify(data));
+		} else {
+			resp.success(data);
+		}
+	});
+~~~
+
+## Messaging.waitForMessage(topics, callback)
+
+This method waits for message on the array of topics it is provided. Usually used within Stream Services.
+
+
+ * Callback waitForMessage
+ * @callback waitForMessageCallback
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - The message which gets published on the topic 
+ * @param {string} topic - It's one of the topics which waitForMessage was listening on
+
+
+* @param {[]string} topics - An array of topics to wait for messages on
+* @param {function} waitForMessageCallback - Function that handles the response from the server
+
+**Example:**
+
+~~~javascript
+	const msg = ClearBlade.Messaging();
+    const topics = ["topic1", "topic2"];
+	msg.subscribe("topic1", function(err, data){
+
+	})
+
+	msg.waitForMessage(topics, function(err, msg, topic) {
+		if(err) {
+			resp.error("message history error : " + JSON.stringify(msg));
+		} 
+		
+		if( topic === "topic1" ){
+			// perform some action
+		} else {
+			//topic2
+			// perform some action
+		} 
+		
+	});
+~~~
+
 ## Messaging.getMessageHistoryWithTimeFrame(topic, count, last, start, stop, callback)
 
 Retrieves the message history for a topic within the specified parameters.
