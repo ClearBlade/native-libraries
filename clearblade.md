@@ -4,6 +4,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 
 1. __[Initialization](#init)__
 1. __[Devices](#device)__
+1. __[Cache](#cache)__
 1. __[Query](#query)__
 1. __[Collection](#collection)__
 1. __[Messaging](#messaging)__
