@@ -533,6 +533,142 @@ Example:
 	});
 ~~~
 
+## Cache
+
+Class: ClearBlade.Cache(cacheName);
+
+Caches can be shared across services and make data access faster as compared to database operations. The ClearBlade.Cache object is used perform cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE and FLUSH.
+
+To instantiate the cache object you need the name of your cache.
+
+~~~javascript
+		var cache = ClearBlade.Cache('<CACHE_NAME>');
+~~~
+
+## Cache.set(key, value, callback)
+Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("Set error : " + JSON.stringify(data));
+   	    } else {
+   	    	// Success. Do something
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+		var data = {
+			"name": "Bob",
+			"age": 70
+		}
+   	cache.set("myKey", data, callback);
+~~~~
+
+## Cache.setnx(key, value, callback)
+Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns "true" if it set the data in the cache. Returns "false" if the data already exists
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("SetNX error : " + JSON.stringify(data));
+   	    } else {
+   	    	if(data === "true") {
+						// Data was set. Do something
+					} else {
+						// Data already exists. Do something else
+					}
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+		var data = {
+			"name": "Bob",
+			"age": 70
+		}
+   	cache.setnx("myKey", data, callback);
+~~~~
+
+## Cache.setMultiple(data, callback)
+Sets multiple entries in the cache at once. Requires that the Cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a string "SetMultiple done"
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("SetMultiple error : " + JSON.stringify(data));
+   	    } else {
+   	    	// Success. Do something
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+		var data = {
+			"abc": {"x": 12.34, "y": 56.89},
+			"def": {"x": 33.58, "y": 76.34},
+			"xyz": {"x": 78.45, "y": 99.67}
+		}
+   	cache.setMultiple(data, callback);
+~~~~
+
+## Cache.get(key, callback)
+Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:
+	- If key not found, returns undefined
+	- If key found, returns data
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("Get error : " + JSON.stringify(data));
+   	    } else {
+   	    	resp.success(JSON.stringify(data));
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+   	cache.get("myKey", callback);
+~~~~
+
+## Cache.getAll(callback)
+Gets all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns all data as a JSON object
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("GetAll error : " + JSON.stringify(data));
+   	    } else {
+   	    	resp.success(JSON.stringify(data));
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+   	cache.getAll(callback);
+~~~~
+
+## Cache.delete(key, callback)
+Deletes data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Delete done"
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("GetAll error : " + JSON.stringify(data));
+   	    } else {
+   	    	// Success. Do something
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+   	cache.delete("myKey", callback);
+~~~~
+
+## Cache.flush(callback)
+Deletes all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Flush done"
+
+~~~~javascript
+   	var callback = function (err, data) {
+   	    if (err) {
+   	    	resp.error("GetAll error : " + JSON.stringify(data));
+   	    } else {
+   	    	// Success. Do something
+   	    }
+   	};
+   	var cache = ClearBlade.Cache('<CACHE_NAME>');
+   	cache.flush(callback);
+~~~~
+
 ## Query
 
 Class: ClearBlade.Query(options);
