@@ -1229,16 +1229,18 @@ Subscribes to a MQTT message topic.
 
 Prereq: The user's role should have permissions to subscribe to that topic. Verify on the `Roles` Page of `ClearBlade Console`.
 
-* Callback subscribe
+Callback subscribe:
+
 * @callback subscribeCallback
 * @param {boolean} err - Is true if there is an error.
 * @param {Object} data - the response from the MQTT broker.
 
 
+Function Subscribe:
 
 * @param {string} topic - String that signifies which topic to subscribe
 * @param {function} subscribeCallback - Function that handles the response from the mqtt broker
-*/
+
 **Example:**
 
 ~~~javascript
@@ -1257,14 +1259,16 @@ Prereq: The user's role should have permissions to subscribe to that topic. Veri
 
 This method waits for message on the array of topics it is provided. Usually used within Stream Services.
 
- * Callback waitForMessage
+Callback waitForMessage:
+
  * @callback waitForMessageCallback
  * @param {boolean} err - Is true if there is an error
  * @param {string} msg - The message which gets published on the topic 
  * @param {string} topic - It's one of the topics which waitForMessage was listening on
 
 
-* waitForMessage
+Function waitForMessage:
+
 * @param {[]string} topics - An array of topics to wait for messages on
 * @param {function} waitForMessageCallback - Function that handles the response from the server
 
