@@ -636,7 +636,7 @@ Deletes data corresponding to the key from the cache. Requires that the Cache ob
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
-   	    	resp.error("GetAll error : " + JSON.stringify(data));
+   	    	resp.error("Delete error : " + JSON.stringify(data));
    	    } else {
    	    	// Success. Do something
    	    }
@@ -651,7 +651,7 @@ Deletes all data from the cache. Requires that the Cache object was initialized 
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
-   	    	resp.error("GetAll error : " + JSON.stringify(data));
+   	    	resp.error("Flush error : " + JSON.stringify(data));
    	    } else {
    	    	// Success. Do something
    	    }
