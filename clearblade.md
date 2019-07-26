@@ -566,11 +566,11 @@ Sets data in the cache. Requires that the Cache object was initialized with a ca
 Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns "true" if it set the data in the cache. Returns "false" if the data already exists
 
 ~~~~javascript
-   	var callback = function (err, data) {
+   	var callback = function (err, wasSet) {
    	    if (err) {
    	    	resp.error("SetNX error : " + JSON.stringify(data));
    	    } else {
-   	    	if(data === "true") {
+   	    	if(wasSet === "true") {
 			// Data was set. Do something
 		} else {
 			// Data already exists. Do something else
