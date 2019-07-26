@@ -1234,9 +1234,11 @@ Prereq: The user's role should have permissions to subscribe to that topic. Veri
 * @param {boolean} err - Is true if there is an error.
 * @param {Object} data - the response from the MQTT broker.
 
+
+
 * @param {string} topic - String that signifies which topic to subscribe
 * @param {function} subscribeCallback - Function that handles the response from the mqtt broker
-
+*/
 **Example:**
 
 ~~~javascript
@@ -1255,7 +1257,6 @@ Prereq: The user's role should have permissions to subscribe to that topic. Veri
 
 This method waits for message on the array of topics it is provided. Usually used within Stream Services.
 
-
  * Callback waitForMessage
  * @callback waitForMessageCallback
  * @param {boolean} err - Is true if there is an error
@@ -1263,6 +1264,7 @@ This method waits for message on the array of topics it is provided. Usually use
  * @param {string} topic - It's one of the topics which waitForMessage was listening on
 
 
+* waitForMessage
 * @param {[]string} topics - An array of topics to wait for messages on
 * @param {function} waitForMessageCallback - Function that handles the response from the server
 
