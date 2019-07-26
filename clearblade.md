@@ -558,7 +558,7 @@ Sets data in the cache. Requires that the Cache object was initialized with a ca
    	    }
    	};
    	var cache = ClearBlade.Cache('<CACHE_NAME>');
-		var data = {"name": "Bob", "age": 70}
+		var data = {"name": "Bob", "age": 70};
    	cache.set("myKey", data, callback);
 ~~~~
 
@@ -578,7 +578,7 @@ Sets data in the cache if it does not exist. Requires that the Cache object was 
    	    }
    	};
    	var cache = ClearBlade.Cache('<CACHE_NAME>');
-		var data = {"name": "Bob", "age": 70}
+		var data = {"name": "Bob", "age": 70};
    	cache.setnx("myKey", data, callback);
 ~~~~
 
@@ -594,7 +594,7 @@ Sets multiple entries in the cache at once. Requires that the Cache object was i
    	    }
    	};
    	var cache = ClearBlade.Cache('<CACHE_NAME>');
-		var data = {"abc": {"x": 12.34, "y": 56.89}, "def": {"x": 33.58, "y": 76.34}, "xyz": {"x": 78.45, "y": 99.67}}
+		var data = {"abc": {"x": 12.34, "y": 56.89}, "def": {"x": 33.58, "y": 76.34}, "xyz": {"x": 78.45, "y": 99.67}};
    	cache.setMultiple(data, callback);
 ~~~~
 
