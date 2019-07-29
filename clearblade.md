@@ -549,6 +549,10 @@ To instantiate the cache object you need the name of your cache.
 ## Cache.set(key, value, callback)
 Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
 
+* @param {string} key - Key in cache
+* @param {string|number|object|array} value - Data to be stored in the cache
+* @param {function} callback - callback that returns error or success messages
+
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
@@ -564,6 +568,10 @@ Sets data in the cache. Requires that the Cache object was initialized with a ca
 
 ## Cache.setnx(key, value, callback)
 Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns "true" if it set the data in the cache. Returns "false" if the data already exists
+
+* @param {string} key - Key in cache
+* @param {string|number|object|array} value - Data to be stored in the cache
+* @param {function} callback - callback that returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, wasSet) {
@@ -585,6 +593,9 @@ Sets data in the cache if it does not exist. Requires that the Cache object was 
 ## Cache.setMultiple(data, callback)
 Sets multiple entries in the cache at once. Requires that the Cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a string "SetMultiple done"
 
+* @param {object} value - Multiple data entries to be stored in the cache
+* @param {function} callback - callback that returns error or success messages
+
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
@@ -602,6 +613,9 @@ Sets multiple entries in the cache at once. Requires that the Cache object was i
 Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:
 	- If key not found, returns undefined
 	- If key found, returns data
+	
+* @param {string} key - Key in cache
+* @param {function} callback - callback that returns error or data corresponding to the key
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -618,6 +632,8 @@ Gets data corresponding to the key from the cache. Requires that the Cache objec
 ## Cache.getAll(callback)
 Gets all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns all data as a JSON object
 
+* @param {function} callback - callback that returns error or all data from the cache
+
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
@@ -633,6 +649,9 @@ Gets all data from the cache. Requires that the Cache object was initialized wit
 ## Cache.delete(key, callback)
 Deletes data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Delete done"
 
+* @param {string} key - Key in cache
+* @param {function} callback - callback that returns error or success messages
+
 ~~~~javascript
    	var callback = function (err, data) {
    	    if (err) {
@@ -647,6 +666,8 @@ Deletes data corresponding to the key from the cache. Requires that the Cache ob
 
 ## Cache.flush(callback)
 Deletes all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Flush done"
+
+* @param {function} callback - callback that returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, data) {
