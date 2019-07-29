@@ -593,7 +593,7 @@ Sets data in the cache if it does not exist. Requires that the Cache object was 
 ## Cache.setMultiple(data, callback)
 Sets multiple entries in the cache at once. Requires that the Cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a string "SetMultiple done"
 
-* @param {object} value - Multiple data entries to be stored in the cache
+* @param {object} data - Multiple data entries to be stored in the cache
 * @param {function} callback - callback that returns error or success messages
 
 ~~~~javascript
