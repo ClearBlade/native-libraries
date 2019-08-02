@@ -1388,6 +1388,118 @@ Returns the current topics for a system
     msg.getAndDeleteMessageHistory("TestTopic", 0, null, null, null, callback); // get and delete all messages for "TestTopic"
 ~~~
 
+## messaging.setTimeout(timeout, topic, data, callback)
+
+This method publishes data to a topic after timing out.
+
+Callback setTimeout:
+
+ * @param {integer} timeout - Timeout in miliseconds
+ * @param {string} topic - String that signifies which topic to search
+ * @param {string} data - response -messages
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - timerId if no error, error message otherwise
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Timeout error : " + JSON.stringify(msg));
+		} 
+		else {
+			//msg will be the timerId	
+			resp.success(msg)
+		} 
+	}
+	msg.setTimeout(30, "TestTopic", null, callback );
+~~~
+
+## messaging.cancelCBTimeout(timerId, callback)
+
+This method cancels the timeout message with the given timerId.
+
+Callback cancelCBTimeout:
+
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} timerId -  if there is no error, error message otherwise
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error(" Cancel Timeout error : " + JSON.stringify(msg));
+		} 
+		else {	
+			resp.success(msg)
+		} 
+	}
+	msg.cancelCBTimeout("90cc94d10bb0d9acfdaa8cb684fd01", callback);
+~~~
+
+
+## messaging.setInterval(timeout, topic, data, iterations, callback)
+
+This method publishes data to topic after timing out, repeats iterations.
+
+Callback setInterval:
+
+ * @param {integer} timeout - Timeout in milliseconds
+ * @param {string} topic - String that signifies which topic to search
+ * @param {string} data -  The message that is published
+ * @param {integer} iterations - Number of times timeout is set
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - intervalId if no error, error message otherwise
+ 
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Interval error : " + JSON.stringify(msg));
+		} 
+		else {	
+			//msg will be the intervalId	
+			resp.success(msg)
+		} 
+	}
+	msg.setInterval(30, "TestTopic", null, 0, callback );
+~~~
+
+## messaging.cancelCBInterval(intervalId, callback)
+
+This method cancels the interval message with the given intervalId.
+.
+
+Callback cancelCBInterval:
+
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} intervalId -  if there is no error, error message otherwise
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Cancel Interval error : " + JSON.stringify(msg));
+		} 
+		else {	
+			resp.success(msg)
+		} 
+	}
+	msg.cancelCBInterval("90cc94d10bb0d9a0fdca8cb684fd01", callback);
+~~~
+
 # Class: ClearBlade.Code()
 
 The code class is used to call other code services from within a service.
