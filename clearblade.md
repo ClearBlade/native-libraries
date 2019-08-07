@@ -1203,8 +1203,8 @@ The available methods for the Messaging class and examples of how to use them ar
 Retrieves the message history for a topic within the specified parameters.
 
 * @param {string} topic - String that signifies which topic to search
-* @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
-* @param {int} count - Number that signifies how many messages to return; 0 returns all messages
+* @param {number} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
+* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
 * @param {function} callback - Function that handles the response from the server
 
 **Example:**
@@ -1301,7 +1301,7 @@ Function waitForMessage:
 Retrieves the message history for a topic within the specified parameters.
 
 * @param {string} topic - String that signifies which topic to search
-* @param {int} count - Number that signifies how many messages to return; 0 returns all messages
+* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
 * @param {int} last - Epoch timestamp in seconds that will retrieve 'count' number of messages before that timestamp
 * @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
 * @param {int} stop - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
@@ -1367,7 +1367,7 @@ Returns the current topics for a system
  The return value is a list of js objects, one for each returned item in the message history.
 
  * @param {string} topic - String that signifies which topic to search
- * @param {int} count - Number that signifies how many messages to return and delete; 0 returns and deletes all messages
+ * @param {number} count - Number that signifies how many messages to return and delete; 0 returns and deletes all messages
  * @param {int} last - Epoch timestamp in seconds that will retrieve and delete 'count' number of messages before that timestamp
  * @param {int} start - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
  * @param {int} stop - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
