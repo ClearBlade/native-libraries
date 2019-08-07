@@ -1392,14 +1392,17 @@ Returns the current topics for a system
 
 This method publishes data to a topic after timing out.
 
-Callback setTimeout:
-
- * @param {integer} timeout - Timeout in miliseconds
- * @param {string} topic - String that signifies which topic to search
- * @param {string} data - response -messages
- * @param {function} callback - Function that handles the response from the server
+@callback cbSetTimeout
  * @param {boolean} err - Is true if there is an error
  * @param {string} msg - timerId if no error, error message otherwise
+
+function setTimeout:
+ * @param {number} timeout - Timeout in miliseconds
+ * @param {string} topic - String that signifies which topic to search
+ * @param {string} data - Data to publish to the topic once it timeouts
+ * @param {cbSetTimeout} callback - Function that handles the response from the server
+
+
  
 **Example:**
 
@@ -1414,14 +1417,14 @@ Callback setTimeout:
 			resp.success(msg)
 		} 
 	}
-	msg.setTimeout(30, "TestTopic", null, callback );
+	msg.setTimeout(30, "TestTopic", "4f775222-1910-4bd7-bf8d-5bdbc11dfa92", callback );
 ~~~
 
 ## messaging.cancelCBTimeout(timerId, callback)
 
 This method cancels the timeout message with the given timerId.
 
-Callback cancelCBTimeout:
+@callback cancelCBTimeout:
 
  * @param {function} callback - Function that handles the response from the server
  * @param {boolean} err - Is true if there is an error
@@ -1447,17 +1450,19 @@ Callback cancelCBTimeout:
 
 This method publishes data to topic after timing out, repeats iterations.
 
-Callback setInterval:
-
- * @param {integer} timeout - Timeout in milliseconds
- * @param {string} topic - String that signifies which topic to search
- * @param {string} data -  The message that is published
- * @param {integer} iterations - Number of times timeout is set
- * @param {function} callback - Function that handles the response from the server
+@callback cbSetInterval:
  * @param {boolean} err - Is true if there is an error
- * @param {string} msg - intervalId if no error, error message otherwise
- 
- 
+ * @param {string} msg - timerId if no error, error message otherwise
+
+
+function setInterval:
+
+ * @param {number} timeout - Timeout in milliseconds
+ * @param {string} topic - The topic to publish to, after every timeout
+ * @param {string} data - Data to publish to the topic once it timeouts
+ * @param {number} iterations - Number of times timeout is set
+ * @param {function} callback - Function that handles the response from the server
+
 **Example:**
 
 ~~~javascript
@@ -1471,7 +1476,7 @@ Callback setInterval:
 			resp.success(msg)
 		} 
 	}
-	msg.setInterval(30, "TestTopic", null, 0, callback );
+	msg.setInterval(30, "TestTopic", "8e48cb42-d76b-4b82-8253-1e8af8e20795", 1, callback );
 ~~~
 
 ## messaging.cancelCBInterval(intervalId, callback)
@@ -1479,7 +1484,7 @@ Callback setInterval:
 This method cancels the interval message with the given intervalId.
 .
 
-Callback cancelCBInterval:
+@callback cancelCBInterval:
 
  * @param {function} callback - Function that handles the response from the server
  * @param {boolean} err - Is true if there is an error
