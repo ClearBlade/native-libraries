@@ -1351,8 +1351,8 @@ The available methods for the Messaging class and examples of how to use them ar
 Retrieves the message history for a topic within the specified parameters.
 
 * @param {string} topic - String that signifies which topic to search
-* @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
-* @param {int} count - Number that signifies how many messages to return; 0 returns all messages
+* @param {number} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
+* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
 * @param {function} callback - Function that handles the response from the server
 
 **Example:**
@@ -1371,12 +1371,85 @@ Retrieves the message history for a topic within the specified parameters.
 	});
 ~~~
 
+## Messaging.subscribe(topic, callback)
+
+Subscribes to a MQTT message topic. 
+
+Prereq: The user's role should have permissions to subscribe to that topic. Verify on the `Roles` Page of `ClearBlade Console`.
+
+Callback subscribe:
+
+* @callback subscribeCallback
+* @param {boolean} err - Is true if there is an error.
+* @param {Object} data - the response from the MQTT broker.
+
+
+Function Subscribe:
+
+* @param {string} topic - String that signifies which topic to subscribe
+* @param {function} subscribeCallback - Function that handles the response from the mqtt broker
+
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+  
+	msg.subscribe("coolTopic", function(err, data) {
+		if(err) {
+			resp.error("subscribe error : " + JSON.stringify(data));
+		} else {
+			resp.success(data);
+		}
+	});
+~~~
+
+## Messaging.waitForMessage(topics, callback)
+
+This method waits for message on the array of topics it is provided. Usually used within Stream Services.
+
+Callback waitForMessage:
+
+ * @callback waitForMessageCallback
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - The message which gets published on the topic 
+ * @param {string} topic - It's one of the topics which waitForMessage was listening on
+
+
+Function waitForMessage:
+
+* @param {[]string} topics - An array of topics to wait for messages on
+* @param {function} waitForMessageCallback - Function that handles the response from the server
+
+**Example:**
+
+~~~javascript
+	const msg = ClearBlade.Messaging();
+    const topics = ["topic1", "topic2"];
+	msg.subscribe("topic1", function(err, data){
+
+	})
+
+	msg.waitForMessage(topics, function(err, msg, topic) {
+		if(err) {
+			resp.error("message history error : " + JSON.stringify(msg));
+		} 
+		
+		if( topic === "topic1" ){
+			// perform some action
+		} else {
+			//topic2
+			// perform some action
+		} 
+		
+	});
+~~~
+
 ## Messaging.getMessageHistoryWithTimeFrame(topic, count, last, start, stop, callback)
 
 Retrieves the message history for a topic within the specified parameters.
 
 * @param {string} topic - String that signifies which topic to search
-* @param {int} count - Number that signifies how many messages to return; 0 returns all messages
+* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
 * @param {int} last - Epoch timestamp in seconds that will retrieve 'count' number of messages before that timestamp
 * @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
 * @param {int} stop - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
@@ -1442,7 +1515,7 @@ Returns the current topics for a system
  The return value is a list of js objects, one for each returned item in the message history.
 
  * @param {string} topic - String that signifies which topic to search
- * @param {int} count - Number that signifies how many messages to return and delete; 0 returns and deletes all messages
+ * @param {number} count - Number that signifies how many messages to return and delete; 0 returns and deletes all messages
  * @param {int} last - Epoch timestamp in seconds that will retrieve and delete 'count' number of messages before that timestamp
  * @param {int} start - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
  * @param {int} stop - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
@@ -1461,6 +1534,123 @@ Returns the current topics for a system
 
     var msg = ClearBlade.Messaging();
     msg.getAndDeleteMessageHistory("TestTopic", 0, null, null, null, callback); // get and delete all messages for "TestTopic"
+~~~
+
+## messaging.setTimeout(timeout, topic, data, callback)
+
+This method publishes data to a topic after timing out.
+
+@callback cbSetTimeout
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - timerId if no error, error message otherwise
+
+function setTimeout:
+ * @param {number} timeout - Timeout in miliseconds
+ * @param {string} topic - String that signifies which topic to search
+ * @param {string} data - Data to publish to the topic once it timeouts
+ * @param {cbSetTimeout} callback - Function that handles the response from the server
+
+
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Timeout error : " + JSON.stringify(msg));
+		} 
+		else {
+			//msg will be the timerId	
+			resp.success(msg)
+		} 
+	}
+	msg.setTimeout(30, "TestTopic", "4f775222-1910-4bd7-bf8d-5bdbc11dfa92", callback );
+~~~
+
+## messaging.cancelCBTimeout(timerId, callback)
+
+This method cancels the timeout message with the given timerId.
+
+@callback cancelCBTimeout:
+
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} timerId -  if there is no error, error message otherwise
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error(" Cancel Timeout error : " + JSON.stringify(msg));
+		} 
+		else {	
+			resp.success(msg)
+		} 
+	}
+	msg.cancelCBTimeout("90cc94d10bb0d9acfdaa8cb684fd01", callback);
+~~~
+
+
+## messaging.setInterval(timeout, topic, data, iterations, callback)
+
+This method publishes data to topic after timing out, repeats iterations.
+
+@callback cbSetInterval:
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} msg - timerId if no error, error message otherwise
+
+
+function setInterval:
+
+ * @param {number} timeout - Timeout in milliseconds
+ * @param {string} topic - The topic to publish to, after every timeout
+ * @param {string} data - Data to publish to the topic once it timeouts
+ * @param {number} iterations - Number of times timeout is set
+ * @param {function} callback - Function that handles the response from the server
+
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Interval error : " + JSON.stringify(msg));
+		} 
+		else {	
+			//msg will be the intervalId	
+			resp.success(msg)
+		} 
+	}
+	msg.setInterval(30, "TestTopic", "8e48cb42-d76b-4b82-8253-1e8af8e20795", 1, callback );
+~~~
+
+## messaging.cancelCBInterval(intervalId, callback)
+
+This method cancels the interval message with the given intervalId.
+.
+
+@callback cancelCBInterval:
+
+ * @param {function} callback - Function that handles the response from the server
+ * @param {boolean} err - Is true if there is an error
+ * @param {string} intervalId -  if there is no error, error message otherwise
+ 
+**Example:**
+
+~~~javascript
+	var msg = ClearBlade.Messaging();
+	var callback = function(err, msg) {
+		if(err) {
+			resp.error("Cancel Interval error : " + JSON.stringify(msg));
+		} 
+		else {	
+			resp.success(msg)
+		} 
+	}
+	msg.cancelCBInterval("90cc94d10bb0d9a0fdca8cb684fd01", callback);
 ~~~
 
 # Class: ClearBlade.Code()
