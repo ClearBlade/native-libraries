@@ -1163,19 +1163,21 @@ Adds a column to a specified collection.
 * @param {function} callback - Function that handles the response from the server
 
 ~~~javascript
-collection.addColumn = function(options, callback) {
-	var resp = _addCollectionColumn(this.Id, options);
-	if (resp.error) {
-		_this.execute(true, resp.error, callback);
-	} else {
-		_this.execute(false, resp, callback);
-}
-};
-var options = {
-"name": "cool",
-"type": "string"
-};
-// format of options 
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("addColumn error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		};
+		
+	var addColumnOptions = {
+	"name": "cool",
+	"type": "string"
+	};
+
+   	var col = ClearBlade.Collection({collectionName:"<COLLECTION_NAME>"});
+    col.addColumn(addColumnOptions, callback);
 ~~~
 
 ## Collection.count(_query, callback)
