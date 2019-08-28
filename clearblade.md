@@ -1155,6 +1155,28 @@ Removes an item or set of items from the specified collection
     col.remove(query, callback);
     //removes every item whose 'name' attribute is equal to 'John'
 ~~~
+## Collection.addColumn(options, callback)
+
+Adds a column to a specified collection. 
+
+* @param {object} options- Define the columns to be added.
+* @param {function} callback - Function that handles the response from the server
+
+~~~javascript
+collection.addColumn = function(options, callback) {
+	var resp = _addCollectionColumn(this.Id, options);
+	if (resp.error) {
+		_this.execute(true, resp.error, callback);
+	} else {
+		_this.execute(false, resp, callback);
+}
+};
+var options = {
+"name": "cool",
+"type": "string"
+};
+// format of options 
+~~~
 
 ## Collection.count(_query, callback)
 
