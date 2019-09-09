@@ -1773,6 +1773,8 @@ ClearBlade.Timer.Create("runValidatorEveryHour",
     {
         frequency: 3600,
         service_name: "validator"
+		repeats: 1,
+        description:"example"
     },
     function(err, response) {
         if (err) {
