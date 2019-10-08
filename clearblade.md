@@ -546,6 +546,14 @@ To instantiate the cache object you need the name of your cache.
 	var cache = ClearBlade.Cache('<CACHE_NAME>');
 ~~~
 
+### Cache Callback
+
+The following callback function can be used for all cache callbacks.
+
+@callback cbCallback:  
+@param {boolean} err - Is true if there is an error  
+@param {string} data - data or error description in case of an error
+
 ## Cache.set(key, value, callback)
 Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
 
