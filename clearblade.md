@@ -609,10 +609,10 @@ Sets multiple entries in the cache at once. Requires that the Cache object was i
    	cache.setMultiple(data, callback);
 ~~~~
 
-## Cache.get(key, callback)
-Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:
-	- If key not found, returns undefined
-	- If key found, returns data. __(Type of data is same as set in the cache)__
+## Cache.get(key, callback)    
+Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:       
+	- If key not found, returns undefined.   
+	- If key found, returns data. __(Type of data is same as set in the cache)__.   
 
 * @param {string} key - Key in cache
 * @param {function} callback - callback that returns error or data corresponding to the key
