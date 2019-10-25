@@ -538,7 +538,7 @@ Example:
 
 Class: ClearBlade.Cache(cacheName);
 
-Caches can be shared across services and make data access faster as compared to database operations. The ClearBlade.Cache object is used perform cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE and FLUSH.
+Caches can be shared across services and make data access faster as compared to database operations. The ClearBlade.Cache object is used perform cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE and FLUSH. __Please note that setting `undefined` values in the cache cause abnormal behavior.__  
 
 To instantiate the cache object you need the name of your cache.
 
@@ -550,7 +550,7 @@ To instantiate the cache object you need the name of your cache.
 Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
 
 * @param {string} key - Key in cache
-* @param {string|number|object|array} value - Data to be stored in the cache
+* @param {string|number|object|array|boolean|null} value - Data to be stored in the cache
 * @param {function} callback - callback that returns error or success messages
 
 ~~~~javascript
@@ -567,10 +567,10 @@ Sets data in the cache. Requires that the Cache object was initialized with a ca
 ~~~~
 
 ## Cache.setnx(key, value, callback)
-Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns "true" if it set the data in the cache. Returns "false" if the data already exists
+Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns boolean __true__ if it set the data in the cache. Returns boolean __false__ if the data already exists
 
 * @param {string} key - Key in cache
-* @param {string|number|object|array} value - Data to be stored in the cache
+* @param {string|number|object|array|boolean|null} value - Data to be stored in the cache
 * @param {function} callback - callback that returns error or success messages
 
 ~~~~javascript
@@ -578,7 +578,7 @@ Sets data in the cache if it does not exist. Requires that the Cache object was 
    	    if (err) {
    	    	resp.error("SetNX error : " + JSON.stringify(data));
    	    } else {
-   	    	if(wasSet === "true") {
+   	    	if(wasSet === true) {
 			// Data was set. Do something
 		} else {
 			// Data already exists. Do something else
@@ -612,8 +612,8 @@ Sets multiple entries in the cache at once. Requires that the Cache object was i
 ## Cache.get(key, callback)
 Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:
 	- If key not found, returns undefined
-	- If key found, returns data
-	
+	- If key found, returns data. __(Type of data is same as set in the cache)__
+
 * @param {string} key - Key in cache
 * @param {function} callback - callback that returns error or data corresponding to the key
 
@@ -630,7 +630,7 @@ Gets data corresponding to the key from the cache. Requires that the Cache objec
 ~~~~
 
 ## Cache.getAll(callback)
-Gets all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns all data as a JSON object
+Gets all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns all data as a JSON object with key/value pairs. If the cache is empty, an empty JSON object is returned
 
 * @param {function} callback - callback that returns error or all data from the cache
 
@@ -1157,7 +1157,7 @@ Removes an item or set of items from the specified collection
 ~~~
 ## Collection.addColumn(options, callback)
 
-Adds a column to a specified collection. 
+Adds a column to a specified collection.
 
 * @param {object} options- Define the columns to be added.
 * @param {function} callback - Function that handles the response from the server
@@ -1396,7 +1396,7 @@ Retrieves the message history for a topic within the specified parameters.
 
 ## Messaging.subscribe(topic, callback)
 
-Subscribes to a MQTT message topic. 
+Subscribes to a MQTT message topic.
 
 Prereq: The user's role should have permissions to subscribe to that topic. Verify on the `Roles` Page of `ClearBlade Console`.
 
@@ -1416,7 +1416,7 @@ Function Subscribe:
 
 ~~~javascript
 	var msg = ClearBlade.Messaging();
-  
+
 	msg.subscribe("coolTopic", function(err, data) {
 		if(err) {
 			resp.error("subscribe error : " + JSON.stringify(data));
@@ -1434,7 +1434,7 @@ Callback waitForMessage:
 
  * @callback waitForMessageCallback
  * @param {boolean} err - Is true if there is an error
- * @param {string} msg - The message which gets published on the topic 
+ * @param {string} msg - The message which gets published on the topic
  * @param {string} topic - It's one of the topics which waitForMessage was listening on
 
 
@@ -1455,15 +1455,15 @@ Function waitForMessage:
 	msg.waitForMessage(topics, function(err, msg, topic) {
 		if(err) {
 			resp.error("message history error : " + JSON.stringify(msg));
-		} 
-		
+		}
+
 		if( topic === "topic1" ){
 			// perform some action
 		} else {
 			//topic2
 			// perform some action
-		} 
-		
+		}
+
 	});
 ~~~
 
@@ -1574,7 +1574,7 @@ function setTimeout:
  * @param {cbSetTimeout} callback - Function that handles the response from the server
 
 
- 
+
 **Example:**
 
 ~~~javascript
@@ -1582,11 +1582,11 @@ function setTimeout:
 	var callback = function(err, msg) {
 		if(err) {
 			resp.error("Timeout error : " + JSON.stringify(msg));
-		} 
+		}
 		else {
-			//msg will be the timerId	
+			//msg will be the timerId
 			resp.success(msg)
-		} 
+		}
 	}
 	msg.setTimeout(30, "TestTopic", "4f775222-1910-4bd7-bf8d-5bdbc11dfa92", callback );
 ~~~
@@ -1600,7 +1600,7 @@ This method cancels the timeout message with the given timerId.
  * @param {function} callback - Function that handles the response from the server
  * @param {boolean} err - Is true if there is an error
  * @param {string} timerId -  if there is no error, error message otherwise
- 
+
 **Example:**
 
 ~~~javascript
@@ -1608,10 +1608,10 @@ This method cancels the timeout message with the given timerId.
 	var callback = function(err, msg) {
 		if(err) {
 			resp.error(" Cancel Timeout error : " + JSON.stringify(msg));
-		} 
-		else {	
+		}
+		else {
 			resp.success(msg)
-		} 
+		}
 	}
 	msg.cancelCBTimeout("90cc94d10bb0d9acfdaa8cb684fd01", callback);
 ~~~
@@ -1641,11 +1641,11 @@ function setInterval:
 	var callback = function(err, msg) {
 		if(err) {
 			resp.error("Interval error : " + JSON.stringify(msg));
-		} 
-		else {	
-			//msg will be the intervalId	
+		}
+		else {
+			//msg will be the intervalId
 			resp.success(msg)
-		} 
+		}
 	}
 	msg.setInterval(30, "TestTopic", "8e48cb42-d76b-4b82-8253-1e8af8e20795", 1, callback );
 ~~~
@@ -1660,7 +1660,7 @@ This method cancels the interval message with the given intervalId.
  * @param {function} callback - Function that handles the response from the server
  * @param {boolean} err - Is true if there is an error
  * @param {string} intervalId -  if there is no error, error message otherwise
- 
+
 **Example:**
 
 ~~~javascript
@@ -1668,10 +1668,10 @@ This method cancels the interval message with the given intervalId.
 	var callback = function(err, msg) {
 		if(err) {
 			resp.error("Cancel Interval error : " + JSON.stringify(msg));
-		} 
-		else {	
+		}
+		else {
 			resp.success(msg)
-		} 
+		}
 	}
 	msg.cancelCBInterval("90cc94d10bb0d9a0fdca8cb684fd01", callback);
 ~~~
