@@ -809,48 +809,6 @@ This method is used to filter the data by using a not equal to operator on a giv
 	query.notEqualTo("YOUR_COLUMN_OF_TYPE_STRING", "hello");
 ~~~~
 
-## Query.like(field, value)
-This method is used to filter the data by using a SQL __*LIKE*__ clause.
-__Like__ comparisons are __NOT__ case sensitive.  
-~~~~javascript
-	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-	query.matches("YOUR_COLUMN_OF_TYPE_STRING", "mustContainThis");
-~~~~
-
-### Wildcards
-The _value_ string can contain any number of the standard SQL wildcard characters _%_ and _\__.  
-
-| Wildcard | Definition | Example |
-|-------------|-------------|-----------------|
-| %      | Represents zero or more characters |Start% will match any any character string that begins with _Start_, _start_, or any other uppercase/lowercase combinations the letters _s_, _t_, _a_, _r_, _t_ (_StaRT_ me up)|
-| _      | Represents a single character |_ail will match any 4 character string that ends with _ail_, _AIL_, or any other uppercase/lowercase combinations the letters _a_, _i_, _l_ (tail, sail, mail, etc. will all match)|
-
-{{< warning title="URL Encoding" >}}
-The % character has special meaning in the context of URL's and HTTP payloads. In order utilize the __%__ wildcard, you will need to URL encode the string representing your _value_.
-
-~~~~javascript
-	query.like("my_collection", encodeURIComponent("%your matching text%"));
-~~~~
-{{< /warning >}}
-
-~~~~javascript
-	/*
-	* Let's assume we have a collection named "PokémonCollection"
-	* This collection has two columns: column1 of type string, column2 of type string
-	* There is a single row: { column1:"charizard", column2:"holographic"}
-	*/
-	var query = ClearBlade.Query({collectionName: "PokémonCollection"});
-	// the first parameter is the column name, in this case "column1"
-	// the second parameter is a string literal
-	query.like("column1", encodeURIComponent("%zard"));
-	query.fetch(function(err, data){
-		// the second parameter, encodeURIComponent("%zard"), will match any
-		// column value that ends with zard
-		//
-		// The single row { column1:"charizard", column2:"holographic"} will match and be returned
-	})
-~~~~
-
 ## Query.rawQuery(rawQueryString)
 This method is used to supply a raw query string to the query object.  
 __NOTE:__ This is currently only supported for MongoDB. Also note that if you use this, it will override
