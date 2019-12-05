@@ -547,6 +547,14 @@ To instantiate the cache object you need the name of your cache.
 	var cache = ClearBlade.Cache('<CACHE_NAME>');
 ~~~
 
+### Cache Callback
+
+The following callback function can be used for all cache callbacks.
+
+@callback cbCallback:  
+@param {boolean} err - Is true if there is an error  
+@param {string} data - data or error description in case of an error
+
 ## Cache.set(key, value, callback)
 Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
 
@@ -800,48 +808,6 @@ This method is used to filter the data by using a not equal to operator on a giv
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.notEqualTo("YOUR_COLUMN_OF_TYPE_STRING", "hello");
-~~~~
-
-## Query.like(field, value)
-This method is used to filter the data by using a SQL __*LIKE*__ clause.
-__Like__ comparisons are __NOT__ case sensitive.  
-~~~~javascript
-	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-	query.matches("YOUR_COLUMN_OF_TYPE_STRING", "mustContainThis");
-~~~~
-
-### Wildcards
-The _value_ string can contain any number of the standard SQL wildcard characters _%_ and _\__.  
-
-| Wildcard | Definition | Example |
-|-------------|-------------|-----------------|
-| %      | Represents zero or more characters |Start% will match any any character string that begins with _Start_, _start_, or any other uppercase/lowercase combinations the letters _s_, _t_, _a_, _r_, _t_ (_StaRT_ me up)|
-| _      | Represents a single character |_ail will match any 4 character string that ends with _ail_, _AIL_, or any other uppercase/lowercase combinations the letters _a_, _i_, _l_ (tail, sail, mail, etc. will all match)|
-
-{{< warning title="URL Encoding" >}}
-The % character has special meaning in the context of URL's and HTTP payloads. In order utilize the __%__ wildcard, you will need to URL encode the string representing your _value_.
-
-~~~~javascript
-	query.like("my_collection", encodeURIComponent("%your matching text%"));
-~~~~
-{{< /warning >}}
-
-~~~~javascript
-	/*
-	* Let's assume we have a collection named "PokémonCollection"
-	* This collection has two columns: column1 of type string, column2 of type string
-	* There is a single row: { column1:"charizard", column2:"holographic"}
-	*/
-	var query = ClearBlade.Query({collectionName: "PokémonCollection"});
-	// the first parameter is the column name, in this case "column1"
-	// the second parameter is a string literal
-	query.like("column1", encodeURIComponent("%zard"));
-	query.fetch(function(err, data){
-		// the second parameter, encodeURIComponent("%zard"), will match any
-		// column value that ends with zard
-		//
-		// The single row { column1:"charizard", column2:"holographic"} will match and be returned
-	})
 ~~~~
 
 ## Query.rawQuery(rawQueryString)
@@ -1164,19 +1130,20 @@ Adds a column to a specified collection.
 * @param {function} callback - Function that handles the response from the server
 
 ~~~javascript
-collection.addColumn = function(options, callback) {
-	var resp = _addCollectionColumn(this.Id, options);
-	if (resp.error) {
-		_this.execute(true, resp.error, callback);
-	} else {
-		_this.execute(false, resp, callback);
-}
-};
-var options = {
-"name": "cool",
-"type": "string"
-};
-// format of options 
+	ClearBlade.init({ request: req });
+	var callback = function (err, data) {
+		if (err) {
+			resp.error("addColumn error : " + JSON.stringify(data));
+		} else {
+			resp.success(data);
+		};
+	}
+	var addColumnOptions = {
+		"name": "cool",
+		"type": "string"
+	};
+   	var col = ClearBlade.Collection({collectionName:"<COLLECTION_NAME>"});
+    col.addColumn(addColumnOptions, callback);
 ~~~
 
 ## Collection.count(_query, callback)
@@ -1776,6 +1743,8 @@ ClearBlade.Timer.Create("runValidatorEveryHour",
     {
         frequency: 3600,
         service_name: "validator"
+		repeats: 1,
+        description:"example"
     },
     function(err, response) {
         if (err) {
