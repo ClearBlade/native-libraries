@@ -8,6 +8,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 1. __[Query](#query)__
 1. __[Collection](#collection)__
 1. __[Messaging](#messaging)__
+1. __[Timers](#timer)__
 1. __[Triggers](#trigger)__
 1. __[Edge](#edge)__
 
@@ -1763,7 +1764,9 @@ updates just the user the service is running as.
 returns a count of users who have matched the query
 
 
-# Events: ClearBlade Timer
+## Timer
+
+Events: ClearBlade Timer
 
 
 ## ClearBlade.Timer.Create(name, options, callback)
