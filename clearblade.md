@@ -535,6 +535,111 @@ Example:
 	});
 ~~~
 
+## ClearBlade.connectedDevices(callback)
+
+This method is used to retrieve information about the devices currently connected to the platform via MQTT.
+The response is a map from the device names to a list of connection details.
+The connection details include the clientID the device connected with, and the time it started the connection (UTC).
+
+~~~json
+{
+   "deviceNameA":[
+       {
+           "client_id": "DhkVG42mlBQ7DkZSvb5d",
+           "time_connected": "2019-12-11T20:48:10.875786Z"
+       }
+   ],
+   "deviceNameB":[
+       {
+           "client_id": "8I27kjNaI6290Npp64hl",
+           "time_connected": "2019-12-13T17:53:09.5778599Z"
+       }
+   ]
+}
+~~~
+
+Example:
+~~~javascript
+    ClearBlade.init({request: req});
+
+    ClearBlade.connectedDevices(function(err, data) {
+        if(err){
+            resp.error("Unable to get connected devices: " + JSON.stringify(data))
+        }
+        resp.success(data)
+    });
+~~~
+
+## ClearBlade.deviceConnections(deviceName, callback)
+
+This method is used to retrieve information about a single device currently connected to the platform via MQTT.
+The response is a map containing all the usual device details, as well as a list of connection details for each active connection.
+The connection details include the clientID the device connected with, and the time it started the connection (UTC).
+
+~~~json
+{
+    "allow_certificate_auth": false,
+    "allow_key_auth": true,
+    "certificate": null,
+    "connections": [
+        {
+            "client_id": "8I27kjNaI6290Npp64hl",
+            "time_connected": "2019-12-13T17:53:09.5778599Z"
+        }
+    ],
+    "created_date": 1576095410,
+    "description": null,
+    "device_key": "e4ba8adf0beeea9dcc909dafaeab01 :: deviceNameB",
+    "enabled": true,
+    "has_keys": false,
+    "last_active_date": 1576095410,
+    "name": "deviceNameB",
+    "state": "",
+    "system_key": "e4ba8adf0beeea9dcc909dafaeab01",
+    "type": ""
+}
+~~~
+
+Example:
+~~~javascript
+    ClearBlade.init({request: req});
+
+    ClearBlade.deviceConnections("deviceNameB", function(err, data) {
+        if(err){
+            resp.error("Unable to get device connections: " + JSON.stringify(data))
+        }
+        resp.success(data)
+    });
+~~~
+
+## ClearBlade.connectedDeviceCount(callback)
+
+This method is used to retrieve the number of devices connected to the platform via MQTT.
+The response contains three keys: unique\_device\_connections, total\_device\_connections, and total\_devices.
+Total devices is simply a count of the devices in your device table.
+Unique device connections is how many of those devices have at least one active MQTT connection to the platform.
+Total device connections is how many active MQTT connections to the platform are being made by your devices.
+
+~~~json
+{
+    "unique_device_connections": 2,
+    "total_device_connections": 5,
+    "total_devices": 3
+}
+~~~
+
+Example:
+~~~javascript
+    ClearBlade.init({request: req});
+
+    ClearBlade.connectedDeviceCount(function(err, data) {
+        if(err){
+            resp.error("Unable to count connected devices: " + JSON.stringify(data))
+        }
+        resp.success(data)
+    });
+~~~
+
 ## Cache
 
 Class: ClearBlade.Cache(cacheName);
