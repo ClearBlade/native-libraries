@@ -3,7 +3,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 # Usage
 
 1. __[Initialization](#init)__
-1. __[Devices](#device)__
+1. __[Device](#device)__
 1. __[Cache](#cache)__
 1. __[Query](#query)__
 1. __[Collection](#collection)__
@@ -61,8 +61,7 @@ Optional Parameters:
 >- password - the password of the user you would like to login/register for subsequent operations
 >- registerUser - boolean that signifies that the email and password params should be used to register a new user with the platform. The newly registered user will be logged in
 >- useUser - an object in the form of {"authToken": "userToken"} used to set the user for any ensuing operations
->- callback - a function that takes a boolean for error checking and a JSON object. Must be supplied if any of the following options are supplied: email, password,
->- registerUser. If none of the mentioned options are supplied, an anonymous token will be used for following operations.
+>- callback - a function that takes a boolean for error checking and a JSON object. Must be supplied if any of the following options are supplied: email, password
 
 
 Basic Example:
