@@ -35,25 +35,16 @@ The available methods for the ClearBlade class and examples of how to use them a
 
 This method sets up the ClearBlade object with a few configuration values necessary for subsequent operations against the ClearBlade Platform.
 
-{{< warning title="Heads Up!" >}}
-You must init before accessing any ClearBlade resources within your system
-{{< /warning >}}
+Note: You must init before accessing any ClearBlade resources within your system
 
 Passing the request into the init function is the simplest and most performant way to establish an authorized instance of the ClearBlade object.  The ClearBlade object will inherit the permissions associated with the calling user.
 
-{{< note title="Best Practice" >}}
-This is the recommended way to initialize ClearBlade.js
-{{< /note >}}
+Recommended:
 
-Request Example:
 ~~~javascript
 	//In this example the passed in information on the request object is used to init the ClearBlade object
 	ClearBlade.init({request:req});
 ~~~
-
-{{< warning title="Bad Credentials" >}}
-Invalid credentials (bad username or password) leads to the #init methods to throw an error. You must catch this error using a try catch block.
-{{< /warning >}}
 
 To establish a new session for the ClearBlade object; the `options` object contains all the parameters passed into the `init` method. It can contain the following keys / value pairs:
 
@@ -77,13 +68,10 @@ Optional Parameters:
 Basic Example:
 ~~~javascript
 		//this example simply initializes the ClearBlade object with the desired system.
-		ClearBlade.init({
-			systemKey: req.systemKey,
-			systemSecret: req.systemSecret
-		});
+		ClearBlade.init({request:req});
 ~~~
 
-Authorization Example:
+Authentication Example:
 
 ~~~javascript
 		//this example uses a users email and password to log in
@@ -101,6 +89,8 @@ Authorization Example:
 			}
 		});
 ~~~
+
+Note: Invalid credentials (bad username or password) leads to the #init methods to throw an error. You must catch this error using a try catch block.
 
 Registration Example:
 ~~~javascript
