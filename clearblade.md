@@ -1186,6 +1186,42 @@ Retrieves the count of items in a collection that match the supplied query
 
 ~~~
 
+# Database
+
+Class: ClearBlade.Database();
+
+This class allows you to specify the query in raw SQL on platform and edge instead of using the existing ClearBlade query model. The function can be used for operations, such as `JOIN` and `SOME`, that are not supported by the ClearBlade Query Model.
+
+~~~javascript
+		var db = ClearBlade.Database();
+~~~
+
+## ClearBlade.Database.query(_query, callback)
+
+This function returns query results to be parsed.
+
+~~~~javascript
+	var db = ClearBlade.Database();
+	db.query("select sum(ingress) from traffic where entrance='Main_Entrance';", callback);
+	//'Ingress' is a column in 'traffic' collection
+	var callback = function (err, data) {
+        if (err) {
+        	resp.error("Parse error : " + JSON.stringify(data));
+        } else {
+        	resp.success(data);
+        }
+    };
+~~~~
+
+## ClearBlade.Database.exec(_query, callback)
+
+This function does not return query results. 
+
+~~~~javascript
+	var db = ClearBlade.Database();
+	db.exec("delete from traffic where entrance='Store_Entrance';");
+~~~~
+
 # Class: ClearBlade.Device(options)
 
 To instantiate a Device object all you need to do is call:
