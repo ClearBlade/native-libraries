@@ -7,6 +7,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 1. __[Cache](#cache)__
 1. __[Query](#query)__
 1. __[Collection](#collection)__
+2. __[Database](#database)__
 1. __[Messaging](#messaging)__
 1. __[Timers](#timer)__
 1. __[Triggers](#trigger)__
