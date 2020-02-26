@@ -1203,14 +1203,14 @@ This function returns query results to be parsed.
 
 ~~~~javascript
 	var db = ClearBlade.Database();
-	db.query("select sum(ingress) from traffic where entrance='Main_Entrance';", callback);
-	//'Ingress' is a column in 'traffic' collection
 	var callback = function (err, data) {
         if (err) {
         	resp.error("Parse error : " + JSON.stringify(data));
         } else {
         	resp.success(data);
         }
+	db.query("select sum(ingress) from traffic where entrance='Main_Entrance';", callback);
+	//'Ingress' is a column in 'traffic' collection
     };
 ~~~~
 
@@ -1220,6 +1220,12 @@ This function does not return query results.
 
 ~~~~javascript
 	var db = ClearBlade.Database();
+	var callback = function (err, data) {
+        if (err) {
+        	resp.error("Parse error : " + JSON.stringify(data));
+        } else {
+        	resp.success(data);
+        }
 	db.exec("delete from traffic where entrance='Store_Entrance';");
 ~~~~
 
