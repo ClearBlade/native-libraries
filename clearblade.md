@@ -1304,7 +1304,7 @@ This function returns query results to be parsed.
         	resp.success(data);
         }
 	db.query("select sum(ingress) from traffic where entrance='Main_Entrance';", callback);
-	//'Ingress' is a column in 'traffic' collection
+	//'ingress' is a column in 'traffic' collection
     };
 ~~~~
 
