@@ -1323,6 +1323,59 @@ This function does not return query results.
 	db.exec("delete from traffic where entrance='Store_Entrance';");
 ~~~~
 
+## ClearBlade.Database.performOperation(callback, argument)
+
+This function takes a callback as the first argument and a variable number of arguments after the callback. 
+
+~~~~javascript
+//MongoDB Example
+// Collection methods that are supported: find, insert, insertOne, insertMany, update, updateOne, updateMany, deleteOne, deleteMany, countDocuments, estimatedDocumentCount, aggregate
+//The following Cursor methods are supported: sort, limit, skip, collation
+    var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var dbCommand = 'db.externalDB.find()'
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, dbCommand)
+~~~~
+~~~~javascript
+//SQL Example
+//All SQL queries are supported
+	var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var sqlQuery1 = "SELECT * from myTable where name='Bob'"
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, sqlQuery1)
+	var sqlQuery2 = "SELECT * from myTable where name=$1"
+	db.performOperation(callback, sqlQuery2, "Bob") // 3rd arg will be substitution for $1
+~~~~
+~~~~javascript
+//CouchDB Example
+//Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
+	var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var httpMethod = "GET"
+	var uri = "/myDb/all_docs"
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, httpMethod, uri)
+	var httpMethod = "POST"
+	var uri = "/myDb/bulk_docs"
+	var data = {
+  "docs": [{"name": "Bob", "age": 100}]
+}
+	db.performOperation(callback, httpMethod, uri, JSON.stringify(data))
+~~~~
 # Class: ClearBlade.Device(options)
 
 To instantiate a Device object all you need to do is call:
