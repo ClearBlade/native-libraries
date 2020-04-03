@@ -1312,6 +1312,9 @@ This function returns query results to be parsed.
 
 This function does not return query results. 
 
+* @param {Query} _query - Query object that used to define what operations are being used. 
+* @param {function} callback - Function that handles the response from the server
+
 ~~~~javascript
 	var db = ClearBlade.Database();
 	var callback = function (err, data) {
@@ -1325,12 +1328,39 @@ This function does not return query results.
 
 ## ClearBlade.Database.performOperation(callback, argument)
 
-This function takes a callback as the first argument and a variable number of arguments after the callback. 
+This function takes a callback as the first argument and a variable number of arguments after the callback.
 
+* @param {function} callback - Function that handles the response from the server
+
+* @param {function} argument - Commands that are used in the external databases.
+
+|Functions| sql | mongodb | couchdb |
+|:---|:---|:---|:---|
+|param1|query, ex: "SELECT * from myTable where name='Bob'" |dbCommand, ex: "find"|httpMethod, ex: "POST"|
+|param2| - | - | uri, ex: "/mydb/bulk_docs"
+
+### MongoDB 
+__Collection methods that are supported__: 
+* find
+* insert
+* insertOne
+* insertMany
+* update
+* updateOne
+* updateMany
+* deleteOne
+* deleteMany
+* countDocuments
+* estimatedDocumentCount
+* aggregate
+
+__The following Cursor methods are supported:__
+* sort
+* limit
+* skip
+* collation
 ~~~~javascript
-//MongoDB Example
-// Collection methods that are supported: find, insert, insertOne, insertMany, update, updateOne, updateMany, deleteOne, deleteMany, countDocuments, estimatedDocumentCount, aggregate
-//The following Cursor methods are supported: sort, limit, skip, collation
+
     var db = ClearBlade.Database({externalDBName: "externalDB"});
 	var dbCommand = 'db.externalDB.find()'
 	var callback = function(err, data) {
@@ -1341,9 +1371,9 @@ This function takes a callback as the first argument and a variable number of ar
   		}
 	db.performOperation(callback, dbCommand)
 ~~~~
+### SQL 
+All SQL queries are supported
 ~~~~javascript
-//SQL Example
-//All SQL queries are supported
 	var db = ClearBlade.Database({externalDBName: "externalDB"});
 	var sqlQuery1 = "SELECT * from myTable where name='Bob'"
 	var callback = function(err, data) {
@@ -1356,9 +1386,11 @@ This function takes a callback as the first argument and a variable number of ar
 	var sqlQuery2 = "SELECT * from myTable where name=$1"
 	db.performOperation(callback, sqlQuery2, "Bob") // 3rd arg will be substitution for $1
 ~~~~
+### CouchDB
+
+Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
+
 ~~~~javascript
-//CouchDB Example
-//Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
 	var db = ClearBlade.Database({externalDBName: "externalDB"});
 	var httpMethod = "GET"
 	var uri = "/myDb/all_docs"
