@@ -1312,6 +1312,9 @@ This function returns query results to be parsed.
 
 This function does not return query results. 
 
+* @param {Query} _query - Query object that used to define what operations are being used. 
+* @param {function} callback - Function that handles the response from the server
+
 ~~~~javascript
 	var db = ClearBlade.Database();
 	var callback = function (err, data) {
@@ -1321,6 +1324,95 @@ This function does not return query results.
         	resp.success(data);
         }
 	db.exec("delete from traffic where entrance='Store_Entrance';");
+~~~~
+
+## ClearBlade.Database.performOperation(callback, argument)
+
+This function takes a callback as the first argument and a variable number of arguments after the callback.
+
+* @param {function} callback - Function that handles the response from the server
+* @param {string} param1 - Commands that are used in the external databases.
+* @param {string} param2 - Commands that are used in the external databases.
+* @param {string} param3 - Commands that are used in the external databases.
+
+
+|Functions| sql | mongodb | couchdb |
+|:---|:---|:---|:---|
+|param1|query, ex: "SELECT * from myTable where name='Bob'" |dbCommand, ex: "find"|httpMethod, ex: "POST"|
+|param2| - | - | uri, ex: "/mydb/bulk_docs"|
+|param3| - | - |data, ex: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"|
+
+### MongoDB 
+__Collection methods that are supported__: 
+* find
+* insert
+* insertOne
+* insertMany
+* update
+* updateOne
+* updateMany
+* deleteOne
+* deleteMany
+* countDocuments
+* estimatedDocumentCount
+* aggregate
+
+__The following Cursor methods are supported:__
+* sort
+* limit
+* skip
+* collation
+  
+~~~~javascript
+
+    var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var dbCommand = 'db.externalDB.find()'
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, dbCommand)
+~~~~
+
+### SQL 
+All SQL queries are supported
+~~~~javascript
+	var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var sqlQuery1 = "SELECT * from myTable where name='Bob'"
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, sqlQuery1)
+	var sqlQuery2 = "SELECT * from myTable where name=$1"
+	db.performOperation(callback, sqlQuery2, "Bob") // 3rd arg will be substitution for $1
+~~~~
+
+### CouchDB
+
+Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
+
+~~~~javascript
+	var db = ClearBlade.Database({externalDBName: "externalDB"});
+	var httpMethod = "GET"
+	var uri = "/myDb/all_docs"
+	var callback = function(err, data) {
+  		if(err) {
+   		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
+  		} else {
+    		resp.success(data);
+  		}
+	db.performOperation(callback, httpMethod, uri)
+	var httpMethod = "POST"
+	var uri = "/myDb/bulk_docs"
+	var data = {
+  "docs": [{"name": "Bob", "age": 100}]
+}
+	db.performOperation(callback, httpMethod, uri, JSON.stringify(data))
 ~~~~
 
 # Class: ClearBlade.Device(options)
