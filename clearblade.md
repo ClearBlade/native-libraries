@@ -1578,10 +1578,10 @@ Retrieves the message history for a topic within the specified parameters.
 
 ~~~javascript
 	var msg = ClearBlade.Messaging();
-    var unixTimeNano = new Date().getTime()
+    var unixTimeMilli = new Date().getTime()
     // Get messages from last 60 seconds
-    var unixTimeMilli = unixTimeNano / 1000 - 60
-	msg.getMessageHistory("coolTopic", unixTimeMilli, 25, function(err, data) {
+    var timestampMinAgo = unixTimeMilli - 60;
+	msg.getMessageHistory("coolTopic", timestampMinAgo, 25, function(err, data) {
 		if(err) {
 			resp.error("message history error : " + JSON.stringify(data));
 		} else {
@@ -1678,8 +1678,7 @@ Retrieves the message history for a topic within the specified parameters.
 
 ~~~javascript
 	var msg = ClearBlade.Messaging();
-	var unixTimeNano = new Date().getTime()
-    var unixTimeMilli = unixTimeNano / 1000
+	var unixTimeMilli = new Date().getTime();
 	msg.getMessageHistoryWithTimeFrame("coolTopic", 25, unixTimeMilli, null, null, function(err, body) {
 		if(err) {
 			resp.error("message history error : " + JSON.stringify(data));
