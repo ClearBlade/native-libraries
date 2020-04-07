@@ -1345,6 +1345,8 @@ We define how the param `arguments` looks like for each database below.
 
 ### MongoDB 
 
+dbCommand: valid mongodb commands 
+
 Example command forms:
 
 `db.collectionName.insert()` 
@@ -1421,7 +1423,7 @@ var sqlQuery2 = "SELECT * from myTable where name=$1"
   - httpMethod: example "POST"
   - uri: example "/mydb/bulk_docs"
   - data: example: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"
-  `data` is optional and is unvailable for `GET` operations.
+  `data` is optional and is unavailable for `GET` operations.
 
 Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
 
