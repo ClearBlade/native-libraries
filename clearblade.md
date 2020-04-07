@@ -1287,13 +1287,15 @@ Class: ClearBlade.Database();
 
 This class allows you to specify the query in raw SQL on platform and edge instead of using the existing ClearBlade query model. The function can be used for operations, such as `JOIN` and `SOME`, that are not supported by the ClearBlade Query Model.
 
+Use the Database object without the options object for performing query and exec operations on collections.
+
 ~~~javascript
-//Issues commands for external collections
 		var db = ClearBlade.Database();
 ~~~
 
+Use the Database object with the external database options object for performing operations on external database connections.
+
 ~~~javascript
-//Issues commands for external database connections
 		 var db = ClearBlade.Database({externalDBName: "externalDB"});
 ~~~
 
@@ -1343,8 +1345,13 @@ We define how the param `arguments` looks like for each database below.
 
 ### MongoDB 
 
-- arguments
-  - dbCommand: one of the below supported collection methods
+Example command forms:
+
+`db.collectionName.insert()` 
+
+or 
+
+`db.<collectionName>.<collectionMethod>(<data>).<cursorMethod>(<data>)`
 
 
 __Collection methods that are supported__: 
@@ -1366,11 +1373,13 @@ __The following Cursor methods are supported:__
 * limit
 * skip
 * collation
+
+MongoDB CLI commands can be found here -  https://docs.mongodb.com/manual/reference/method/js-collection/
   
 ~~~~javascript
 
     var db = ClearBlade.Database({externalDBName: "externalDB"});
-	var dbCommand = 'db.externalDB.find()'
+	var dbCommand = 'db.collectionName.find()'
 	var callback = function(err, data) {
   		if(err) {
    		 	resp.error("Error performing external db operation: " + JSON.stringify(data))
@@ -1412,6 +1421,7 @@ var sqlQuery2 = "SELECT * from myTable where name=$1"
   - httpMethod: example "POST"
   - uri: example "/mydb/bulk_docs"
   - data: example: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"
+  `data` is optional and is unvailable for `GET` operations.
 
 Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
 
