@@ -1288,7 +1288,13 @@ Class: ClearBlade.Database();
 This class allows you to specify the query in raw SQL on platform and edge instead of using the existing ClearBlade query model. The function can be used for operations, such as `JOIN` and `SOME`, that are not supported by the ClearBlade Query Model.
 
 ~~~javascript
+//Issues commands for external collections
 		var db = ClearBlade.Database();
+~~~
+
+~~~javascript
+//Issues commands for external database connections
+		 var db = ClearBlade.Database({externalDBName: "externalDB"});
 ~~~
 
 ## ClearBlade.Database.query(_query, callback)
