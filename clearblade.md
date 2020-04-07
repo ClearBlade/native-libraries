@@ -1328,21 +1328,19 @@ This function does not return query results.
 
 ## ClearBlade.Database.performOperation(callback, argument)
 
-This function takes a callback as the first argument and a variable number of arguments after the callback.
+This function takes a callback as the first argument and a variable number of string arguments after the callback.
 
 * @param {function} callback - Function that handles the response from the server
-* @param {string} param1 - Commands that are used in the external databases.
-* @param {string} param2 - Commands that are used in the external databases.
-* @param {string} param3 - Commands that are used in the external databases.
+* @param {...string} arguments - Arguments that are used in the external databases.
 
-
-|Functions| sql | mongodb | couchdb |
-|:---|:---|:---|:---|
-|param1|query, ex: "SELECT * from myTable where name='Bob'" |dbCommand, ex: "find"|httpMethod, ex: "POST"|
-|param2| - | - | uri, ex: "/mydb/bulk_docs"|
-|param3| - | - |data, ex: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"|
+We define how the param `arguments` looks like for each database below.
 
 ### MongoDB 
+
+- arguments
+  - dbCommand: one of the below supported collection methods
+
+
 __Collection methods that are supported__: 
 * find
 * insert
@@ -1378,6 +1376,11 @@ __The following Cursor methods are supported:__
 
 ### SQL 
 All SQL queries are supported
+
+- arguments:
+  - query
+  - (optional) args: which are denoted by `$1`, `$2`, ... in the query string
+
 ~~~~javascript
 	var db = ClearBlade.Database({externalDBName: "externalDB"});
 	var sqlQuery1 = "SELECT * from myTable where name='Bob'"
@@ -1388,11 +1391,21 @@ All SQL queries are supported
     		resp.success(data);
   		}
 	db.performOperation(callback, sqlQuery1)
-	var sqlQuery2 = "SELECT * from myTable where name=$1"
+~~~~
+
+
+~~~~javascript
+// Another way to invoke the db.performOperation, this example is in continuation of the above example, just changing values for few of the variables.
+var sqlQuery2 = "SELECT * from myTable where name=$1"
 	db.performOperation(callback, sqlQuery2, "Bob") // 3rd arg will be substitution for $1
 ~~~~
 
 ### CouchDB
+
+- arguments
+  - httpMethod: example "POST"
+  - uri: example "/mydb/bulk_docs"
+  - data: example: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"
 
 Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
 
@@ -1407,11 +1420,15 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
     		resp.success(data);
   		}
 	db.performOperation(callback, httpMethod, uri)
+~~~~
+
+~~~~javascript
+// Another way to invoke the db.performOperation, this example is in continuation of the above example, just changing values for few of the variables.
 	var httpMethod = "POST"
 	var uri = "/myDb/bulk_docs"
 	var data = {
-  "docs": [{"name": "Bob", "age": 100}]
-}
+		"docs": [{"name": "Bob", "age": 100}]
+	}
 	db.performOperation(callback, httpMethod, uri, JSON.stringify(data))
 ~~~~
 
