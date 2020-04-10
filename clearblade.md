@@ -1450,6 +1450,14 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
 	db.performOperation(callback, httpMethod, uri, JSON.stringify(data))
 ~~~~
 
+## ClearBlade.Database.performOperationAsync(callback, argument)
+
+This function is an asynchronous version of ```performOperation```. This function takes a callback as the first argument and a variable number of string arguments after the callback. This function does not return the results of the operation. It only returns ___"Success"___ if the operation succeeded or an error message if the operation failed.
+
+* @param {function} callback - Function that handles the response from the server
+* @param {...string} arguments - Arguments that are used in the external databases.  
+
+
 # Class: ClearBlade.Device(options)
 
 To instantiate a Device object all you need to do is call:
