@@ -3,15 +3,18 @@ The ClearBlade library provides all the methods necessary for interacting with t
 # Usage
 
 1. __[Initialization](#init)__
-1. __[Device](#device)__
-1. __[Cache](#cache)__
-1. __[Query](#query)__
-1. __[Collection](#collection)__
-2. __[Database](#database)__
-1. __[Messaging](#messaging)__
-1. __[Timers](#timer)__
-1. __[Triggers](#trigger)__
-1. __[Edge](#edge)__
+2. __[Device](#device)__
+3. __[Cache](#cache)__
+4. __[Query](#query)__
+5. __[Collection](#collection)__
+6. __[Database](#database)__
+7. __[Messaging](#messaging)__
+8. __[Timers](#timer)__
+9. __[Triggers](#trigger)__
+10. __[Edge](#edge)__
+11. __[Roles](#roles)__
+12. __[Permissions](#permissions)__
+
 
 # Overview
 
@@ -2070,7 +2073,7 @@ Events: ClearBlade Trigger
 
 
 ## ClearBlade.Trigger.Create(name, options, callback)
-### Create a new Trigger (runs a service after a defined action is detected)
+### Create a new Trigger (runs a service aftDFSer a defined action is detected)
 ```javascript
 ClearBlade.Trigger.Create("runTestAfterPublishOnTopicFoo", {
         "def_module":      "Messaging",
@@ -2148,4 +2151,508 @@ function myService(req, resp){
 	var edgeId = ClearBlade.edgeId()
 	resp.success("Edge Id: " + edgeId)
 }
+~~~
+# Class: ClearBlade.Roles()
+
+This class allows for interacting with roles settings and information.
+To instantiate the roles class just call:
+
+~~~javascript
+	var roles = ClearBlade.Roles();
+~~~
+## roles.create(roleMeta, callback)
+
+This method creates a role.
+
+* @param {function} callback - Returns a roleID
+
+Function `roleMeta`:
+* @property {string} name - name of the role
+* @property {string} description - description of the role
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+    var callback = function (err, roleID) {
+        if (err) {
+            resp.error(roleID);
+        } 
+        resp.success(roleID);
+    }
+    roles.create({"name":"newRole","description": "This is a new role!"}, callback);
+~~~
+## roles.update(roleID, changes, callback)
+
+This method updates a role's description.
+
+* @param {string} roleID - The role's unique ID. Required.
+* @param {function} callback - Returns a success response
+
+Function `changes`:
+* @property {string} description - New description of the role
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.update("<roleID>",{"description": "This is a new description!"}, callback);
+~~~
+
+## roles.delete(roleID, callback)
+
+This method deletes a role.
+
+* @param {string} roleID - The role's unique ID. Required.
+* @param {function} callback - Returns a roleID
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.delete("<roleID>", callback);
+~~~
+## roles.get(query, callback)
+
+This method gets role info with a query. 
+
+* @param {Query} query - Query object that used to filter the roles. Query page size will be defaulted to 100 if size is not provided
+* @param {function} callback - Returns a success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.get(query, callback);
+~~~
+
+## roles.getById(roleID, callback)
+
+This method gets role info with the role ID. 
+
+* @param {string} roleID - The role's unique ID. Required.
+* @param {function} callback - Returns role info from requested roleID
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.getById("<roleID>", callback);
+~~~
+
+## roles.getByName(roleName, callback)
+
+This method gets role info with the role name. 
+
+* @param {string} roleName - The role's name
+* @param {function} callback - Returns role info from requested roleName
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.getByName("roleName", callback);
+~~~
+
+## roles.addRoleToUser(userID, roleNameOrID, callback)
+
+This method adds a role to a user. 
+
+* @param {string} userID - A user's unique ID
+* @param {string} roleNameOrID - A role can be added to the user using a role name or ID
+* @param {function} callback - Returns unique `user_role_id`
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.addRoleToUser("<userID>","roleNameOrID", callback);
+~~~
+
+## roles.getRolesForUser(userID, callback)
+
+This method gets role(s) for a user. 
+
+* @param {string} userID - A user's unique ID
+* @param {function} callback - Returns the IDs for role, user, and user_role
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.getRolesForUser("<userID>", callback);
+~~~
+
+## roles.removeRoleFromUser(userID,roleNameOrID, callback)
+
+This method removes a role for a user. 
+
+* @param {string} userID - A user's unique ID
+* @param {string} roleNameOrID - A role can be removed from the user using a role name or ID
+* @param {function} callback - Returns a success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.removeRoleFromUser("<userID>","roleName", callback);
+~~~
+
+## roles.addRoleToDevice(deviceName,roleNameOrID, callback)
+
+This method adds a role to a user. 
+
+* @param {string} deviceName - The device name
+* @param {string} roleNameOrID - A role can be removed from the user using a role name or ID
+* @param {function} callback - Returns unique `device_role_id`
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.addRoleToDevice("deviceName","roleName", callback);
+~~~
+
+## roles.getRolesForDevice(deviceName, callback)
+
+This method gets role(s) for a device. 
+
+* @param {string} deviceName - The device name
+* @param {function} callback - Returns the IDs for role, device, and device_role
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.getRolesForDevice("deviceName", callback);
+~~~
+
+## roles.removeRoleFromDevice(deviceName,roleNameOrID, callback)
+
+This method removes a role for a device. 
+
+* @param {string} deviceName - The device name
+* @param {string} roleNameOrID - A role can be removed from the user using a role name or ID
+* @param {function} callback - Returns a success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    roles.removeRoleFromDevice("deviceName","roleName", callback);
+~~~
+
+## roles.duplicateRole(newRoleInfo,oldRoleID, callback)
+
+This method duplicates an existing role's meta and permissions.
+
+* @param {string} oldRoleID - The original role's original unique ID.
+* @param {function} callback - Returns a new roleID for the duplicate role
+
+Function `newRoleInfo`:
+* @property {string} name - new name of the role
+* @property {string} description - new description of the role
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var roles = ClearBlade.Roles();
+    var callback = function (err, oldRoleID) {
+        if (err) {
+            resp.error(oldRoleID);
+        } 
+        resp.success(oldRoleID);
+    }
+    roles.duplicateRole({"name":"duplicateRole","description": "This is a new role!"},"<oldRoleID>",callback);
+~~~
+
+# Class: ClearBlade.Permissions()
+
+This class allows for interacting with roles settings and information.
+To instantiate the roles class just call:
+
+~~~javascript
+	var permissions = ClearBlade.Permissions();
+~~~
+
+### Permission Values
+
+|`resourceType`|`requestType`|
+|-----|------|
+|service|1 = READ|
+|allservices|2 = CREATE|
+|collection|4 = UPDATE|
+|allcollections|8 = DELETE|
+|allexternaldatabases|
+|topic|
+|messagehistory|
+|users|
+|dashboard|
+|devices|
+|edges|
+|deployments|
+|timers|
+|triggers|
+|roles|
+|servicecache|
+|externaldatabase|
+|manageusers|
+
+Example for `requestType`:
+
+1 + 2 = 3 which is the READ and CREATE permissions. 15 is all permissions
+
+## permissions.addPermissionToRole(roleID, info, callback)
+
+This method adds permissions to a role. 
+
+* @param {string} roleID - The role's unique ID.
+* @param {function} callback - Returns the permission ID
+
+Function `info`:
+* @property {int} requestType - permissions types to be added. See above for possible values.
+* @property {string} resourceType - asset types that the permissions are added to. See above for possible values.
+* @property {string} resourceName - name of the asset to add permissions to
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+    var callback = function (err, permID) {
+        if (err) {
+            resp.error(permID);
+        } 
+        resp.success(permID);
+    }
+    permissions.addPermissionToRole("<roleID>",{"requestType": 3,"resourceType": "allservices", "resourceName":""}, callback);
+~~~
+
+## permissions.getPermissionsForRole(roleID, callback)
+
+This method gets all permissions for a role. 
+
+* @param {string} roleID - The role's unique ID. Required.
+* @param {function} callback - Returns all permissions and info for the asset(s) with the roleID
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.getPermissionsForRole("<roleID>", callback);
+~~~
+
+## permissions.getPermissionsForResource(resourceType, resourceName, callback)
+
+This method gets all permissions for a resource. 
+
+* @param {string} resourceType - asset types that have the permissions. See above for possible values.
+* @param {string} resourceName - name of the asset have the permissions.
+* @param {function} callback - Returns all permission info and role ID for the asset(s) with the resource name
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.getPermissionsForResource("service","serviceName", callback);
+~~~
+
+# permissions.increasePermissionsForRole(roleID, permID, requestType, callback)
+
+This method increases existing permissions for roles and resources. 
+
+* @param {string} roleID - The role's unique ID 
+* @param {string} permID - The permission's ID
+* @param {int} requestType - permissions types to be added. See above for possible values.
+* @param {function} callback - Returns success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.increasePermissionsForRole("roleID","permID",15, callback);
+~~~
+
+# permissions.decreasePermissionsForRole(roleID, permID, requestType, callback)
+
+This method decreses existing permissions for roles and resources. 
+
+* @param {string} roleID - The role's unique ID 
+* @param {string} permID - The permission's ID
+* @param {int} requestType - permissions types to be added. See above for possible values.
+* @param {function} callback - Returns success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.decreasePermissionsForRole("roleID","permID",1, callback);
+~~~
+
+## permissions.removePermissionsForRole(roleID, callback)
+
+This method removes permissions for a role. 
+
+* @param {string} roleID - The role's unique ID. 
+* @param {function} callback - Returns success response
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.removePermissionsForRole("<roleID>", callback);
+~~~
+
+## permissions.removePermissionsForResource(resourceType, resourceName, callback)
+
+This method removes permissions for a resource. 
+
+* @param {string} resourceType - asset types that have the permissions. See above for possible values.
+* @param {string} resourceName - name of the asset have the permissions.
+* @param {function} callback - Returns success response
+
+
+### Example
+
+~~~javascript
+    ClearBlade.init({request:req});
+    var permissions = ClearBlade.Permissions();
+	var callback = function (err, data) {
+			if (err) {
+				resp.error("Parse error : " + JSON.stringify(data));
+			} else {
+				resp.success(data);
+			}
+		}
+    permissions.removePermissionsForResource("service","serviceName", callback);
 ~~~
