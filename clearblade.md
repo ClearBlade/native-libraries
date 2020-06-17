@@ -2647,7 +2647,7 @@ This method decreases existing permissions for roles and resources.
 
 ## permissions.removePermissionsForRole(roleID, callback)
 
-This method removes permissions for a role. 
+This method removes all permissions for a role. 
 
 * @param {string} roleID
 * @callback callback
