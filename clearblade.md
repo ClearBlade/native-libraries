@@ -917,52 +917,6 @@ ___Query.descending___ or ___Query.setPage___ to set sort order or paging.
 	query.rawQuery(JSON.stringify(rawQueryJson));
 ~~~~
 
-## Query.matches(field, value)
-This method is used to filter the data by using a regular expression against a given column.
-
-~~~~javascript
-	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-	query.matches("YOUR_COLUMN_OF_TYPE_STRING", ".*mustContainThis.*");
-~~~~
-{{< note title="Regex Flags" >}}
-If regex flags are needed, the regular expression should be preceded by __(?_flags_)__. For example, a regular expression for a case insenstive match would resemble __(?i).\*This is a case insensitive match.\*__
-{{< /note >}}
-
-{{< note title="Regex Parameter Type" >}}
-The second parameter is a string literal, not a JavaScript Regex object
-{{< /note >}}
-
-{{< note title="Leading and Trailing Slashes" >}}
-You do not need to surround your regex with __/__. Example: passing in __.\*zard__ as a second parameter will be executed as __/.*zard/__
-{{< /note >}}
-
-{{< warning title="URL Encoding" >}}
-Many characters used in regular expressions have special meanings in the context of URL's and HTTP payloads. If you receive a _fetch error : "unexpected end of JSON input"_ error, you will need to URL encode your regular expression.
-
-~~~~javascript
-	query.matches("blah_col", ".+?%lowercase.*$");
-~~~~
-{{< /warning >}}
-
-~~~~javascript
-	/*
-	* Let's assume we have a collection named "PokémonCollection"
-	* This collection has two columns: column1 of type string, column2 of type string
-	* There is a single row: { column1:"charizard", column2:"holographic"}
-	*/
-	var query = ClearBlade.Query({collectionName: "PokémonCollection"});
-	// the first parameter is the column name, in this case "column1"
-	// the second parameter is a string literal
-	query.matches("column1", "(?i).*zard");
-	query.fetch(function(err, data){
-		// the second parameter, "(?i).*zard", will be executed as /(?i).*zard/
-		// and will match any column value that ends with "zard" (ignoring case)
-		//
-		// The single row { column1:"charizard", column2:"holographic"} will match and be returned
-
-	})
-~~~~
-
 ## Query.setPage(pageSize, pageNum)
 
 The default paging is page 1 with 100 results.  
