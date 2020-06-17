@@ -2164,12 +2164,15 @@ To instantiate the roles class just call:
 
 This method creates a role.
 
-* {Object} roleMeta
-* {string} roleMeta.name
-* {string} roleMeta.description
 * @callback callback
 * @param {boolean} err
 * @param {string} data - returns roleID or error string
+
+
+* @param {Object} roleMeta
+* @param {string} roleMeta.name
+* @param {string} roleMeta.description
+* @param {callback} callback  
 
 ### Example
 
@@ -2186,15 +2189,24 @@ This method creates a role.
 ~~~
 ## roles.update(roleID, changes, callback)
 
-This method updates a role's description.
+This method updates a role's description. To update the permissions, check the permissions class.
 
-* @param {string} roleID - Required.
-* {Object} changes
-* {string} changes.description - updated description for the role
+```
+/*
+* 
 * @callback callback
 * @param {boolean} err
 * @param {string} data
+*/
 
+/*
+* This method updates a role's description. To update the permissions, check the permissions class.
+* @param {string} roleID - Required.
+* @param {Object} changes
+* @param {string} changes.description - updated description for the role
+* @param {callback} callback
+*/
+```
 ### Example
 
 ~~~javascript
@@ -2214,11 +2226,13 @@ This method updates a role's description.
 
 This method deletes a role.
 
-* @param {string} roleID - The role's unique ID. Required.
-* @param {function} callback - Returns a roleID
 * @callback callback
 * @param {boolean} err
 * @param {string} data - returns roleID or error string
+
+* 
+* @param {string} roleID - The role's unique ID. Required.
+* @param {callback} callback
 
 ### Example
 
@@ -2236,12 +2250,14 @@ This method deletes a role.
 ~~~
 ## roles.get(query, callback)
 
-This method gets role info with a query. 
+This method gets role info with a query.
 
-* @param {Query} query - Query object that used to filter the roles. Query page size will be defaulted to 100 if size is not provided
 * @callback callback
 * @param {boolean} err
 * @param {string} data
+
+* @param {Query} query - Query object that used to filter the roles. Query page size will be defaulted to 100 if size is not provided
+* @param {callback} callback
 
 ### Example
 
@@ -2260,12 +2276,14 @@ This method gets role info with a query.
 
 ## roles.getById(roleID, callback)
 
-This method gets role info with the role ID. 
-
-* @param {string} roleID -  Required.
+* 
 * @callback callback
 * @param {boolean} err
 * @param {string} data - Returns role info from requested roleID or error string
+
+* This method gets role info with the role ID.
+* @param {string} roleID -  Required.
+* @param {callback} callback
 
 ### Example
 
@@ -2284,9 +2302,9 @@ This method gets role info with the role ID.
 
 ## roles.getByName(roleName, callback)
 
-This method gets role info with the role name. 
+This method gets role info with the role name.
 
-* @param {string} roleName 
+* @param {string} roleName
 * @callback callback
 * @param {boolean} err
 * @param {string} data - Returns role info for requested roleName or error string
@@ -2308,9 +2326,9 @@ This method gets role info with the role name.
 
 ## roles.addRoleToUser(userID, roleNameOrID, callback)
 
-This method adds a role to a user. 
+This method adds a role to a user.
 
-* @param {string} userID 
+* @param {string} userID
 * @param {string} roleNameOrID - A role can be added to the user using a role name or ID
 * @callback callback
 * @param {boolean} err
@@ -2333,7 +2351,7 @@ This method adds a role to a user.
 
 ## roles.getRolesForUser(userID, callback)
 
-This method gets role(s) for a user. 
+This method gets role(s) for a user.
 
 * @param {string} userID
 * @callback callback
@@ -2357,7 +2375,7 @@ This method gets role(s) for a user.
 
 ## roles.removeRoleFromUser(userID,roleNameOrID, callback)
 
-This method removes a role for a user. 
+This method removes a role for a user.
 
 * @param {string} userID 
 * @param {string} roleNameOrID - A role can be removed from the user using a role name or ID
@@ -2382,7 +2400,7 @@ This method removes a role for a user.
 
 ## roles.addRoleToDevice(deviceName,roleNameOrID, callback)
 
-This method adds a role to a device. 
+This method adds a role to a device.
 
 * @param {string} deviceName 
 * @param {string} roleNameOrID - A role can be added to the device using a role name or ID
@@ -2407,7 +2425,7 @@ This method adds a role to a device.
 
 ## roles.getRolesForDevice(deviceName, callback)
 
-This method gets role(s) for a device. 
+This method gets role(s) for a device.
 
 * @param {string} deviceName 
 * @callback callback
@@ -2431,7 +2449,7 @@ This method gets role(s) for a device.
 
 ## roles.removeRoleFromDevice(deviceName,roleNameOrID, callback)
 
-This method removes a role for a device. 
+This method removes a role for a device.
 
 * @param {string} deviceName 
 * @param {string} roleNameOrID - A role can be removed from the device using a role name or ID
@@ -2518,7 +2536,7 @@ Example for `requestType`:
 
 ## permissions.addPermissionToRole(roleID, info, callback)
 
-This method adds permissions to a role. 
+This method adds permissions to a role.
 
 * @param {string} roleID - The role's unique ID.
 * {Object} info
@@ -2546,7 +2564,7 @@ This method adds permissions to a role.
 
 ## permissions.getPermissionsForRole(roleID, callback)
 
-This method gets all permissions for a role. 
+This method gets all permissions for a role.
 
 * @param {string} roleID -  Required.
 * @callback callback
@@ -2570,7 +2588,7 @@ This method gets all permissions for a role.
 
 ## permissions.getPermissionsForResource(resourceType, resourceName, callback)
 
-This method gets all permissions for a resource. 
+This method gets all permissions for a resource.
 
 * @param {string} resourceType - asset types that have the permissions. See above for possible values.
 * @param {string} resourceName - name of the asset have the permissions.
@@ -2595,7 +2613,7 @@ This method gets all permissions for a resource.
 
 # permissions.increasePermissionsForRole(roleID, permID, requestType, callback)
 
-This method increases existing permissions for roles and resources. 
+This method increases existing permissions for roles and resources.
 
 * @param {string} roleID - The role's unique ID 
 * @param {string} permID - The permission's ID
@@ -2621,7 +2639,7 @@ This method increases existing permissions for roles and resources.
 
 # permissions.decreasePermissionsForRole(roleID, permID, requestType, callback)
 
-This method decreases existing permissions for roles and resources. 
+This method decreases existing permissions for roles and resources.
 
 * @param {string} roleID 
 * @param {string} permID 
@@ -2647,7 +2665,7 @@ This method decreases existing permissions for roles and resources.
 
 ## permissions.removePermissionsForRole(roleID, callback)
 
-This method removes permissions for a role. 
+This method removes all the permissions for a role.
 
 * @param {string} roleID
 * @callback callback
@@ -2671,7 +2689,7 @@ This method removes permissions for a role.
 
 ## permissions.removePermissionsForResource(resourceType, resourceName, callback)
 
-This method removes permissions for a resource. 
+This method removes all the permissions for a resource.
 
 * @param {string} resourceType - asset types that have the permissions. See above for possible values.
 * @param {string} resourceName - name of the asset have the permissions.
