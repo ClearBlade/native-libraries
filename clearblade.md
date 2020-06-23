@@ -2152,7 +2152,9 @@ function myService(req, resp){
 	resp.success("Edge Id: " + edgeId)
 }
 ~~~
-# Class: ClearBlade.Roles()
+# Roles 
+
+Class: ClearBlade.Roles()
 
 This class allows for interacting with roles settings and information.
 To instantiate the roles class just call:
@@ -2504,10 +2506,12 @@ This method duplicates an existing role's meta and permissions.
     roles.duplicateRole({"name":"duplicateRole","description": "This is a new role!"},"oldRoleID",callback);
 ~~~
 
-# Class: ClearBlade.Permissions()
+# Permissions
 
-This class allows for interacting with roles settings and information.
-To instantiate the roles class just call:
+Class: ClearBlade.Permissions()
+
+This class allows for interacting with permission settings and information.
+To instantiate the permissions class just call:
 
 ~~~javascript
 	var permissions = ClearBlade.Permissions();
