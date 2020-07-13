@@ -7,19 +7,19 @@ The ClearBlade Async library works with the event loop to provide asynchronous C
 
 # Query 
 
-Class: ClearBladeAsync.Query(options)
+Class: ClearBladeAsync.Query()
 
-This class allows for the execution of async ClearBlade query functions and returns promises. The functions and examples are similar to the [ClearBlade Query Class](https://github.com/ClearBlade/native-libraries/blob/master/clearblade.md#query)
+This is an object to be used with the other async functions. The functions and examples are similar to the [ClearBlade Query Class](https://github.com/ClearBlade/native-libraries/blob/master/clearblade.md#query)
 
 To instantiate the async query class just call:
 
 ~~~javascript
-	var query = ClearBladeAsync.Query("Activity")
+	var query = ClearBladeAsync.Query()
 ~~~
 
 # Collection
 
-Class: ClearBladeAsync.Collection(options)
+Class: ClearBladeAsync.Collection(nameOrID)
 
 This class allows for the execution of async ClearBlade collection functions and returns promises. The `init` function is not required.
 
@@ -41,7 +41,7 @@ Creates a new ClearBlade collection.
 
 ## ClearBladeAsync.Collection(nameOrID)
 
-This function returns collection query data.
+This function gets data from the collection using the collection name or ID.
 
  * @param {string} nameOrID
  * @returns {Collection}
@@ -49,8 +49,7 @@ This function returns collection query data.
 Example
 
 ~~~javascript
-// Use a string parameter for the Collection object. The string can be either the collection name or collection id
-	var collection  = ClearBladeAsync.Collection({collectionName:"<COLLECTION_NAME>");
+	var collection  = ClearBladeAsync.Collection("<COLLECTION_NAME_OR_ID>");
 	collection.fetch()
 		.then(resp.success)
 		.catch(function(reason){
@@ -78,19 +77,11 @@ Example
 		})
 ~~~
 
-## ClearBladeAsync.Collection.fetch(query)
-
-This function gets data from the collection.
-
- * @param {Query} _query
- * @returns {Promise} 
-
 ## ClearBladeAsync.Collection.create(newItem)
 
 This function creates a row in the collection.
 
  * {Object} newItem
- * {string} newItem.column
  * @returns {Promise} 
 
 Example
@@ -113,7 +104,6 @@ Example
 
  * @param {Query} _query
  * {Object} changes
- * {string} changes.column
  * @returns {Promise}
 
 Example

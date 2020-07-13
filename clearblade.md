@@ -14,8 +14,6 @@ The ClearBlade library provides all the methods necessary for interacting with t
 10. __[Edge](#edge)__
 11. __[Roles](#roles)__
 12. __[Permissions](#permissions)__
-13. __[Async](#async)__
-
 
 # Overview
 
