@@ -41,7 +41,7 @@ Creates a new ClearBlade collection.
 
 ## ClearBladeAsync.Collection(nameOrID)
 
-This function gets data from the collection using the collection name or ID.
+This function instantiates a Collection object.
 
  * @param {string} nameOrID
  * @returns {Collection}
