@@ -15,7 +15,6 @@ The ClearBlade library provides all the methods necessary for interacting with t
 11. __[Roles](#roles)__
 12. __[Permissions](#permissions)__
 
-
 # Overview
 
 ClearBlade.js Library enables users to:
@@ -1090,6 +1089,7 @@ Example with Query:
    	query.equalTo("YOUR_COLUMN_OF_TYPE_STRING", "hello");
     col.fetch(query, callback);
 ~~~
+
 
 ## Collection.create(newItem, callback)
 
@@ -2690,3 +2690,4 @@ This method removes all the permissions for a resource.
 		}
     permissions.removePermissionsForResource("service","serviceName", callback);
 ~~~
+
