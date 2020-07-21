@@ -45,8 +45,8 @@ var options = {
   port: 1883,
   username: "<CB_TOKEN>",
   password: "<SYSTEM_KEY>",
-var client = new MQTT.Client(options);
 }
+var client = new MQTT.Client(options);
 ~~~
 
 ## Client.subscribe(topic, onMessage)
