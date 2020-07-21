@@ -4,7 +4,6 @@ The ClearBlade Async library works with the event loop to provide asynchronous C
 
 1. __[Query](#query)__
 2. __[Collection](#collection)__
-3. __[Messaging](#messaging)__
 
 # Query 
 

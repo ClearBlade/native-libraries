@@ -37,10 +37,10 @@ If no options are specified, the client connects to the ClearBlade broker.
 
 Example
 
-The code block below is to connect to an clearblade external broker. 
+The code block below is to connect to an external clearblade broker. 
 
 ~~~javascript
-new MQTT.Client();
+var client = new MQTT.Client(options);
 var options = {
   address: 'platform.clearblade.com',
   port: 1883,
@@ -59,7 +59,9 @@ This function subscribes to a topic in the broker and registers a callback funct
 
 ~~~ javascript
 var client = new MQTT.Client();
-var data = log("Subscribing to topic")
+function data(topic, message){
+  log("received message on topic "+topic+": "+message.payload)
+  }
 function myStreamService(req, resp){
   client.subscribe("incoming/data/topic", data)
     .catch(function(reason){
