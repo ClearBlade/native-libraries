@@ -40,12 +40,12 @@ Example
 The code block below is to connect to an external clearblade broker. 
 
 ~~~javascript
-var client = new MQTT.Client(options);
 var options = {
   address: 'platform.clearblade.com',
   port: 1883,
   username: "<CB_TOKEN>",
   password: "<SYSTEM_KEY>",
+var client = new MQTT.Client(options);
 }
 ~~~
 
