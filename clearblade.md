@@ -1288,7 +1288,7 @@ This function does not return query results.
         } else {
         	resp.success(data);
         }
-	db.exec("delete from traffic where entrance='Store_Entrance';");
+	db.exec("delete from traffic where entrance='Store_Entrance';", callback);
 ~~~~
 
 ## ClearBlade.Database.performOperation(callback, arguments)
