@@ -1291,7 +1291,7 @@ This function does not return query results.
 	db.exec("delete from traffic where entrance='Store_Entrance';");
 ~~~~
 
-## ClearBlade.Database.performOperation(callback, argument)
+## ClearBlade.Database.performOperation(callback, arguments)
 
 This function takes a callback as the first argument and a variable number of string arguments after the callback.
 
@@ -1376,7 +1376,7 @@ var sqlQuery2 = "SELECT * from myTable where name=$1"
 
 ### CouchDB
 
-- arguments
+- arguments:
   - httpMethod: example "POST"
   - uri: example "/mydb/bulk_docs"
   - data: example: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"
@@ -1407,12 +1407,31 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
 	db.performOperation(callback, httpMethod, uri, JSON.stringify(data))
 ~~~~
 
+### BigQuery 
+
+- arguments:
+  - operation
+  - query
+
+~~~javascript
+var db = ClearBlade.Database({externalDBName: "myBigquery"});
+var operation = "query"
+var query = "SELECT name, gender, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name, gender ORDER BY total DESC LIMIT 10"
+var callback = function(err, data) {
+    if(err) {
+         resp.error("Error performing external db operation: " + JSON.stringify(data))
+    } else {
+        resp.success(data);
+    }
+db.performOperation(callback, operation, query)
+~~~
+
 ## ClearBlade.Database.performOperationAsync(callback, argument)
 
 This function is an asynchronous version of ```performOperation```. This function takes a callback as the first argument and a variable number of string arguments after the callback. This function does not return the results of the operation. It only returns ___"Success"___ if the operation succeeded or an error message if the operation failed.
 
 * @param {function} callback - Function that handles the response from the server
-* @param {...string} arguments - Arguments that are used in the external databases.  
+* @param {...string} arguments - Arguments that are used in the external databases. 
 
 
 # Class: ClearBlade.Device(options)
