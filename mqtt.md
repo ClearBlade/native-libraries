@@ -59,11 +59,11 @@ This function subscribes to a topic in the broker and registers a callback funct
 
 ~~~ javascript
 var client = new MQTT.Client();
-function data(topic, message){
+function onMessage(topic, message){
   log("received message on topic "+topic+": "+message.payload)
   }
 function myStreamService(req, resp){
-  client.subscribe("incoming/data/topic", data)
+  client.subscribe("incoming/data/topic", onMessage)
     .catch(function(reason){
       resp.error("failed to subscribe: "+reason.message)
     })
@@ -82,13 +82,13 @@ This function allows publish to send a MQTT message to the broker.
 
 ~~~ javascript
 var client = new MQTT.Client();
-function checkDataLimits(topic, msg) {
-  var msgData = JSON.parse(msg.payload);
-  if (msgData.data > 90) {
-    var alert = "Data on device " + msgData.deviceID + " too high (" + msgData.data + ")";
-    client.publish("alert/topic", alert)
-      .catch(function(reason){
-        log("failed to publish alert \""+alert+"\": "+reason.message)
-      })
-  }
+var deviceData = {
+"data":90,
+"deviceID":"myDevice"
+}
+var info = "Data on device: " + msgData.deviceID + " is " + msgData.data;
+client.publish("device/info", info)
+.catch(function(reason){
+log("failed to publish device data "+deviceData+": "+reason.message)
+});
   ~~~
