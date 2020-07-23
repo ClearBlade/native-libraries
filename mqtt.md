@@ -58,15 +58,18 @@ This function subscribes to a topic in the broker and registers a callback funct
 * @returns {Promise}
 
 ~~~ javascript
-var client = new MQTT.Client();
-function onMessage(topic, message){
-  log("received message on topic "+topic+": "+message.payload)
-  }
+
 function myStreamService(req, resp){
+
+  var client = new MQTT.Client();
+  function onMessage(topic, message) {
+    log("received message on topic " + topic + ": " + message.payload)
+  }
   client.subscribe("incoming/data/topic", onMessage)
-    .catch(function(reason){
-      resp.error("failed to subscribe: "+reason.message)
-    })
+    .catch(function (reason) {
+      resp.error("failed to subscribe: " + reason.message)
+    });
+}
 ~~~
 
 ## Client.publish(topic, payload, qos, retain)
@@ -81,14 +84,20 @@ This function allows publish to send a MQTT message to the broker.
 * @returns {Promise}
 
 ~~~ javascript
-var client = new MQTT.Client();
-var deviceData = {
-"data":90,
-"deviceID":"myDevice"
+function myCodeService(req, resp){
+    var client = new MQTT.Client();
+    var deviceData = {
+        "data": 90,
+        "deviceID": "myDevice"
+    }
+    var info = "Data on device: " + deviceData.deviceID + " is " + deviceData.data;
+    client.publish("device/info", info)
+        .then(function (resolve) {
+            log(resolve);
+            resp.success("success");
+        }, function (reason) {
+            log("failed to publish device data " + deviceData + ": " + reason.message);
+            resp.error('failure');
+        });
 }
-var info = "Data on device: " + msgData.deviceID + " is " + msgData.data;
-client.publish("device/info", info)
-.catch(function(reason){
-log("failed to publish device data "+deviceData+": "+reason.message)
-});
   ~~~
