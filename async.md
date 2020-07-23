@@ -28,6 +28,7 @@ To instantiate the async class just call:
 ~~~javascript
 	var collection = ClearBladeAsync.Collection(nameorID)
 ~~~
+
 ## ClearBladeAsync.newCollection(name)
 
 Creates a new ClearBlade collection.
@@ -218,3 +219,5 @@ Example
 			resp.error("caught: "+reason.message);
 		})
 ~~~
+
+
