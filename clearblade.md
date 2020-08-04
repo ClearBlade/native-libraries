@@ -246,7 +246,7 @@ This method is used to delete a user by email.
 Example:
 
 ```javascript
-ClearBlade.init(req);
+ClearBlade.init({ request: req });
 ClearBlade.deleteUser("<USER_EMAIL>", function(err, body) {
 	if(err) {
 		resp.error("user deletion failure: " + JSON.stringify(body));
@@ -263,7 +263,7 @@ This method is used to delete multiple users by email.
 Example:
 
 ```javascript
-ClearBlade.init(req);
+ClearBlade.init({ request: req });
 emailsToDelete = ["<USER_EMAIL_ONE>", "<USER_EMAIL_TWO>", "<USER_EMAIL_THREE>"];
 ClearBlade.deleteUsers(emailsToDelete, function(err, body) {
 	if(err) {
