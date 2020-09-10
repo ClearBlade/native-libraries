@@ -274,6 +274,25 @@ ClearBlade.deleteUsers(emailsToDelete, function(err, body) {
 });
 ```
 
+## ClearBlade.reauthUser(usertoken, refreshtoken, callback)
+
+This method is used to reauthenticate the user with refresh tokens. 
+
+Example:
+
+```javascript
+ClearBlade.init(req);
+var usertoken = "<old_auth_token>";
+var refreshtoken = "<old_refresh_token>";
+ClearBlade.reauthUser(usertoken, refreshtoken, function(err, data) {
+	if(err) {
+		resp.error("user reauthentication failure: " + JSON.stringify(data));
+	} else {
+		resp.success(data);
+	}
+});
+```
+
 ## Device
 
 ClearBlade.getAllDevicesForSystem(callback)
