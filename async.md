@@ -4,6 +4,7 @@ The ClearBlade Async library works with the event loop to provide asynchronous C
 
 1. __[Query](#query)__
 2. __[Collection](#collection)__
+3. __[File Management](#file-management)__
 
 # Query 
 
@@ -220,4 +221,315 @@ Example
 		})
 ~~~
 
+# FileSystem 
 
+Class: ClearBladeAsync.FS()
+
+This class adds support for interacting with the sync’d filesystem. All file paths are relative to bucket root, except on an edge where you can use full paths.
+
+To instantiate the async filesystem class just call:
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+~~~
+
+## ClearBladeAsync.FS(deployment_name)
+
+Represents a sync'd filesystem.
+
+* @param {string} deployment_name
+* @returns {FS}
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	
+~~~
+
+## ClearBladeAsync.FS.readDir(path)
+
+ This function reads the entire contents of a file.
+ If encoding is not specified, contents will be a `UInt8Array`. If encoding is specified, contents will be a string.
+
+ * @param {string} path
+ * @param {string} encoding
+ * @returns {Promise} -  file contents
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.readDir(path)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.FS.readFile(path,[encoding])
+
+ This function reads the entire contents of a file.
+ If encoding is not specified, contents will be a `UInt8Array`. If encoding is specified, contents will be a string.
+
+ * @param {string} path
+ * @param {string} encoding
+ * @returns {Promise} -  file contents
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.readFile(path,[utf8]
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.FS.writeFile(path,data)
+
+This function writes the given data to a file, replacing the file if it already exists.
+
+ * @param {string} path
+ * @param {string|Uint8Array} data
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.readFile(path,[utf8]
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.FS.renameFile(oldPath, newPath)
+
+ This function renames the file path.
+
+ * @param {string} oldPath
+ * @param {string} newPath
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.renameFile(oldPath, newPath)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.FS.copyFile(srcPath, dstPath)
+
+ This function copies srcPath to dstPath. It overwrites dstPath if it already exists.
+
+ * @param {string} srcPath
+ * @param {string} dstPath
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.copyFile(srcPath, dstPath)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.FS.deleteFile(path)
+
+This function deletes the file at the specified path.
+
+ * @param {string} path
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var FS = ClearBladeAsync.FS()
+	FS.deleteFile(path)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+# File Stats 
+
+Class: ClearBladeAsync.FileStats()
+
+ This type definition for an object represents file metadata like size, permissions, etc.
+
+To instantiate the async file stats class just call:
+
+~~~javascript
+	var fstats = ClearBladeAsync.FileStats()
+~~~
+
+## ClearBladeAsync.FileStats.stat(path)
+
+The promise is resolved with the `FileStats` object for the given path.
+
+ * @param {string} path
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var fstats = ClearBladeAsync.FileStats()
+	fstats.stat(path)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+# File Management 
+
+Class: ClearBladeAsync.File()
+
+This class adds support for interacting with the files in the sync’d filesystem.
+
+To instantiate the async file class just call:
+
+~~~javascript
+	var fstats = ClearBladeAsync.File()
+~~~
+
+## ClearBladeAsync.File(deployment_name, path)
+
+This function represents a file on the filesystem.
+It is useful for performing multiple operations on a single file.
+
+ * @param {string} deployment_name
+ * @param {string} path
+ * @returns {File}
+
+Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.stat(deployment_name, path)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.stat()
+
+The promise is resolved with the `FileStats` object for the file.
+
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.stat()
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.read([encoding])
+
+This function reads the entire contents of the file.
+If encoding is not specified, contents will be a UInt8Array.
+If encoding is specified, contents will be a string.
+
+ * @param {string} [encoding]
+ * @returns {Promise} - file contents
+
+Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.read("utf8")
+		.then(function(logString){
+            return logString.split('\n').slice(-100).join('\n');
+        })
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.write(data)
+
+This function writes the given data to the file, replacing the contents if it already exists.
+
+ * @param {string|Uint8Array} data
+ * @returns {Promise}
+
+ Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.write(data)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.rename(newPath)
+This function renames file to newPath.
+
+ * @param {string} newPath
+ * @returns {Promise}
+
+Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.rename(newPath)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.copy(dstPath)
+
+This function copies file to `dstPath`, overwriting dstPath if it already exists.
+
+ * @param {string} dstPath
+ * @returns {Promise}
+
+
+Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.copy(dstPath)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.File.delete()
+
+This function deletes the file.
+
+ * @returns {Promise}
+
+ Example
+
+~~~javascript
+	var file = ClearBladeAsync.File()
+	file.delete()
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
