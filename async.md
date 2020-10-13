@@ -230,7 +230,7 @@ This class adds support for interacting with the sync’d filesystem. All file p
 To instantiate the async filesystem class just call:
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 ~~~
 
 ## ClearBladeAsync.FS(deployment_name)
@@ -242,23 +242,21 @@ Represents a sync'd filesystem.
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 	
 ~~~
 
 ## ClearBladeAsync.FS.readDir(path)
 
- This function reads the entire contents of a file.
- If encoding is not specified, contents will be a `UInt8Array`. If encoding is specified, contents will be a string.
+Reads the contents of a directory.
 
  * @param {string} path
- * @param {string} encoding
- * @returns {Promise} -  file contents
+ * @returns {Promise}- array of file names
 
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 	FS.readDir(path)
 		.then(resp.success)
 		.catch(function(reason){
@@ -272,14 +270,14 @@ Example
  If encoding is not specified, contents will be a `UInt8Array`. If encoding is specified, contents will be a string.
 
  * @param {string} path
- * @param {string} encoding
+ * @param {string} [encoding]
  * @returns {Promise} -  file contents
 
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
-	FS.readFile(path,[utf8]
+	var FS = ClearBladeAsync.FS('myDeployment')
+	FS.readFile(path,'utf8')
 		.then(resp.success)
 		.catch(function(reason){
 			resp.error("caught: "+reason.message);
@@ -297,8 +295,8 @@ This function writes the given data to a file, replacing the file if it already 
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
-	FS.readFile(path,[utf8]
+	var FS = ClearBladeAsync.FS('myDeployment')
+	FS.writeFile(path,data)
 		.then(resp.success)
 		.catch(function(reason){
 			resp.error("caught: "+reason.message);
@@ -316,7 +314,7 @@ Example
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 	FS.renameFile(oldPath, newPath)
 		.then(resp.success)
 		.catch(function(reason){
@@ -335,7 +333,7 @@ Example
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 	FS.copyFile(srcPath, dstPath)
 		.then(resp.success)
 		.catch(function(reason){
@@ -353,25 +351,16 @@ This function deletes the file at the specified path.
 Example
 
 ~~~javascript
-	var FS = ClearBladeAsync.FS()
+	var FS = ClearBladeAsync.FS('myDeployment')
 	FS.deleteFile(path)
 		.then(resp.success)
 		.catch(function(reason){
 			resp.error("caught: "+reason.message);
 		})
 ~~~
+## ClearBladeAsync.FileStats()
 
-# File Stats 
-
-Class: ClearBladeAsync.FileStats()
-
- This type definition for an object represents file metadata like size, permissions, etc.
-
-To instantiate the async file stats class just call:
-
-~~~javascript
-	var fstats = ClearBladeAsync.FileStats()
-~~~
+ This type definition for an object represents file metadata such as size, permissions, etc.
 
 ## ClearBladeAsync.FileStats.stat(path)
 
@@ -383,30 +372,28 @@ The promise is resolved with the `FileStats` object for the given path.
 Example
 
 ~~~javascript
-	var fstats = ClearBladeAsync.FileStats()
-	fstats.stat(path)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
+ ClearBladeAsync.FileStats(path)
+	.then(resp.success)
+	.catch(function(reason){
+		resp.error("caught: "+reason.message);
+	})
 ~~~
 
 # File Management 
 
 Class: ClearBladeAsync.File()
 
-This class adds support for interacting with the files in the sync’d filesystem.
+This class adds support for interacting with a file in the sync’d filesystem.
 
 To instantiate the async file class just call:
 
 ~~~javascript
-	var fstats = ClearBladeAsync.File()
+	var fstats = ClearBladeAsync.File(deployment_name, path)
 ~~~
 
 ## ClearBladeAsync.File(deployment_name, path)
 
-This function represents a file on the filesystem.
-It is useful for performing multiple operations on a single file.
+This function is useful for performing multiple operations on a single file.
 
  * @param {string} deployment_name
  * @param {string} path
@@ -415,8 +402,8 @@ It is useful for performing multiple operations on a single file.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
-	file.stat(deployment_name, path)
+	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
+	file.stat()
 		.then(resp.success)
 		.catch(function(reason){
 			resp.error("caught: "+reason.message);
@@ -432,7 +419,7 @@ The promise is resolved with the `FileStats` object for the file.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
 	file.stat()
 		.then(resp.success)
 		.catch(function(reason){
@@ -452,10 +439,10 @@ If encoding is specified, contents will be a string.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
 	file.read("utf8")
 		.then(function(logString){
-            return logString.split('\n').slice(-100).join('\n');
+        return logString.split('\n').slice(-100).join('\n');
         })
 		.then(resp.success)
 		.catch(function(reason){
@@ -473,7 +460,7 @@ This function writes the given data to the file, replacing the contents if it al
  Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File()('myDeployment', 'sandbox/myFile.txt')
 	file.write(data)
 		.then(resp.success)
 		.catch(function(reason){
@@ -490,7 +477,7 @@ This function renames file to newPath.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.rename(newPath)
 		.then(resp.success)
 		.catch(function(reason){
@@ -509,7 +496,7 @@ This function copies file to `dstPath`, overwriting dstPath if it already exists
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.copy(dstPath)
 		.then(resp.success)
 		.catch(function(reason){
@@ -526,7 +513,7 @@ This function deletes the file.
  Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.delete()
 		.then(resp.success)
 		.catch(function(reason){
