@@ -358,9 +358,6 @@ Example
 			resp.error("caught: "+reason.message);
 		})
 ~~~
-## ClearBladeAsync.FileStats()
-
- This type definition for an object represents file metadata such as size, permissions, etc.
 
 ## ClearBladeAsync.FileStats.stat(path)
 
@@ -372,7 +369,7 @@ The promise is resolved with the `FileStats` object for the given path.
 Example
 
 ~~~javascript
- ClearBladeAsync.FileStats(path)
+ClearBladeAsync.FileStats('myDeployment').stat(path)
 	.then(resp.success)
 	.catch(function(reason){
 		resp.error("caught: "+reason.message);
@@ -402,7 +399,7 @@ This function is useful for performing multiple operations on a single file.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.stat()
 		.then(resp.success)
 		.catch(function(reason){
@@ -419,7 +416,7 @@ The promise is resolved with the `FileStats` object for the file.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.stat()
 		.then(resp.success)
 		.catch(function(reason){
@@ -439,7 +436,7 @@ If encoding is specified, contents will be a string.
 Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File(('myDeployment', 'sandbox/myFile.txt')
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.read("utf8")
 		.then(function(logString){
         return logString.split('\n').slice(-100).join('\n');
@@ -460,7 +457,7 @@ This function writes the given data to the file, replacing the contents if it al
  Example
 
 ~~~javascript
-	var file = ClearBladeAsync.File()('myDeployment', 'sandbox/myFile.txt')
+	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.write(data)
 		.then(resp.success)
 		.catch(function(reason){
