@@ -222,7 +222,7 @@ Example
 
 ## ClearBladeAsync.Collection.createIndex(columnToIndex)
 
-This function creates an index on a collection column.
+This function creates an index on a collection column. By default, a collection can be indexed on the `item_id` column. Users can index a collection on any column.
 
 * @param {string} columnName
 * @returns {Promise}
