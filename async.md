@@ -359,7 +359,7 @@ Example
 		})
 ~~~
 
-## ClearBladeAsync.FS(deployment).stat(path)
+## ClearBladeAsync.FS.stat(path)
 
 The promise is resolved with the `FileStats` object for the given path.
 
@@ -369,7 +369,8 @@ The promise is resolved with the `FileStats` object for the given path.
 Example  
 
 ~~~javascript
-ClearBladeAsync.FS('myDeployment').stat(path)
+var FS = ClearBladeAsync.FS('myDeployment')
+ClearBladeAsync.FS.stat(path)
 	.then(resp.success)
 	.catch(function(reason){
 		resp.error("caught: "+reason.message);
