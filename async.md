@@ -359,17 +359,17 @@ Example
 		})
 ~~~
 
-## ClearBladeAsync.FileStats.stat(path)
+## ClearBladeAsync.FS.stat(path)
 
 The promise is resolved with the `FileStats` object for the given path.
 
  * @param {string} path
  * @returns {Promise}
 
-Example
+Example  
 
 ~~~javascript
-ClearBladeAsync.FileStats('myDeployment').stat(path)
+ClearBladeAsync.FS.stat(path)
 	.then(resp.success)
 	.catch(function(reason){
 		resp.error("caught: "+reason.message);
