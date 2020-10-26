@@ -274,6 +274,25 @@ ClearBlade.deleteUsers(emailsToDelete, function(err, body) {
 });
 ```
 
+## ClearBlade.reauthUser(usertoken, refreshtoken, callback)
+
+This method is used to reauthenticate the user with refresh tokens. 
+
+Example:
+
+```javascript
+ClearBlade.init(req);
+var usertoken = "<old_auth_token>";
+var refreshtoken = "<old_refresh_token>";
+ClearBlade.reauthUser(usertoken, refreshtoken, function(err, data) {
+	if(err) {
+		resp.error("user reauthentication failure: " + JSON.stringify(data));
+	} else {
+		resp.success(data);
+	}
+});
+```
+
 ## Device
 
 ClearBlade.getAllDevicesForSystem(callback)
@@ -1345,6 +1364,7 @@ MongoDB CLI commands can be found here -  https://docs.mongodb.com/manual/refere
   		} else {
     		resp.success(data);
   		}
+	};
 	db.performOperation(callback, dbCommand)
 ~~~~
 
@@ -1364,6 +1384,7 @@ All SQL queries are supported
   		} else {
     		resp.success(data);
   		}
+	};
 	db.performOperation(callback, sqlQuery1)
 ~~~~
 
@@ -1394,6 +1415,7 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
   		} else {
     		resp.success(data);
   		}
+	};
 	db.performOperation(callback, httpMethod, uri)
 ~~~~
 
@@ -1423,6 +1445,7 @@ var callback = function(err, data) {
     } else {
         resp.success(data);
     }
+};
 db.performOperation(callback, operation, query)
 ~~~
 

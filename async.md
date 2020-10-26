@@ -221,7 +221,71 @@ Example
 		})
 ~~~
 
+
 # FileSystem 
+
+## ClearBladeAsync.Collection.createIndex(columnToIndex)
+
+This function creates an index on a collection column. By default, a collection can be indexed on the `item_id` column. Users can index a collection on any column.
+
+* @param {string} columnName
+* @returns {Promise}
+
+Example
+
+~~~javascript
+    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
+    var columnToIndex = "myColumn"
+    collection.createIndex(columnToIndex)
+        .then(resp.success)
+        .catch(function(reason){
+            resp.error("caught: "+reason.message);
+        })
+~~~
+
+## ClearBladeAsync.Collection.createUniqueIndex(columnToIndex)
+
+This function creates a unique index on a collection column.
+
+* @param {string} columnName
+* @returns {Promise}
+
+Example
+
+~~~javascript
+    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
+    var columnToIndex = "myColumn"
+    collection.createUniqueIndex(columnToIndex)
+        .then(resp.success)
+        .catch(function(reason){
+            resp.error("caught: "+reason.message);
+        })
+~~~
+
+ 
+## ClearBladeAsync.Collection.upsert(changes, conflictColumn)
+
+This function performs an upsert operation on a collection. The `conflictColumn` must be either a primary key or have a unique index.
+
+* @param {object} changes
+* @param {string} conflictColumn
+* @returns {Promise}
+
+Example
+
+~~~javascript
+    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
+    var conflictColumn = "myColumn"
+    var changes = {
+        "myColumn": "myUniqueId",
+        "data": "someData"
+    }
+    collection.upsert(changes, conflictColumn)
+        .then(resp.success)
+        .catch(function(reason){
+            resp.error("caught: "+reason.message);
+~~~
+
 
 Class: ClearBladeAsync.FS()
 
