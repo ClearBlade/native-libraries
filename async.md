@@ -370,7 +370,7 @@ Example
 
 ~~~javascript
 var FS = ClearBladeAsync.FS('myDeployment')
-ClearBladeAsync.FS.stat(path)
+FS.stat(path)
 	.then(resp.success)
 	.catch(function(reason){
 		resp.error("caught: "+reason.message);
