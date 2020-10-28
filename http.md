@@ -18,7 +18,7 @@ Options passed into each request
 - **strictSSL:**  Fails the request if the identity on the SSL certificate cannot be verified. set to false to use with self-signed certs
 - **getProxyUrl:** If you are using a proxy to call the outside world, and need to get the proxy URL from an environment variable, set this to true
 - **isSoap:** Force an XML based response  
-- **full:** This adds `Body`, `Status`, and `Header` to the response so that developers can access to everything. Only the data from the `Body`will be returned if the property isn't set.
+- **[full](#example-using-`Full`-property):** This adds `Body`, `Status`, and `Header` to the response so that developers can have access to the full response. Only the data from the `Body` will be returned if the property isn't set.
 
 
 
