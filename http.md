@@ -18,7 +18,7 @@ Options passed into each request
 - **strictSSL:**  Fails the request if the identity on the SSL certificate cannot be verified. set to false to use with self-signed certs
 - **getProxyUrl:** If you are using a proxy to call the outside world, and need to get the proxy URL from an environment variable, set this to true
 - **isSoap:** Force an XML based response  
-- **full:** Gets back all the HTTP response headers
+- **full:** This adds `Body`, `Status`, and `Header` to the response so that developers can access to everything. Only the data from the `Body`will be returned if the property isn't set.
 
 
 
@@ -110,4 +110,62 @@ requestObject.put(options,function(err,body){
 		//body is JSON of the response
 	}
 })
+~~~
+
+## Example using `Full` property
+
+~~~javascript
+
+function testHttpFull(req,resp){
+    const req = Requests();
+    req.get({
+        uri: "https://api.openweathermap.org/data/2.5/weather?q=Austin&appid=0f84b67b5728e6e8ca9fdefae37162c7",
+        full: true
+    }, function(err, data) {
+        if (err) {
+            resp.error(err);
+        } else {
+            resp.success(data);
+        }
+    })
+}
+~~~
+
+This will return:
+
+~~~javascript
+
+{
+  "Body": "{\"coord\":{\"lon\":-97.74,\"lat\":30.27},\"weather\":[{\"id\":804,\"main\":\"Clouds\",\"description\":\"overcast clouds\",\"icon\":\"04d\"}],\"base\":\"stations\",\"main\":{\"temp\":279.27,\"feels_like\":275.27,\"temp_min\":278.15,\"temp_max\":280.37,\"pressure\":1016,\"humidity\":81},\"visibility\":10000,\"wind\":{\"speed\":3.6,\"deg\":310,\"gust\":8.2},\"clouds\":{\"all\":90},\"dt\":1603902142,\"sys\":{\"type\":1,\"id\":3344,\"country\":\"US\",\"sunrise\":1603888949,\"sunset\":1603928803},\"timezone\":-18000,\"id\":4671654,\"name\":\"Austin\",\"cod\":200}",
+  "Header": {
+    "Access-Control-Allow-Credentials": [
+      "true"
+    ],
+    "Access-Control-Allow-Methods": [
+      "GET, POST"
+    ],
+    "Access-Control-Allow-Origin": [
+      "*"
+    ],
+    "Connection": [
+      "keep-alive"
+    ],
+    "Content-Length": [
+      "484"
+    ],
+    "Content-Type": [
+      "application/json; charset=utf-8"
+    ],
+    "Date": [
+      "Wed, 28 Oct 2020 16:29:10 GMT"
+    ],
+    "Server": [
+      "openresty"
+    ],
+    "X-Cache-Key": [
+      "/data/2.5/weather?q=austin"
+    ]
+  },
+  "Status": 200
+}
 ~~~
