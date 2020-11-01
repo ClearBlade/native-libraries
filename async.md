@@ -220,10 +220,6 @@ Example
 			resp.error("caught: "+reason.message);
 		})
 ~~~
-
-
-# FileSystem 
-
 ## ClearBladeAsync.Collection.createIndex(columnToIndex)
 
 This function creates an index on a collection column. By default, a collection can be indexed on the `item_id` column. Users can index a collection on any column.
@@ -286,6 +282,7 @@ Example
             resp.error("caught: "+reason.message);
 ~~~
 
+# FileSystem 
 
 Class: ClearBladeAsync.FS()
 
