@@ -595,7 +595,11 @@ To instantiate the async lock class just call:
 	var asyncLock = ClearBladeAsync.Lock(name, caller)
 ~~~
 
-### Example using lock/unlock
+ * @param {string} name
+ * @param {string} caller
+ * @returns {Lock}
+
+### Example
 
 ~~~javascript
 function incr() {

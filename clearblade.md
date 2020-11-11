@@ -2770,7 +2770,7 @@ function incrWithLock(req, resp) {
  	});
 	myLock.unlock();
   }
- esp.success(“Incremented incrVal 100 times”);
+ resp.success(“Incremented incrVal 100 times”);
 }
 ~~~
 
