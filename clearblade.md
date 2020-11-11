@@ -14,6 +14,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 10. __[Edge](#edge)__
 11. __[Roles](#roles)__
 12. __[Permissions](#permissions)__
+13. __[Lock](#lock)__
 
 # Overview
 
@@ -2732,4 +2733,60 @@ This method removes all the permissions for a resource.
 		}
     permissions.removePermissionsForResource("service","serviceName", callback);
 ~~~
+
+# Lock
+
+Class: ClearBlade.Lock()
+
+This class allows for interacting with cache locks.
+To instantiate the permissions class just call:
+
+~~~javascript
+	var myLock = ClearBlade.Lock(name,caller);
+~~~
+
+ * @param {string} name
+ * @param {string} caller
+ * @returns {Lock}
+
+### Example
+
+~~~ javascript
+function incrWithLock(req, resp) {
+  ClearBlade.init({request: req});
+  var cache = ClearBlade.Cache(“IncrCache”);
+  var myLock = ClearBlade.Lock(“CacheLock”, “service incrWithLock”);
+  for (i = 0; i < 100; i++) {
+  	myLock.lock();
+ 	cache.get(“incrVal”, function(err, data) {
+  		if (err) {
+ 			resp.error(“Could not get incrVal: ” + JSON.stringify(data));
+	        };
+		cache.set(“incrVal”, data + 1, function(serr, sdata) {
+			if (serr) {
+				resp.error(“Could not set incrVal: ” + JSON.stringify(sdata));
+ 	    	});
+ 		});
+ 	});
+	myLock.unlock();
+  }
+ resp.success(“Incremented incrVal 100 times”);
+}
+~~~
+
+## myLock.lock(resourceName)
+
+This method obtains a write lock on the entire cache.
+
+## myLock.unlock(resourceName)
+
+This method releases the current lock.
+
+## myLock.rlock(resourceName)
+
+This method obtains a read lock for multiple users.
+
+## myLock.runlock(resourceName)
+
+This method obtains releases the current read lock.
 

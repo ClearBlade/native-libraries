@@ -5,6 +5,7 @@ The ClearBlade Async library works with the event loop to provide asynchronous C
 1. __[Query](#query)__
 2. __[Collection](#collection)__
 3. __[File Management](#file-management)__
+4. __[Lock](#lock)__
 
 # Query 
 
@@ -579,3 +580,81 @@ This function deletes the file.
 			resp.error("caught: "+reason.message);
 		})
 ~~~
+# Lock
+
+Class: ClearBladeAsync.Lock()
+
+This class allows for the execution of async ClearBlade lock functions. 
+
+To instantiate the async lock class just call:
+
+~~~javascript
+	var asyncLock = ClearBladeAsync.Lock(name, caller)
+~~~
+
+ * @param {string} name
+ * @param {string} caller
+ * @returns {Lock}
+
+### Example
+
+~~~javascript
+function incr() {
+    var cache = ClearBlade.Cache("IncrCache");
+    cache.get("incrVal", function (err, data) {
+        if (err) {
+            throw new Error("Could not get incrVal: " + JSON.stringify(data));
+        }
+        cache.set("incrVal", data + 1, function (serr, sdata) {
+            if (serr) {
+                throw new Error("Could not set incrVal: " + JSON.stringify(sdata));
+            }
+        });
+    });
+}
+var asyncLock = ClearBladeAsync.Lock("CacheLock", "service incrWithLock");
+function singleAsyncIncr() {
+    return new Promise(function (resolve) {
+        asyncLock.lock()
+            .then(incr)
+            .then(asyncLock.unlock.bind(asyncLock))
+            .then(resolve)
+    })
+}
+function asyncIncrWithLock(req, resp) {
+    ClearBlade.init({request: req})
+    var chain = Promise.resolve();
+    for (var i = 0; i < 100; i++) {
+        chain = chain.then(singleAsyncIncr)
+    }
+    chain.catch(function (e) {
+        resp.error(e.message)
+    })
+    chain.finally(resp.success.bind(resp, "Incremented incrVal 100 times"))
+}
+~~~
+
+## ClearBladeAsync.Lock.lock()
+
+This function obtains an exclusive lock.
+
+ * @returns {Promise} - This will get resolved when the lock is granted
+
+## ClearBladeAsync.Lock.unlock()
+
+This function releases an exclusive lock.
+
+ * @returns {Promise} - This will get resolved when the lock is released
+
+## ClearBladeAsync.Lock.rlock()
+
+This function obtains a shared lock for read access.
+
+ * @returns {Promise} - This will get resolved when the lock is granted
+
+## ClearBladeAsync.Lock.runlock()
+
+This function releases a shared lock.
+
+ * @returns {Promise} - This will get resolved when the lock is released
+
