@@ -1079,6 +1079,7 @@ _Note_: Postgres and sqlite have different styles to operate on json data. Postg
 The [ClearBlade Query](#query) object only supports one json operator `->>`. This works accross both postgres and sqlite. To use all other operators/functions, a raw query is required.
 
 Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of sqlite json functions.
+
 Click __[HERE](https://www.postgresql.org/docs/current/functions-json.html)__ to see a list of postgres json operators/functions.
 
 Supported Postgres JSON operators:
