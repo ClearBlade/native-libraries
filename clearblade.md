@@ -1073,10 +1073,10 @@ To instantiate a collection object you can either supply an object containing <C
 
 ### jsonb
 
-Collections now supports column type `jsonb`. This enables users to store json values in the database tables and query based on keys (for objects) or indexes (for arrays). 
+Collections now support column type `jsonb`. This enables users to store json values in the database tables and query based on keys (for objects) or indexes (for arrays). 
 
 _Note_: Postgres and sqlite have different styles to operate on json data. Postgres has json operators and functions whereas sqlite only has json functions. You will have to write different raw queries for postgres and sqlite and use the `ClearBlade.IsEdge()` function call to check if your code is running on an edge or thee platform.
-The [ClearBlade Query](#query) object only supports one json operator `->>`. This works accross both postgres and sqlite. To use all other operators/functions, a raw query is required.
+The [ClearBlade Query](#query) object only supports one json operator `->>`. This works across both postgres and sqlite. To use all other operators/functions, a raw query is required.
 
 Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of sqlite json functions.
 
