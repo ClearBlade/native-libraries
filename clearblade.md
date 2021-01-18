@@ -14,6 +14,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 10. __[Edge](#edge)__
 11. __[Roles](#roles)__
 12. __[Permissions](#permissions)__
+13. __[Lock](#lock)__
 
 # Overview
 
@@ -1069,6 +1070,28 @@ To instantiate a collection object you can either supply an object containing <C
 	//With collectionID value
 	var collection = ClearBlade.Collection("<COLLECTION_ID>");
 ~~~~
+
+### jsonb
+
+Collections now support column type `jsonb`. This enables users to store json values in the database tables and query based on keys (for objects) or indexes (for arrays). 
+
+_Note_: Postgres and sqlite have different styles to operate on json data. Postgres has json operators and functions whereas sqlite only has json functions. You will have to write different raw queries for postgres and sqlite and use the `ClearBlade.IsEdge()` function call to check if your code is running on an edge or thee platform.
+The [ClearBlade Query](#query) object only supports one json operator `->>`. This works across both postgres and sqlite. To use all other operators/functions, a raw query is required.
+
+Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of sqlite json functions.
+
+Click __[HERE](https://www.postgresql.org/docs/current/functions-json.html)__ to see a list of postgres json operators/functions.
+
+Supported Postgres JSON operators:
+
+* ->
+* ->>
+* #>
+* n#>>
+* @>
+* <@
+* ?
+* @?
 
 The available methods for the Collection class and examples of how to use them are listed below:
 
@@ -2732,4 +2755,60 @@ This method removes all the permissions for a resource.
 		}
     permissions.removePermissionsForResource("service","serviceName", callback);
 ~~~
+
+# Lock
+
+Class: ClearBlade.Lock()
+
+This class allows for interacting with cache locks.
+To instantiate the permissions class just call:
+
+~~~javascript
+	var myLock = ClearBlade.Lock(name,caller);
+~~~
+
+ * @param {string} name
+ * @param {string} caller
+ * @returns {Lock}
+
+### Example
+
+~~~ javascript
+function incrWithLock(req, resp) {
+  ClearBlade.init({request: req});
+  var cache = ClearBlade.Cache(“IncrCache”);
+  var myLock = ClearBlade.Lock(“CacheLock”, “service incrWithLock”);
+  for (i = 0; i < 100; i++) {
+  	myLock.lock();
+ 	cache.get(“incrVal”, function(err, data) {
+  		if (err) {
+ 			resp.error(“Could not get incrVal: ” + JSON.stringify(data));
+	        };
+		cache.set(“incrVal”, data + 1, function(serr, sdata) {
+			if (serr) {
+				resp.error(“Could not set incrVal: ” + JSON.stringify(sdata));
+ 	    	});
+ 		});
+ 	});
+	myLock.unlock();
+  }
+ resp.success(“Incremented incrVal 100 times”);
+}
+~~~
+
+## myLock.lock(resourceName)
+
+This method obtains a write lock on the entire cache.
+
+## myLock.unlock(resourceName)
+
+This method releases the current lock.
+
+## myLock.rlock(resourceName)
+
+This method obtains a read lock for multiple users.
+
+## myLock.runlock(resourceName)
+
+This method obtains releases the current read lock.
 
