@@ -5,6 +5,7 @@ The ClearBlade Async library works with the event loop to provide asynchronous C
 1. __[Query](#query)__
 2. __[Collection](#collection)__
 3. __[File Management](#file-management)__
+4. __[Device](#device)__
 
 # Query 
 
@@ -577,6 +578,120 @@ This function deletes the file.
 ~~~javascript
 	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
 	file.delete()
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+# Device
+
+Class: ClearBladeAsync.Collection(nameOrID)
+
+This class allows for the execution of async ClearBlade device operations in services. 
+
+To instantiate the async class just call:
+
+~~~javascript
+	var Devices = ClearBladeAsync.Devices()
+~~~
+
+## ClearBladeAsync.Devices()
+
+This function returns the list of devices in the system.
+
+* @returns {Devices}
+
+Example
+
+~~~javascript
+	var Devices  = ClearBladeAsync.Devices();
+	Devices.fetch()
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.Devices.create(info)
+
+This function creates a new device.
+
+* @param {Object} info - initial data describing the new device.
+* @returns {Promise<Object>}
+
+Example
+
+~~~javascript
+	var Devices  = ClearBladeAsync.Devices();
+	var info = {
+        name: '<DEVICE_NAME>',
+	}
+	Devices.create(info)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.Devices.read(query)
+
+This function fetches rows (devices) from the device table.
+
+* @param {ClearBladeAsync.Query} query
+* @returns {Promise<Object[]>}
+
+Example
+
+~~~javascript
+	var Devices  = ClearBladeAsync.Devices();
+	var query = ClearBladeAsync.Query()
+	query.equalTo("<DEVICE_NAME>");
+	Devices.read(query)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.Devices.update(query, changes)
+
+This function updates rows (devices) in the device table.
+
+* @param {ClearBladeAsync.Query} query
+* @param {Object} changes
+* @returns {Promise<Object>}
+
+Example
+
+~~~javascript
+	var Devices  = ClearBladeAsync.Devices();
+	var query = ClearBladeAsync.Query();
+	query.equalTo("<DEVICE_NAME>");
+	var changes = {
+        active_key: '<ACTIVE_KEY>',
+	}
+	Devices.update(query, changes)
+		.then(resp.success)
+		.catch(function(reason){
+			resp.error("caught: "+reason.message);
+		})
+~~~
+
+## ClearBladeAsync.Devices.delete(query)
+
+This function deletes rows (devices) from the device table.
+
+* @param {ClearBladeAsync.Query} query
+* @returns {Promise<Object>}
+
+Example
+
+~~~javascript
+	var Devices  = ClearBladeAsync.Devices();
+	var query = ClearBladeAsync.Query()
+	query.equalTo("<DEVICE_NAME>");
+	Devices.delete(query)
 		.then(resp.success)
 		.catch(function(reason){
 			resp.error("caught: "+reason.message);
