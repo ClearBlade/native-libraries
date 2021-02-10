@@ -734,11 +734,265 @@ ClearBladeAsync.Permissions = {
 
 ## Caches
 
+~~~javascript
+/**
+ * Represents a distributed cache.
+ * @param {string} name
+ * @returns {Cache}
+ */
+ClearBladeAsync.Cache(name)
+
+/**
+ * Sets a value in the cache.
+ * Promise resolves empty.
+ * @param {string} key 
+ * @param {*} value
+ * @returns {Promise<>} 
+ */
+Cache.set(key, value)
+
+/**
+ * Sets a value in the cache, if it does not already exist.
+ * Promise resolves with true if it set the value, false if it already existed.
+ * @param {string} key 
+ * @param {*} value
+ * @returns {Promise<boolean>} 
+ */
+Cache.setnx(key, value)
+
+/**
+ * Retrieves a value from the cache.
+ * Promise resolves with the cached value.
+ * @param {string} key
+ * @returns {Promise<*>}
+ */
+Cache.get(key)
+
+/**
+ * Retrieves all key/value pairs from the cache.
+ * Promise resolves with object containing all cache values.
+ * @returns {Promise<Object>}
+ */
+Cache.getAll()
+
+/**
+ * Removes a value from the cache.
+ * Promise resolves empty.
+ * @param {string} key 
+ * @returns {Promise<>}
+ */
+Cache.delete(key)
+
+/**
+ * Removes all values from the cache.
+ * Promise resolves empty.
+ * @returns {Promise<>}
+ */
+Cache.flush()
+
+/**
+ * Lists the keys which currently contain values in the cache.
+ * Pattern may contain '?' as a single-character wildcard, 
+ * or '*' as a multi-character wildcard.
+ * Promise resolves with a list of keys matching the given pattern.
+ * @param {string} pattern 
+ * @returns {Promise<string[]>}
+ */
+Cache.keys(pattern)
+~~~
+
 ## Triggers
+
+~~~javascript
+/**
+ * Represents the triggers in your system.
+ * @returns {Triggers}
+ */
+ClearBladeAsync.Triggers()
+
+/**
+ * @typedef {Object} TriggerInfo
+ * @property {strign} name
+ * @property {string} service_name - which service to run when trigger fires
+ * @property {string} def_module - see following table
+ * @property {string} def_name - see following table
+ * @property {Object} key_value_pairs - see following table
+ */
+
+/**
+ * Creates a new trigger in your system.
+ * Promise will resolve with the trigger data of the new trigger.
+ * @param {TriggerInfo} info - initial data describing the new trigger.
+ * @returns {Promise<Object>}
+ */
+Triggers.create(info)
+
+/**
+ * Fetches triggers from your system.
+ * Promise will resolve with the triggers matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Triggers.read(query)
+
+/**
+ * Updates triggers in your system.
+ * Promise will resolve with the updated triggers.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Triggers.update(query, changes)
+
+/**
+ * Deletes triggers from your system.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Triggers.delete(query)
+~~~
+
+Valid trigger definitions:
+
+|def_module|def_name|possible key_value_pairs keys|
+|---|---|---|
+|Asset|AssetCreated|assetClass|
+|Asset|AssetDeleted|assetClass, assetID|
+|Asset|AssetUpdated|assetClass, assetID|
+|Data|CollectionCreated||
+|Data|CollectionDeleted|collectionId, collectionName|
+|Data|CollectionUpdated|collectionId, collectionName|
+|Data|ItemCreated|collectionId, collectionName|
+|Data|ItemDeleted|collectionId, collectionName, itemId|
+|Data|ItemUpdated|collectionId, collectionName, itemId|
+|Data|ItemUpserted|collectionId, collectionName, itemId|
+|Device|DeviceCreated||
+|Device|DeviceDeleted|deviceName|
+|Device|DeviceUpdated|deviceName|
+|File|FileCreated|filePath|
+|File|FileDeleted|filePath|
+|File|FileUpdated|filePath|
+|Messaging|MQTTDeviceConnected|deviceName|
+|Messaging|MQTTDeviceDisconnected|deviceName|
+|Messaging|MQTTUserConnected|email|
+|Messaging|MQTTUserDisconnected|email|
+|Messaging|Publish|topic|
+|Messaging|Subscribe|topic|
+|Messaging|Unsubscribe|topic|
+|StartConnectDisconnect|EdgeConnectedOnPlatform|edgeName|
+|StartConnectDisconnect|EdgeDisconnectedOnPlatform|edgeName|
+|StartConnectDisconnect|EdgeStarted||
+|StartConnectDisconnect|PlatformConnectedOnEdge||
+|StartConnectDisconnect|PlatformDisconnectedOnEdge||
+|StartConnectDisconnect|PlatformStarted||
+|User|UserCreated||
+|User|UserDeleted|userId|
+|User|UserUpdated|userId|
 
 ## Timers
 
+~~~javascript
+/**
+ * Represents the timer table.
+ * @returns {Timers}
+ */
+ClearBladeAsync.Timers()
+
+/**
+ * @typedef {Object} TimerInfo
+ * @property {string} name 
+ * @property {string} description 
+ * @property {string} service_name - which service to run when timer fires
+ * @property {string} start_time - RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
+ * @property {number} repeats - how many times the timer should fire (-1 for infinite)
+ * @property {number} frequency - how often the timer should fire, in seconds
+ * @property {boolean} [user_id] - which user to run the service as, defaults to caller
+ * @property {number} [user_type] - user type of user_id (1=dev, 2=user, 3=device)
+ */
+
+/**
+ * Creates a new timer in the timer table.
+ * Promise will resolve with the timer table row of the new timer.
+ * @param {TimerInfo} info - initial data describing the new timer.
+ * @returns {Promise<Object>}
+ */
+Timers.create(info)
+
+/**
+ * Fetches rows from the timer table.
+ * Promise will resolve with the timer table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Timers.read(query)
+
+/**
+ * Updates rows in the timer table.
+ * Promise will resolve with the updated timer table rows.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Timers.update(query, changes)
+
+/**
+ * Deletes rows from the timer table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Timers.delete(query)
+~~~
+
 ## Edges
+
+~~~javascript
+/**
+ * Represents the edge table.
+ * @returns {Edges}
+ */
+ClearBladeAsync.Edges()
+
+/**
+ * @typedef {Object} EdgeInfo
+ * @property {string} name 
+ * @property {string} token 
+ */
+
+/**
+ * Creates a new edge in the edge table.
+ * Promise will resolve with the edge table row of the new edge.
+ * @param {EdgeInfo} info - initial data describing the new edge.
+ * @returns {Promise<Object>}
+ */
+Edges.create(info)
+
+/**
+ * Fetches rows from the edge table.
+ * Promise will resolve with the edge table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Edges.read(query)
+
+/**
+ * Updates rows in the edge table.
+ * Promise will resolve with the updated edge table rows.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Edges.update(query, changes)
+
+/**
+ * Deletes rows from the edge table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Edges.delete(query)
+~~~
 
 
 # Examples
