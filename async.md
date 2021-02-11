@@ -22,7 +22,9 @@ __Examples__
 
 # Reference
 
-## Query 
+## Query
+
+Note: by default, all queries are limited to 100 results. To change this limit, use the `setPage` method.
 
 ~~~javascript
 /**
