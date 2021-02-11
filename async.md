@@ -18,6 +18,7 @@ __Reference__
 
 __Examples__
 1. [Collections](#collection-examples)
+1. [Databases](#database-examples)
 
 # Reference
 
@@ -31,7 +32,7 @@ __Examples__
 ClearBladeAsync.Query()
 
 /**
- * Query filter functions.
+ * Modifies a query in place, ANDing the given filter.
  * @param {string} column
  * @param {*} value
  * @returns {Query} with filter applied
@@ -101,10 +102,19 @@ ClearBladeAsync.newCollection(name)
 ClearBladeAsync.Collection(nameOrID)
 
 /**
+ * @typedef {Object} fetchResponse
+ * @property {Object[]} DATA - requested collection rows
+ * @property {number} TOTAL - number of objects in the DATA field
+ * @property {number} CURRENTPAGE 
+ * @property {string} NEXTPAGEURL 
+ * @property {string} PREVPAGEURL
+ */
+
+/**
  * Gets data from the collection.
  * Promise resolves with the requested collection rows.
  * @param {Query} [query]
- * @returns {Promise<Object[]>} 
+ * @returns {Promise<fetchResponse>} 
  */
 Collection.fetch(query)
 
@@ -999,44 +1009,111 @@ Edges.delete(query)
 
 ## Collection Examples
 
-## Lock Examples
-
 ~~~javascript
-// TODO: too complicated
-// 
-// 
-function incr() {
-    var cache = ClearBlade.Cache("IncrCache");
-    cache.get("incrVal", function (err, data) {
-        if (err) {
-            throw new Error("Could not get incrVal: " + JSON.stringify(data));
-        }
-        cache.set("incrVal", data + 1, function (serr, sdata) {
-            if (serr) {
-                throw new Error("Could not set incrVal: " + JSON.stringify(sdata));
-            }
-        });
+var assetsCollection = ClearBladeAsync.Collection('assets');
+
+/**
+ * @typedef {Object} AssetRow - a row in the assets collection
+ * @property {string} asset_id - a unique identifier for each asset
+ * @property {string} asset_type - can be "thermometer" or "barometer"
+ * @property {number} reading - the current temperature or pressure value
+ * @property {string} last_updated - timestamp when the asset last sent an update
+ * @property {boolean} stale - indicates the asset hasn't sent an update in over a week
+ */
+
+/**
+ * updateStaleAssets uses a query to find all rows in the assets collection
+ * whose "last_updated" value is more than a week old, then updates those rows
+ * setting their "stale" value to true.
+ * @return {Promise<AssetRow[]>} all stale assets
+ */
+function updateStaleAssets() {
+    var lastWeek = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    var staleQuery = ClearBladeAsync.Query().lessThan('last_updated', lastWeek.toISOString())
+    return assetsCollection.update(staleQuery, {stale: true});
+}
+
+/**
+ * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses 
+ * a query with multiple conditions to only update assets whose "stale" value
+ * is not already true.
+ * @return {Promise<AssetRow[]>} the assets which became stale in the past week
+ */
+function updateStaleAssetsV2() {
+    var lastWeek = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    var staleQuery = ClearBladeAsync.Query();
+    staleQuery.lessThan('last_updated', lastWeek.toISOString());
+    staleQuery.equalTo('stale', false);
+    return assetsCollection.update(staleQuery, {stale: true});
+}
+
+/**
+ * reportDangerousTemperatures uses an "or" query to find all thermometers
+ * whose current reading is below freezing or above boiling.
+ * @return {Promise<AssetRow[]>} thermometer assets with dangerous temperatures
+ */
+function reportDangerousTemperatures() {
+    var lowTempQuery = ClearBladeAsync.Query();
+    lowTempQuery.equalTo('asset_type', 'thermometer');
+    lowTempQuery.lessThanEqualTo('reading', 32.0);
+
+    var highTempQuery = ClearBladeAsync.Query();
+    highTempQuery.equalTo('asset_type', 'thermometer');
+    highTempQuery.greaterThanEqualTo('reading', 212.0);
+
+    var dangerQuery = lowTempQuery.or(highTempQuery);
+    return assetsCollection.fetch(dangerQuery).then(function(results){
+        log('We found', results.TOTAL, 'assets with dangerous temperatures!');
+        return results.DATA;
     });
 }
-var asyncLock = ClearBladeAsync.Lock("CacheLock", "service incrWithLock");
-function singleAsyncIncr() {
-    return new Promise(function (resolve) {
-        asyncLock.lock()
-            .then(incr)
-            .then(asyncLock.unlock.bind(asyncLock))
-            .then(resolve)
-    })
-}
-function asyncIncrWithLock(req, resp) {
-    ClearBlade.init({request: req})
-    var chain = Promise.resolve();
-    for (var i = 0; i < 100; i++) {
-        chain = chain.then(singleAsyncIncr)
+
+/**
+ * processAssetMessage decodes a message sent by an asset, 
+ * and inserts it into the assets collection.
+ * If the asset already exists in the collection, we update it.
+ * @param  {Object} message - an MQTT message from an asset
+ * @param  {string} message.id - the asset's unique identifier
+ * @param  {string} message.type - the asset's type
+ * @param  {number} message.reading - the asset's current sensor reading
+ * @return {Promise<AssetRow[]>} the new or updated asset row
+ */
+function processAssetMessage(message) {
+    var asset = {
+        asset_id: message.id,
+        asset_type: message.type,
+        reading: message.reading,
+        last_updated: new Date().toISOString(),
+        stale: false,
     }
-    chain.catch(function (e) {
-        resp.error(e.message)
+    return assetsCollection.upsert(asset, 'asset_id');
+}
+~~~
+
+## Database Examples
+
+~~~javascript
+var db = ClearBladeAsync.Database();
+
+/**
+ * @typedef {Object} AssetCounts
+ * @property {number} thermometer - number of thermometers in the assets collection
+ * @property {number} barometer - number of barometers in the assets collection
+ */
+
+/**
+ * countAssetsByType runs a raw sql query against the assets collection
+ * to count the number of each asset_type.
+ * @return {AssetCounts} counts per asset type
+ */
+function countAssetsByType(){
+    var sqlQuery = 'SELECT json_object_agg(asset_type, count) counts FROM (SELECT asset_type, COUNT(asset_type) FROM assets GROUP BY asset_type) foo;';
+    return db.query(sqlQuery).then(function(results){
+        if(results.length !== 1) {
+            throw new Error('countAssetsByType: unexpected number of rows returned: '+JSON.stringify(results));
+        }
+        return JSON.parse(results[0].counts);
     })
-    chain.finally(resp.success.bind(resp, "Incremented incrVal 100 times"))
 }
 ~~~
 
