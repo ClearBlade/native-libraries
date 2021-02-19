@@ -1096,6 +1096,7 @@ function processAssetMessage(message) {
 
 ~~~javascript
 var db = ClearBladeAsync.Database();
+var mongo = ClearBladeAsync.Database({externalDBName: 'ClearBladeMongo'})
 
 /**
  * @typedef {Object} AssetCounts
@@ -1108,7 +1109,7 @@ var db = ClearBladeAsync.Database();
  * to count the number of each asset_type.
  * @return {AssetCounts} counts per asset type
  */
-function countAssetsByType(){
+function countAssetsByType() {
     var sqlQuery = 'SELECT json_object_agg(asset_type, count) counts FROM (SELECT asset_type, COUNT(asset_type) FROM assets GROUP BY asset_type) foo;';
     return db.query(sqlQuery).then(function(results){
         if(results.length !== 1) {
@@ -1116,6 +1117,45 @@ function countAssetsByType(){
         }
         return JSON.parse(results[0].counts);
     })
+}
+
+/**
+ * insertAssetHistory performs a raw MongoDB operation to insert a message into the assetHistory collection.
+ * @param  {Object} message - an MQTT message from an asset
+ * @return {Promise<>}
+ */
+function insertAssetHistory(message) {
+    var mongoInsertQuery = 'db.assetHistory.insert('+JSON.stringify(message)+')';
+    return mongo.performOperation(mongoInsertQuery);
+}
+~~~
+
+## File Management Examples
+
+~~~javascript
+/**
+ * sendAdapterLogsToPlatform copies a log file from an edge's filesystem into the edge's outbox.
+ * This file will be sync'd to the platform.
+ * @return {Promise<>}
+ */
+function sendAdapterLogsToPlatform() {
+    var fs = ClearBladeAsync.FS('myDeployment');
+    return fs.copyFile('/home/clearblade/myAdapter.log', 'outbox/myAdapter.log');
+}
+
+/**
+ * checkAdapterLogsForErrors reads a log file from the platform's inbox,
+ * and returns the lines from those logs that contain the string "ERROR".
+ * @return {Promise<string[]>} the error logs
+ */
+function checkAdapterLogsForErrors() {
+    var file = ClearBladeAsync.File('myDeployment', 'inbox/myEdge/myAdapter.log');
+    return file.read('utf8')
+        .then(function(logString){
+            var logLines = logString.split('\n');
+            var errorLines = logLines.filter(function(line){return line.indexOf('ERROR') !== -1});
+            return errorLines;
+        })
 }
 ~~~
 
