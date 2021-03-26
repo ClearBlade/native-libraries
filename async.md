@@ -584,7 +584,7 @@ This function deletes the file.
 
 Class: ClearBladeAsync.Lock()
 
-This class allows for the execution of async ClearBlade lock functions. 
+This class allows for the execution of async ClearBlade lock functions. The lock name must be included where the name is asked for in the code service. 
 
 To instantiate the async lock class just call:
 
