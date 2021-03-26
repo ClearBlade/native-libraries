@@ -2760,7 +2760,8 @@ This method removes all the permissions for a resource.
 
 Class: ClearBlade.Lock()
 
-This class allows for interacting with cache locks.
+This class allows for interacting with cache locks. If the lock is being used across multiple services, they must all use the same lock name.
+
 To instantiate the permissions class just call:
 
 ~~~javascript
@@ -2796,19 +2797,19 @@ function incrWithLock(req, resp) {
 }
 ~~~
 
-## myLock.lock(resourceName)
+## myLock.lock()
 
 This method obtains a write lock on the entire cache.
 
-## myLock.unlock(resourceName)
+## myLock.unlock()
 
 This method releases the current lock.
 
-## myLock.rlock(resourceName)
+## myLock.rlock()
 
 This method obtains a read lock for multiple users.
 
-## myLock.runlock(resourceName)
+## myLock.runlock()
 
 This method obtains releases the current read lock.
 
