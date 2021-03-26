@@ -2760,7 +2760,7 @@ This method removes all the permissions for a resource.
 
 Class: ClearBlade.Lock()
 
-This class allows for interacting with cache locks. The lock name must be included where the name is asked for in the code service. 
+This class allows for interacting with cache locks. If the lock is being used across multiple services, they must all use the same lock name.
 
 To instantiate the permissions class just call:
 
