@@ -1,660 +1,1165 @@
-The ClearBlade Async library works with the event loop to provide asynchronous ClearBlade functions. All functions return promises and execute asynchronously. The `init` function is not required. 
+The ClearBlade Async library works with the event loop to provide asynchronous ClearBlade functions. 
+The `init` function is not required. 
 
-# Usage
+__Reference__
+1. [Query](#query)
+1. [Collections](#collections)
+1. [Databases](#databases)
+1. [File Management](#file-management)
+1. [Locks](#locks)
+1. [Users](#users)
+1. [Devices](#devices)
+1. [Auth](#auth)
+1. [Roles/Perms](#rolesperms)
+1. [Caches](#caches)
+1. [Triggers](#triggers)
+1. [Timers](#timers)
+1. [Edges](#edges)
 
-1. __[Query](#query)__
-2. __[Collection](#collection)__
-3. __[File Management](#file-management)__
-4. __[Lock](#lock)__
+__Examples__
+1. [Collections](#collection-examples)
+1. [Databases](#database-examples)
 
-# Query 
+# Reference
 
-Class: ClearBladeAsync.Query()
+## Query
 
-This is an object to be used with the other async functions. The functions and examples are similar to the [ClearBlade Query Class](https://github.com/ClearBlade/native-libraries/blob/master/clearblade.md#query)
-
-To instantiate the async query class just call:
-
-~~~javascript
-	var query = ClearBladeAsync.Query()
-~~~
-
-# Collection
-
-Class: ClearBladeAsync.Collection(nameOrID)
-
-This class allows for the execution of async ClearBlade collection functions and returns promises. The `init` function is not required.
-
-To instantiate the async class just call:
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection(nameorID)
-~~~
-
-## ClearBladeAsync.newCollection(name)
-
-Creates a new ClearBlade collection.
-
-* @param {string} name
-* @returns {Promise}
+Note: by default, all queries are limited to 100 results. To change this limit, use the `setPage` method.
 
 ~~~javascript
- ClearBladeAsync.newCollection("<COLLECTION_NAME>")
+/**
+ * Represents a query.
+ * @returns {Query}
+ */
+ClearBladeAsync.Query()
+
+/**
+ * Modifies a query in place, ANDing the given filter.
+ * @param {string} column
+ * @param {*} value
+ * @returns {Query} with filter applied
+ */
+Query.equalTo(column, value)
+Query.greaterThan(column, value)
+Query.greaterThanEqualTo(column, value)
+Query.lessThan(column, value)
+Query.lessThanEqualTo(column, value)
+Query.notEqualTo(column, value)
+Query.matches(column, value)
+
+/**
+ * Specifies limits on the query return size.
+ * @param {number} pageSize - the max number of rows to return
+ * @param {number} pageNum - number of pages to offset return data (1 = first page)
+ * @returns {Query} with limits applied
+ */
+Query.setPage(pageSize, pageNum)
+
+/**
+ * Specifies how the returned data should be sorted.
+ * @param {string} column - the name of the column which should used to sort
+ * @returns {Query} with sorting applied
+ */
+Query.ascending(column)
+Query.descending(column)
+
+/**
+ * Limits the data returned to only include the given columns.
+ * @param {string[]} columns - list of column names
+ * @returns {Query} with filter applied
+ */
+Query.columns(columns)
+
+/**
+ * Sets a query string to be used in certain mongodb operations.
+ * @param {string} query
+ * @returns {Query} with query applied
+ */
+Query.rawQuery(query)
+
+/**
+ * Combines two queries with boolean OR condition.
+ * @param {Query} query
+ * @returns {Query} 
+ */
+Query.or(query)
 ~~~
 
-## ClearBladeAsync.Collection(nameOrID)
+## Collections
 
-This function instantiates a Collection object.
+~~~javascript
+/**
+ * Creates a new ClearBlade collection.
+ * Promise resolves with object containing the new collection's metadata.
+ * @param {string} name
+ * @returns {Promise<{name: string, id: string}>}
+ */
+ClearBladeAsync.newCollection(name)
 
+/**
+ * Represents a ClearBlade collection.
  * @param {string} nameOrID
  * @returns {Collection}
+ */
+ClearBladeAsync.Collection(nameOrID)
 
-Example
+/**
+ * @typedef {Object} fetchResponse
+ * @property {Object[]} DATA - requested collection rows
+ * @property {number} TOTAL - number of objects in the DATA field
+ * @property {number} CURRENTPAGE 
+ * @property {string} NEXTPAGEURL 
+ * @property {string} PREVPAGEURL
+ */
 
-~~~javascript
-	var collection  = ClearBladeAsync.Collection("<COLLECTION_NAME_OR_ID>");
-	collection.fetch()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
+/**
+ * Gets data from the collection.
+ * Promise resolves with the requested collection rows.
+ * @param {Query} [query]
+ * @returns {Promise<fetchResponse>} 
+ */
+Collection.fetch(query)
+
+/**
+ * Creates a row in the collection.
+ * Promise resolves with a list of item_id's for the newly created rows. 
+ * @param {Object} newItem
+ * @returns {Promise<string[]>} 
+ */
+Collection.create(newItem)
+
+/**
+ * Updates rows in the collection.
+ * Promise resolves with the updated rows.
+ * @param {Query} [query]
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Collection.update(query, changes)
+
+/**
+ * If the given item does not exist in the collection, it will be inserted.
+ * If the item does exist, it will be updated.
+ * Existance is determined by the conflictColumn, which must either be a primary key or have a unique index on it.
+ * Promise resolves with the updated rows. 
+ * @param {Object} item 
+ * @param {string} conflictColumn
+ * @returns {Promise<Object[]>}
+ */
+Collection.upsert(item, conflictColumn)
+
+/**
+ * Deletes rows from the collection.
+ * Promise resolves empty.
+ * @param {Query} [query]
+ * @returns {Promise<>}
+ */
+Collection.remove(query)
+
+/**
+ * Gets all column metadata for the collection.
+ * Promise resolves with list of column metadata.
+ * @returns {Promise<{ColumnName: string, ColumnType: string, PK: boolean}[]>}
+ */
+Collection.columns()
+
+/**
+ * Adds a column to the collection.
+ * Promise resolves empty.
+ * @param {{name: string, type: string}} columnMeta
+ * @returns {Promise<>}
+ */
+Collection.addColumn(columnMeta)
+
+/**
+ * Removes a column from the collection.
+ * Promise resolves empty.
+ * @param {string} columnName
+ * @returns {Promise<>}
+ */
+Collection.dropColumn(columnName)
+
+/**
+ * Creates an index on the given column.
+ * An index will speed up queries referencing the indexed column,
+ * but will require more space to store your data.
+ * By default, the item_id columns of all collections are indexed.
+ * Promise resolves empty.
+ * @param {string} columnName
+ * @returns {Promise<>}
+ */
+Collection.createIndex(columnName)
+
+/**
+ * Creates a unique index on the given column.
+ * A unique index provides the same speed benefit as a regular index,
+ * and enforces each entry in the indexed column is unique.
+ * Promise resolves empty.
+ * @param {string} columnName
+ * @returns {Promise<>}
+ */
+Collection.createUniqueIndex(columnName)
+
+/**
+ * Deletes the collection and all data.
+ * Promise resolves empty.
+ * @returns {Promise<>}
+ */
+Collection.deleteCollection()
 ~~~
 
-## ClearBladeAsync.Collection.fetch(query)
-
-This function gets data from the collection.
-
- * @param {Query} _query
- * @returns {Promise} 
- 
-Example
+## Databases
 
 ~~~javascript
-	var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
-   	var query = ClearBladeAsync.Query();
-   	query.equalTo("<YOUR_COLUMN_OF_TYPE_STRING>", "<COLUMN_DATA>");
-    collection.fetch(query)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
+/**
+ * Represents a Database.
+ * If options specifies externalDBName, database represents external database.
+ * If options empty, database represents the ClearBlade system's database.
+ * @param {{externalDBName: string}} options
+ * @returns {Database}
+ */
+ClearBladeAsync.Database(options)
+
+/**
+ * Performs a sql query on ClearBlade collections.
+ * Promise resolves with the requested database rows.
+ * @param {string} rawQuery
+ * @returns {Promise<Object[]>}
+ */
+Database.query(rawQuery)
+
+/**
+ * Executes a sql operation on ClearBlade collections.
+ * Promise resolves with the count of rows effected.
+ * No database rows are returned with this function.
+ * @param {string} rawQuery
+ * @returns {Promise<{count: number}>}
+ */
+Database.exec(rawQuery)
+
+/**
+ * Performs a raw operation on an external database.
+ * Promise resolves with the database operation's result.
+ * @param {string} operation
+ * @returns {Promise<*>}
+ */
+Database.performOperation(operation)
 ~~~
 
-## ClearBladeAsync.Collection.create(newItem)
+## File Management
 
-This function creates a row in the collection.
-
- * {Object} newItem
- * @returns {Promise} 
-
-Example
+Note: all file paths are relative to bucket root, except on an edge where you can use full paths.
 
 ~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	var newItem = {
-        column_name: '<COL_DATA>',
-	}
-	collection.create(newItem)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
+/**
+ * Represents a sync'd filesystem.
+ * @param {string} deployment_name
+ * @returns {FS}
+ */
+ClearBladeAsync.FS(deployment_name)
 
-## ClearBladeAsync.Collection.update(query, changes)
-
- This function updates rows in the collection.
-
- * @param {Query} _query
- * {Object} changes
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	var query = ClearBladeAsync.Query();
-   	query.equalTo("<YOUR_COLUMN_OF_TYPE_STRING>", "<COLUMN_DATA>");
-	var changes = {
-        column: '<COL_DATA>',
-	}
-	async.update(query, changes)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.Collection.remove(query)
-
-This function deletes rows from the collection.
-
- * @param {Query} _query
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	var query = ClearBladeAsync.Query();
-   	query.equalTo("<YOUR_COLUMN_OF_TYPE_STRING>", "<COLUMN_DATA>");
-	collection.remove(query)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.Collection.columns()
-
-This function gets all column metadata for the collection.
-
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	collection.columns()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.Collection.addColumn(columnMeta)
-
-This function adds a column to the collection.
- 
- * {Object} columnMeta
- * {string} columnMeta.name
- * {string} columnMeta.type
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	var columnMeta = 
-	{
-        name: '<COL_NAME>',
-		type: '<COL_TYPE>',
-	}
-	collection.addColumn(columnMeta)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.Collection.dropColumn(columnName)
-
-This function removes a column to the collection.
-
- * {string} columnName
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	columnName = '<COL_NAME>'
-	collection.dropColumn(columnName)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-## ClearBladeAsync.Collection.deleteCollection()
-
-This function deletes the collection .
-
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var collection = ClearBladeAsync.Collection("Name")
-	collection.deleteCollection()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-## ClearBladeAsync.Collection.createIndex(columnToIndex)
-
-This function creates an index on a collection column. By default, a collection can be indexed on the `item_id` column. Users can index a collection on any column.
-
-* @param {string} columnName
-* @returns {Promise}
-
-Example
-
-~~~javascript
-    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
-    var columnToIndex = "myColumn"
-    collection.createIndex(columnToIndex)
-        .then(resp.success)
-        .catch(function(reason){
-            resp.error("caught: "+reason.message);
-        })
-~~~
-
-## ClearBladeAsync.Collection.createUniqueIndex(columnToIndex)
-
-This function creates a unique index on a collection column.
-
-* @param {string} columnName
-* @returns {Promise}
-
-Example
-
-~~~javascript
-    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
-    var columnToIndex = "myColumn"
-    collection.createUniqueIndex(columnToIndex)
-        .then(resp.success)
-        .catch(function(reason){
-            resp.error("caught: "+reason.message);
-        })
-~~~
-
- 
-## ClearBladeAsync.Collection.upsert(changes, conflictColumn)
-
-This function performs an upsert operation on a collection. The `conflictColumn` must be either a primary key or have a unique index.
-
-* @param {object} changes
-* @param {string} conflictColumn
-* @returns {Promise}
-
-Example
-
-~~~javascript
-    var collection = ClearBladeAsync.Collection("<COLLECTION_NAME>")
-    var conflictColumn = "myColumn"
-    var changes = {
-        "myColumn": "myUniqueId",
-        "data": "someData"
-    }
-    collection.upsert(changes, conflictColumn)
-        .then(resp.success)
-        .catch(function(reason){
-            resp.error("caught: "+reason.message);
-~~~
-
-# FileSystem 
-
-Class: ClearBladeAsync.FS()
-
-This class adds support for interacting with the sync’d filesystem. All file paths are relative to bucket root, except on an edge where you can use full paths.
-
-To instantiate the async filesystem class just call:
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-~~~
-
-## ClearBladeAsync.FS(deployment_name)
-
-Represents a sync'd filesystem.
-
-* @param {string} deployment_name
-* @returns {FS}
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	
-~~~
-
-## ClearBladeAsync.FS.readDir(path)
-
-Reads the contents of a directory.
-
+/**
+ * Reads the contents of a directory.
+ * The promise is resolved with an array of file names in that directory.
  * @param {string} path
- * @returns {Promise}- array of file names
+ * @returns {Promise<string[]>}
+ */
+FS.readDir(path)
 
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.readDir(path)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.readFile(path,[encoding])
-
- This function reads the entire contents of a file.
- If encoding is not specified, contents will be a `UInt8Array`. If encoding is specified, contents will be a string.
-
+/**
+ * Reads the entire contents of a file.
+ * The promise is resolved with the file contents.
+ * If encoding is not specified, contents will be a UInt8Array.
+ * If encoding is specified, contents will be a string.
  * @param {string} path
  * @param {string} [encoding]
- * @returns {Promise} -  file contents
+ * @returns {Promise<string|UInt8Array>}
+ */
+FS.readFile(path[, encoding])
 
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.readFile(path,'utf8')
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.writeFile(path,data)
-
-This function writes the given data to a file, replacing the file if it already exists.
-
+/**
+ * Writes the given data to a file, replacing the file if it already exists.
+ * The promise is resolved empty.
  * @param {string} path
  * @param {string|Uint8Array} data
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+FS.writeFile(path, data)
 
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.writeFile(path,data)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.renameFile(oldPath, newPath)
-
- This function renames the file path.
-
+/**
+ * Renames (mv's) oldPath to newPath.
+ * The promise is resolved empty.
  * @param {string} oldPath
  * @param {string} newPath
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+FS.renameFile(oldPath, newPath)
 
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.renameFile(oldPath, newPath)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.copyFile(srcPath, dstPath)
-
- This function copies srcPath to dstPath. It overwrites dstPath if it already exists.
-
+/**
+ * Copies srcPath to dstPath, overwriting dstPath if it already exists.
+ * The promise is resolved empty.
  * @param {string} srcPath
  * @param {string} dstPath
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+FS.copyFile(srcPath, dstPath)
 
-Example
-
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.copyFile(srcPath, dstPath)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.deleteFile(path)
-
-This function deletes the file at the specified path.
-
+/**
+ * Deletes the file at the specified path.
+ * The promise is resolved empty.
  * @param {string} path
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+FS.deleteFile(path)
 
-Example
+/**
+ * @typedef {Object} FileStats
+ * Represents file metadata.
+ * @property {number} size - file size in bytes
+ * @property {string} permissions - ex: "-rwxrwxrwx"
+ */
 
-~~~javascript
-	var FS = ClearBladeAsync.FS('myDeployment')
-	FS.deleteFile(path)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.FS.stat(path)
-
-The promise is resolved with the `FileStats` object for the given path.
-
+/**
+ * Retrieves metadata for the given file path.
  * @param {string} path
- * @returns {Promise}
-
-Example  
-
-~~~javascript
-var FS = ClearBladeAsync.FS('myDeployment')
+ * @returns {Promise<FileStats>}
+ */
 FS.stat(path)
-	.then(resp.success)
-	.catch(function(reason){
-		resp.error("caught: "+reason.message);
-	})
-~~~
 
-# File Management 
-
-Class: ClearBladeAsync.File()
-
-This class adds support for interacting with a file in the sync’d filesystem.
-
-To instantiate the async file class just call:
-
-~~~javascript
-	var fstats = ClearBladeAsync.File(deployment_name, path)
-~~~
-
-## ClearBladeAsync.File(deployment_name, path)
-
-This function is useful for performing multiple operations on a single file.
-
+/**
+ * Represents a file on the filesystem.
+ * Useful if you're doing multiple operations on a single file.
  * @param {string} deployment_name
  * @param {string} path
  * @returns {File}
+ */ 
+ClearBladeAsync.File(deployment_name, path)
 
-Example
+/**
+ * Retrieves metadata for the file.
+ * @returns {Promise<FileStats>}
+ */
+File.stat()
 
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.stat()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.File.stat()
-
-The promise is resolved with the `FileStats` object for the file.
-
- * @returns {Promise}
-
-Example
-
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.stat()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.File.read([encoding])
-
-This function reads the entire contents of the file.
-If encoding is not specified, contents will be a UInt8Array.
-If encoding is specified, contents will be a string.
-
+/**
+ * Reads the entire contents of the file.
+ * The promise is resolved with the file contents.
+ * If encoding is not specified, contents will be a UInt8Array.
+ * If encoding is specified, contents will be a string.
  * @param {string} [encoding]
- * @returns {Promise} - file contents
+ * @returns {Promise<string|UInt8Array>}
+ */
+File.read([encoding])
 
-Example
-
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.read("utf8")
-		.then(function(logString){
-        return logString.split('\n').slice(-100).join('\n');
-        })
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.File.write(data)
-
-This function writes the given data to the file, replacing the contents if it already exists.
-
+/**
+ * Writes the given data to the file, replacing the contents if it already exists.
+ * The promise is resolved empty.
  * @param {string|Uint8Array} data
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+File.write(data)
 
- Example
-
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.write(data)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.File.rename(newPath)
-This function renames file to newPath.
-
+/**
+ * Renames (mv's) file to newPath.
+ * The promise is resolved empty.
  * @param {string} newPath
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+File.rename(newPath)
 
-Example
-
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.rename(newPath)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-
-## ClearBladeAsync.File.copy(dstPath)
-
-This function copies file to `dstPath`, overwriting dstPath if it already exists.
-
+/**
+ * Copies file to dstPath, overwriting dstPath if it already exists.
+ * The promise is resolved empty.
  * @param {string} dstPath
- * @returns {Promise}
+ * @returns {Promise<>}
+ */
+File.copy(dstPath)
 
-
-Example
-
-~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.copy(dstPath)
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
+/**
+ * Deletes the file.
+ * The promise is resolved empty.
+ * @returns {Promise<>}
+ */
+File.delete()
 ~~~
 
-## ClearBladeAsync.File.delete()
-
-This function deletes the file.
-
- * @returns {Promise}
-
- Example
+## Locks
 
 ~~~javascript
-	var file = ClearBladeAsync.File('myDeployment', 'sandbox/myFile.txt')
-	file.delete()
-		.then(resp.success)
-		.catch(function(reason){
-			resp.error("caught: "+reason.message);
-		})
-~~~
-# Lock
-
-Class: ClearBladeAsync.Lock()
-
-This class allows for the execution of async ClearBlade lock functions. If the lock is being used across multiple services, they must all use the same lock name.
-
-To instantiate the async lock class just call:
-
-~~~javascript
-	var asyncLock = ClearBladeAsync.Lock(name, caller)
-~~~
-
+/**
+ * Represents a lock
  * @param {string} name
  * @param {string} caller
  * @returns {Lock}
+ */
+ClearBladeAsync.Lock(name, caller)
 
-### Example
+/**
+ * Obtains an exclusive lock.
+ * Promise will resolve when the lock has been granted.
+ * @returns {Promise<>}
+ */
+Lock.lock()
+
+/**
+ * Releases an exclusive lock.
+ * Promise will resolve when the lock has been released.
+ * @returns {Promise<>}
+ */
+Lock.unlock()
+
+/**
+ * Obtains a shared lock for read access.
+ * Promise will resolve when the lock has been granted. 
+ * @returns {Promise<>}
+ */
+Lock.rlock()
+
+/**
+ * Releases a shared lock.
+ * Promise will resolve when the lock has been released.
+ * @returns {Promise<>}
+ */
+Lock.runlock()
+~~~
+
+## Users
 
 ~~~javascript
-function incr() {
-    var cache = ClearBlade.Cache("IncrCache");
-    cache.get("incrVal", function (err, data) {
-        if (err) {
-            throw new Error("Could not get incrVal: " + JSON.stringify(data));
-        }
-        cache.set("incrVal", data + 1, function (serr, sdata) {
-            if (serr) {
-                throw new Error("Could not set incrVal: " + JSON.stringify(sdata));
-            }
-        });
-    });
-}
-var asyncLock = ClearBladeAsync.Lock("CacheLock", "service incrWithLock");
-function singleAsyncIncr() {
-    return new Promise(function (resolve) {
-        asyncLock.lock()
-            .then(incr)
-            .then(asyncLock.unlock.bind(asyncLock))
-            .then(resolve)
-    })
-}
-function asyncIncrWithLock(req, resp) {
-    ClearBlade.init({request: req})
-    var chain = Promise.resolve();
-    for (var i = 0; i < 100; i++) {
-        chain = chain.then(singleAsyncIncr)
-    }
-    chain.catch(function (e) {
-        resp.error(e.message)
-    })
-    chain.finally(resp.success.bind(resp, "Incremented incrVal 100 times"))
+/**
+ * Represents the users table.
+ * @returns {Users}
+ */
+ClearBladeAsync.Users()
+
+/**
+ * @typedef {Object} UserInfo
+ * @property {string} email 
+ * @property {string} password 
+ */
+
+/**
+ * Creates a new user in the user table.
+ * Promise will resolve with the user table row of the new user.
+ * @param {UserInfo} info - initial data describing the new user.
+ * @returns {Promise<Object>}
+ */
+Users.create(info)
+
+/**
+ * Fetches rows from the user table.
+ * Promise will resolve with the user table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Users.read(query)
+
+/**
+ * Updates rows in the user table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<>}
+ */
+Users.update(query, changes)
+
+/**
+ * Deletes rows from the user table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Users.delete(query)
+~~~
+
+## Devices
+
+~~~javascript
+/**
+ * Represents the device table.
+ * @returns {Devices}
+ */
+ClearBladeAsync.Devices()
+
+/**
+ * @typedef {Object} DeviceInfo
+ * @property {string} name 
+ * @property {string} active_key 
+ * @property {string} type 
+ * @property {string} state 
+ * @property {boolean} allow_key_auth 
+ * @property {boolean} allow_certificate_auth 
+ * @property {boolean} enabled 
+ */
+
+/**
+ * Creates a new device in the device table.
+ * Promise will resolve with the device table row of the new device.
+ * @param {DeviceInfo} info - initial data describing the new device.
+ * @returns {Promise<Object>}
+ */
+Devices.create(info)
+
+/**
+ * Fetches rows from the device table.
+ * Promise will resolve with the device table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Devices.read(query)
+
+/**
+ * Updates rows in the device table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<>}
+ */
+Devices.update(query, changes)
+
+/**
+ * Deletes rows from the device table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Devices.delete(query)
+~~~
+
+## Auth
+
+~~~javascript
+/**
+ * Authorization module.
+ * @returns {Auth}
+ */
+ClearBladeAsync.Auth()
+
+/**
+ * @typedef {Object} AuthResponse
+ * @property {string} auth_token 
+ * @property {string} refresh_token 
+ * @property {number} expiry - time auth_token expires, given in unix seconds
+ */
+
+/**
+ * Adds a new anonymous user session.
+ * @returns {Promise<AuthResponse>} 
+ */
+Auth.authAnon()
+
+/**
+ * Adds a new device session.
+ * @returns {Promise<AuthResponse>}
+ */
+Auth.authDevice(deviceName, deviceKey)
+
+/**
+ * Adds a new user session.
+ * @returns {Promise<AuthResponse>}
+ */
+Auth.authUser(email, password)
+
+/**
+ * Adds a new user or device session using a refresh token instead of credentials.
+ * @returns {Promise<AuthResponse>} 
+ */
+Auth.reauth(refreshToken)
+
+/**
+ * Adds a new user session, without requiring the user's credentials.
+ * This function may only be called as a developer.
+ * @returns {Promise<AuthResponse>}
+ */
+Auth.impersonateUser(userID)
+
+/**
+ * Finds the userID or deviceKey associated with the given auth token.
+ * @returns {Promise<string>}
+ */
+Auth.userIDFromToken(token)
+~~~
+
+## Roles/Perms
+
+~~~javascript
+/**
+ * Represents the roles table.
+ * @returns {Roles}
+ */
+ClearBladeAsync.Roles()
+
+/**
+ * Creates a new role.
+ * Promise resolves with the new role's ID.
+ * @param {Object} info
+ * @param {string} info.name - new role's name
+ * @param {string} [info.description] - new role's optional description
+ * @returns {Promise<string>}
+ */
+Roles.create(info)
+
+/**
+ * @typedef {Object} RoleRow
+ * @prop {string} role_id
+ * @prop {string} name
+ * @prop {string} description
+ */
+
+/**
+ * Queries the roles table.
+ * Promise resolves with the requested role table rows.
+ * @param {Query} query
+ * @returns {Promise<RoleRow[]>} 
+ */
+Roles.read(query)
+      
+/**
+ * Updates roles in the roles table.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<>}
+ */
+Roles.update(query, changes)
+
+/**
+ * Deletes roles from the roles table.
+ * Promise resolves empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Roles.delete(query)
+
+/**
+ * Finds roles currently granted to given device or user.
+ * Promise resolves with a list of role IDs.
+ * @param {string} deviceNameOrUserID
+ * @returns {Promise<string[]>}
+ */
+Roles.grantedTo(deviceNameOrUserID)
+
+/**
+ * Represents a specific role.
+ * @param {string} roleID
+ */
+ClearBladeAsync.Role(roleID)
+
+/**
+ * Creates a new role, then copies all permissions from the parent role.
+ * Promise resolves with the newly created role's ID.
+ * @param {Object} info
+ * @param {string} info.name - new role's name
+ * @param {string} [info.description] - new role's optional description
+ * @returns {Promise<string>}
+ */
+Role.duplicate(info)
+
+/**
+ * @typedef {Object} Permission
+ * @prop {string} type - resource type
+ * @prop {string} [name] - resource name
+ * @prop {number} level - permission level
+ */
+
+/**
+ * Lists permissions in role.
+ * @returns {Promise<Permission[]>}
+ */
+Role.permissions()
+
+/**
+ * Overwrites the level of the given permissions.
+ * Resources not included in the perms object remain unchanged.
+ * Promise resolves empty.
+ * @param {Permission|Permission[]} perms
+ * @returns {Promise<>}
+ */
+Role.setPermissions(perms)
+
+/**
+ * Increases the level of the given permissions.
+ * Resources not included in the perms object remain unchanged.
+ * Promise resolves empty.
+ * @param {Permission|Permission[]} perms
+ * @returns {Promise<>}
+ */
+Role.increasePermissions(perms)
+
+/**
+ * Decreases the level of the given permissions.
+ * Resources not included in the perms object remain unchanged.
+ * Promise resolves empty.
+ * @param {Permission|Permission[]} perms
+ * @returns {Promise<>}
+ */
+Role.decreasePermissions(perms)
+
+/**
+ * Removes all permissions from the role.
+ * Promise resolves empty.
+ * @returns {Promise<>}
+ */
+Role.removeAllPermissions()
+
+/**
+ * Applies the role to the given device or user.
+ * Promise resolves empty. 
+ * @param {string} deviceNameOrUserID
+ * @returns {Promise<>}
+ */
+Role.applyTo(deviceNameOrUserID)
+
+/**
+ * Removes the role from the given device or user.
+ * Promise resolves empty.
+ * @param {string} deviceNameOrUserID
+ * @returns {Promise<>}
+ */
+Role.stripFrom(deviceNameOrUserID)
+
+/**
+ * Finds all users with the given role.
+ * Promise resolves with a list of user IDs.
+ * @returns {Promise<string[]>}
+ */
+Role.users()
+
+/**
+ * Finds all devices with the given role.
+ * Promise resolves with a list of device names.
+ * @returns {Promise<string[]>}
+ */
+Role.devices()
+
+/**
+ * Enum helper for permission levels.
+ * @readonly
+ * @enum {number}
+ */
+ClearBladeAsync.Permissions = {
+  READ:   1,
+  CREATE: 2,
+  UPDATE: 4,
+  DELETE: 8,
 }
 ~~~
 
-## ClearBladeAsync.Lock.lock()
+## Caches
 
-This function obtains an exclusive lock.
+~~~javascript
+/**
+ * Represents a distributed cache.
+ * @param {string} name
+ * @returns {Cache}
+ */
+ClearBladeAsync.Cache(name)
 
- * @returns {Promise} - This will get resolved when the lock is granted
+/**
+ * Sets a value in the cache.
+ * Promise resolves empty.
+ * @param {string} key 
+ * @param {*} value
+ * @returns {Promise<>} 
+ */
+Cache.set(key, value)
 
-## ClearBladeAsync.Lock.unlock()
+/**
+ * Sets a value in the cache, if it does not already exist.
+ * Promise resolves with true if it set the value, false if it already existed.
+ * @param {string} key 
+ * @param {*} value
+ * @returns {Promise<boolean>} 
+ */
+Cache.setnx(key, value)
 
-This function releases an exclusive lock.
+/**
+ * Retrieves a value from the cache.
+ * Promise resolves with the cached value.
+ * @param {string} key
+ * @returns {Promise<*>}
+ */
+Cache.get(key)
 
- * @returns {Promise} - This will get resolved when the lock is released
+/**
+ * Retrieves all key/value pairs from the cache.
+ * Promise resolves with object containing all cache values.
+ * @returns {Promise<Object>}
+ */
+Cache.getAll()
 
-## ClearBladeAsync.Lock.rlock()
+/**
+ * Removes a value from the cache.
+ * Promise resolves empty.
+ * @param {string} key 
+ * @returns {Promise<>}
+ */
+Cache.delete(key)
 
-This function obtains a shared lock for read access.
+/**
+ * Removes all values from the cache.
+ * Promise resolves empty.
+ * @returns {Promise<>}
+ */
+Cache.flush()
 
- * @returns {Promise} - This will get resolved when the lock is granted
+/**
+ * Lists the keys which currently contain values in the cache.
+ * Pattern may contain '?' as a single-character wildcard, 
+ * or '*' as a multi-character wildcard.
+ * Promise resolves with a list of keys matching the given pattern.
+ * @param {string} pattern 
+ * @returns {Promise<string[]>}
+ */
+Cache.keys(pattern)
+~~~
 
-## ClearBladeAsync.Lock.runlock()
+## Triggers
 
-This function releases a shared lock.
+~~~javascript
+/**
+ * Represents the triggers in your system.
+ * @returns {Triggers}
+ */
+ClearBladeAsync.Triggers()
 
- * @returns {Promise} - This will get resolved when the lock is released
+/**
+ * @typedef {Object} TriggerInfo
+ * @property {strign} name
+ * @property {string} service_name - which service to run when trigger fires
+ * @property {string} def_module - see following table
+ * @property {string} def_name - see following table
+ * @property {Object} key_value_pairs - see following table
+ */
+
+/**
+ * Creates a new trigger in your system.
+ * Promise will resolve with the trigger data of the new trigger.
+ * @param {TriggerInfo} info - initial data describing the new trigger.
+ * @returns {Promise<Object>}
+ */
+Triggers.create(info)
+
+/**
+ * Fetches triggers from your system.
+ * Promise will resolve with the triggers matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Triggers.read(query)
+
+/**
+ * Updates triggers in your system.
+ * Promise will resolve with the updated triggers.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Triggers.update(query, changes)
+
+/**
+ * Deletes triggers from your system.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Triggers.delete(query)
+~~~
+
+Valid trigger definitions:
+
+|def_module|def_name|possible key_value_pairs keys|
+|---|---|---|
+|Asset|AssetCreated|assetClass|
+|Asset|AssetDeleted|assetClass, assetID|
+|Asset|AssetUpdated|assetClass, assetID|
+|Data|CollectionCreated||
+|Data|CollectionDeleted|collectionId, collectionName|
+|Data|CollectionUpdated|collectionId, collectionName|
+|Data|ItemCreated|collectionId, collectionName|
+|Data|ItemDeleted|collectionId, collectionName, itemId|
+|Data|ItemUpdated|collectionId, collectionName, itemId|
+|Data|ItemUpserted|collectionId, collectionName, itemId|
+|Device|DeviceCreated||
+|Device|DeviceDeleted|deviceName|
+|Device|DeviceUpdated|deviceName|
+|File|FileCreated|filePath|
+|File|FileDeleted|filePath|
+|File|FileUpdated|filePath|
+|Messaging|MQTTDeviceConnected|deviceName|
+|Messaging|MQTTDeviceDisconnected|deviceName|
+|Messaging|MQTTUserConnected|email|
+|Messaging|MQTTUserDisconnected|email|
+|Messaging|Publish|topic|
+|Messaging|Subscribe|topic|
+|Messaging|Unsubscribe|topic|
+|StartConnectDisconnect|EdgeConnectedOnPlatform|edgeName|
+|StartConnectDisconnect|EdgeDisconnectedOnPlatform|edgeName|
+|StartConnectDisconnect|EdgeStarted||
+|StartConnectDisconnect|PlatformConnectedOnEdge||
+|StartConnectDisconnect|PlatformDisconnectedOnEdge||
+|StartConnectDisconnect|PlatformStarted||
+|User|UserCreated||
+|User|UserDeleted|userId|
+|User|UserUpdated|userId|
+
+## Timers
+
+~~~javascript
+/**
+ * Represents the timer table.
+ * @returns {Timers}
+ */
+ClearBladeAsync.Timers()
+
+/**
+ * @typedef {Object} TimerInfo
+ * @property {string} name 
+ * @property {string} description 
+ * @property {string} service_name - which service to run when timer fires
+ * @property {string} start_time - RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
+ * @property {number} repeats - how many times the timer should fire (-1 for infinite)
+ * @property {number} frequency - how often the timer should fire, in seconds
+ * @property {boolean} [user_id] - which user to run the service as, defaults to caller
+ * @property {number} [user_type] - user type of user_id (1=dev, 2=user, 3=device)
+ */
+
+/**
+ * Creates a new timer in the timer table.
+ * Promise will resolve with the timer table row of the new timer.
+ * @param {TimerInfo} info - initial data describing the new timer.
+ * @returns {Promise<Object>}
+ */
+Timers.create(info)
+
+/**
+ * Fetches rows from the timer table.
+ * Promise will resolve with the timer table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Timers.read(query)
+
+/**
+ * Updates rows in the timer table.
+ * Promise will resolve with the updated timer table rows.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Timers.update(query, changes)
+
+/**
+ * Deletes rows from the timer table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Timers.delete(query)
+~~~
+
+## Edges
+
+~~~javascript
+/**
+ * Represents the edge table.
+ * @returns {Edges}
+ */
+ClearBladeAsync.Edges()
+
+/**
+ * @typedef {Object} EdgeInfo
+ * @property {string} name 
+ * @property {string} token 
+ */
+
+/**
+ * Creates a new edge in the edge table.
+ * Promise will resolve with the edge table row of the new edge.
+ * @param {EdgeInfo} info - initial data describing the new edge.
+ * @returns {Promise<Object>}
+ */
+Edges.create(info)
+
+/**
+ * Fetches rows from the edge table.
+ * Promise will resolve with the edge table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+Edges.read(query)
+
+/**
+ * Updates rows in the edge table.
+ * Promise will resolve with the updated edge table rows.
+ * @param {Query} query
+ * @param {Object} changes
+ * @returns {Promise<Object[]>}
+ */
+Edges.update(query, changes)
+
+/**
+ * Deletes rows from the edge table.
+ * Promise will resolve empty.
+ * @param {Query} query
+ * @returns {Promise<>}
+ */
+Edges.delete(query)
+~~~
+
+
+# Examples
+
+## Collection Examples
+
+~~~javascript
+var assetsCollection = ClearBladeAsync.Collection('assets');
+
+/**
+ * @typedef {Object} AssetRow - a row in the assets collection
+ * @property {string} asset_id - a unique identifier for each asset
+ * @property {string} asset_type - can be "thermometer" or "barometer"
+ * @property {number} reading - the current temperature or pressure value
+ * @property {string} last_updated - timestamp when the asset last sent an update
+ * @property {boolean} stale - indicates the asset hasn't sent an update in over a week
+ */
+
+/**
+ * updateStaleAssets uses a query to find all rows in the assets collection
+ * whose "last_updated" value is more than a week old, then updates those rows
+ * setting their "stale" value to true.
+ * @return {Promise<AssetRow[]>} all stale assets
+ */
+function updateStaleAssets() {
+    var lastWeek = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    var staleQuery = ClearBladeAsync.Query().lessThan('last_updated', lastWeek.toISOString())
+    return assetsCollection.update(staleQuery, {stale: true});
+}
+
+
+This class allows for the execution of async ClearBlade lock functions. If the lock is being used across multiple services, they must all use the same lock name.
+
+/**
+ * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses 
+ * a query with multiple conditions to only update assets whose "stale" value
+ * is not already true.
+ * @return {Promise<AssetRow[]>} the assets which became stale in the past week
+ */
+function updateStaleAssetsV2() {
+    var lastWeek = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    var staleQuery = ClearBladeAsync.Query();
+    staleQuery.lessThan('last_updated', lastWeek.toISOString());
+    staleQuery.equalTo('stale', false);
+    return assetsCollection.update(staleQuery, {stale: true});
+}
+
+
+/**
+ * reportDangerousTemperatures uses an "or" query to find all thermometers
+ * whose current reading is below freezing or above boiling.
+ * @return {Promise<AssetRow[]>} thermometer assets with dangerous temperatures
+ */
+function reportDangerousTemperatures() {
+    var lowTempQuery = ClearBladeAsync.Query();
+    lowTempQuery.equalTo('asset_type', 'thermometer');
+    lowTempQuery.lessThanEqualTo('reading', 32.0);
+
+    var highTempQuery = ClearBladeAsync.Query();
+    highTempQuery.equalTo('asset_type', 'thermometer');
+    highTempQuery.greaterThanEqualTo('reading', 212.0);
+
+    var dangerQuery = lowTempQuery.or(highTempQuery);
+    return assetsCollection.fetch(dangerQuery).then(function(results){
+        log('We found', results.TOTAL, 'assets with dangerous temperatures!');
+        return results.DATA;
+    });
+}
+
+/**
+ * processAssetMessage decodes a message sent by an asset, 
+ * and inserts it into the assets collection.
+ * If the asset already exists in the collection, we update it.
+ * @param  {Object} message - an MQTT message from an asset
+ * @param  {string} message.id - the asset's unique identifier
+ * @param  {string} message.type - the asset's type
+ * @param  {number} message.reading - the asset's current sensor reading
+ * @return {Promise<AssetRow[]>} the new or updated asset row
+ */
+function processAssetMessage(message) {
+    var asset = {
+        asset_id: message.id,
+        asset_type: message.type,
+        reading: message.reading,
+        last_updated: new Date().toISOString(),
+        stale: false,
+    }
+    return assetsCollection.upsert(asset, 'asset_id');
+}
+~~~
+
+## Database Examples
+
+~~~javascript
+var db = ClearBladeAsync.Database();
+var mongo = ClearBladeAsync.Database({externalDBName: 'ClearBladeMongo'})
+
+/**
+ * @typedef {Object} AssetCounts
+ * @property {number} thermometer - number of thermometers in the assets collection
+ * @property {number} barometer - number of barometers in the assets collection
+ */
+
+/**
+ * countAssetsByType runs a raw sql query against the assets collection
+ * to count the number of each asset_type.
+ * @return {AssetCounts} counts per asset type
+ */
+function countAssetsByType() {
+    var sqlQuery = 'SELECT json_object_agg(asset_type, count) counts FROM (SELECT asset_type, COUNT(asset_type) FROM assets GROUP BY asset_type) foo;';
+    return db.query(sqlQuery).then(function(results){
+        if(results.length !== 1) {
+            throw new Error('countAssetsByType: unexpected number of rows returned: '+JSON.stringify(results));
+        }
+        return JSON.parse(results[0].counts);
+    })
+}
+
+/**
+ * insertAssetHistory performs a raw MongoDB operation to insert a message into the assetHistory collection.
+ * @param  {Object} message - an MQTT message from an asset
+ * @return {Promise<>}
+ */
+function insertAssetHistory(message) {
+    var mongoInsertQuery = 'db.assetHistory.insert('+JSON.stringify(message)+')';
+    return mongo.performOperation(mongoInsertQuery);
+}
+~~~
+
+## File Management Examples
+
+~~~javascript
+/**
+ * sendAdapterLogsToPlatform copies a log file from an edge's filesystem into the edge's outbox.
+ * This file will be sync'd to the platform.
+ * @return {Promise<>}
+ */
+function sendAdapterLogsToPlatform() {
+    var fs = ClearBladeAsync.FS('myDeployment');
+    return fs.copyFile('/home/clearblade/myAdapter.log', 'outbox/myAdapter.log');
+}
+
+/**
+ * checkAdapterLogsForErrors reads a log file from the platform's inbox,
+ * and returns the lines from those logs that contain the string "ERROR".
+ * @return {Promise<string[]>} the error logs
+ */
+function checkAdapterLogsForErrors() {
+    var file = ClearBladeAsync.File('myDeployment', 'inbox/myEdge/myAdapter.log');
+    return file.read('utf8')
+        .then(function(logString){
+            var logLines = logString.split('\n');
+            var errorLines = logLines.filter(function(line){return line.indexOf('ERROR') !== -1});
+            return errorLines;
+        })
+}
+~~~
 

@@ -2058,7 +2058,7 @@ ClearBlade.Timer.Fetch("runValidatorEveryHour", function (err, timer) {
         if (err) {
             resp.error(response);
         } else {
-            timer.Update({def_module:"<COLLECTION_ID>",def_name:"bar"}, function (err, response){
+            timer.Update({ frequency: 600 }, function (err, response){
                 if (err) {
                     resp.error(response);
                 }
