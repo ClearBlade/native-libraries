@@ -19,6 +19,7 @@ __Reference__
 __Examples__
 1. [Collections](#collection-examples)
 1. [Databases](#database-examples)
+1. [File Management](#file-management-examples)
 
 # Reference
 
@@ -86,6 +87,8 @@ Query.or(query)
 ~~~
 
 ## Collections
+
+[Examples](#collection-examples)
 
 ~~~javascript
 /**
@@ -210,6 +213,8 @@ Collection.deleteCollection()
 
 ## Databases
 
+[Examples](#database-examples)
+
 ~~~javascript
 /**
  * Represents a Database.
@@ -249,6 +254,8 @@ Database.performOperation(operation)
 ## File Management
 
 Note: all file paths are relative to bucket root, except on an edge where you can use full paths.
+
+[Examples](#file-management-examples)
 
 ~~~javascript
 /**
@@ -1035,9 +1042,6 @@ function updateStaleAssets() {
     return assetsCollection.update(staleQuery, {stale: true});
 }
 
-
-This class allows for the execution of async ClearBlade lock functions. If the lock is being used across multiple services, they must all use the same lock name.
-
 /**
  * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses 
  * a query with multiple conditions to only update assets whose "stale" value
@@ -1051,7 +1055,6 @@ function updateStaleAssetsV2() {
     staleQuery.equalTo('stale', false);
     return assetsCollection.update(staleQuery, {stale: true});
 }
-
 
 /**
  * reportDangerousTemperatures uses an "or" query to find all thermometers
