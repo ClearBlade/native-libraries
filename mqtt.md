@@ -13,7 +13,7 @@ The message represents an MQTT message.
 Example
 
 ~~~javascript
-var msg = new MQTT.Message("my message") 	
+var msg = new MQTT.Message("my message")
 ~~~
 
 ## MQTT.Client(options)
@@ -23,8 +23,8 @@ If no options are specified, the client connects to the ClearBlade broker.
 
 * @param {object} [options]
 * @param {string} options.address
-* @param {number} [options.port=1883] 
-* @param {string} [options.username] 
+* @param {number} [options.port=1883]
+* @param {string} [options.username]
 * @param {string} [options.password]
 * @param {string} [options.client_id={randomUUID}]
 * @param {boolean} [options.use_tls=false]
@@ -32,11 +32,13 @@ If no options are specified, the client connects to the ClearBlade broker.
 * @param {string} options.tls_config.client_cert
 * @param {string} options.tls_config.client_key
 * @param {string} options.tls_config.ca_cert
+* @param {function} [options.on_connect]
+* @param {function} [options.on_disconnect]
 * @constructor
 
 Example
 
-The code block below is to connect to an external clearblade broker. 
+The code block below is to connect to an external clearblade broker.
 
 ~~~javascript
 var options = {
@@ -57,7 +59,6 @@ This function subscribes to a topic in the broker and registers a callback funct
 * @returns {Promise}
 
 ~~~ javascript
-
 function myStreamService(req, resp){
 
   var client = new MQTT.Client();
@@ -82,7 +83,7 @@ This function allows publish to send a MQTT message to the broker.
 * @param {boolean} [retain]
 * @returns {Promise}
 
-~~~ javascript
+~~~javascript
 function myCodeService(req, resp){
     var client = new MQTT.Client();
     var deviceData = {

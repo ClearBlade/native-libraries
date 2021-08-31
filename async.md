@@ -1,5 +1,5 @@
-The ClearBlade Async library works with the event loop to provide asynchronous ClearBlade functions. 
-The `init` function is not required. 
+The ClearBlade Async library works with the event loop to provide asynchronous ClearBlade functions.
+The `init` function is not required.
 
 __Reference__
 1. [Query](#query)
@@ -15,11 +15,13 @@ __Reference__
 1. [Triggers](#triggers)
 1. [Timers](#timers)
 1. [Edges](#edges)
+1. [Adapters](#adapters)
 
 __Examples__
 1. [Collections](#collection-examples)
 1. [Databases](#database-examples)
 1. [File Management](#file-management-examples)
+1. [Adapter Examples](#adapter-examples)
 
 # Reference
 
@@ -81,7 +83,7 @@ Query.rawQuery(query)
 /**
  * Combines two queries with boolean OR condition.
  * @param {Query} query
- * @returns {Query} 
+ * @returns {Query}
  */
 Query.or(query)
 ~~~
@@ -110,8 +112,8 @@ ClearBladeAsync.Collection(nameOrID)
  * @typedef {Object} fetchResponse
  * @property {Object[]} DATA - requested collection rows
  * @property {number} TOTAL - number of objects in the DATA field
- * @property {number} CURRENTPAGE 
- * @property {string} NEXTPAGEURL 
+ * @property {number} CURRENTPAGE
+ * @property {string} NEXTPAGEURL
  * @property {string} PREVPAGEURL
  */
 
@@ -119,15 +121,15 @@ ClearBladeAsync.Collection(nameOrID)
  * Gets data from the collection.
  * Promise resolves with the requested collection rows.
  * @param {Query} [query]
- * @returns {Promise<fetchResponse>} 
+ * @returns {Promise<fetchResponse>}
  */
 Collection.fetch(query)
 
 /**
  * Creates a row in the collection.
- * Promise resolves with a list of item_id's for the newly created rows. 
+ * Promise resolves with a list of item_id's for the newly created rows.
  * @param {Object} newItem
- * @returns {Promise<string[]>} 
+ * @returns {Promise<string[]>}
  */
 Collection.create(newItem)
 
@@ -143,9 +145,9 @@ Collection.update(query, changes)
 /**
  * If the given item does not exist in the collection, it will be inserted.
  * If the item does exist, it will be updated.
- * Existance is determined by the conflictColumn, which must either be a primary key or have a unique index on it.
- * Promise resolves with the updated rows. 
- * @param {Object} item 
+ * Existence is determined by the conflictColumn, which must either be a primary key or have a unique index on it.
+ * Promise resolves with the updated rows.
+ * @param {Object} item
  * @param {string} conflictColumn
  * @returns {Promise<Object[]>}
  */
@@ -339,7 +341,7 @@ FS.stat(path)
  * @param {string} deployment_name
  * @param {string} path
  * @returns {File}
- */ 
+ */
 ClearBladeAsync.File(deployment_name, path)
 
 /**
@@ -417,7 +419,7 @@ Lock.unlock()
 
 /**
  * Obtains a shared lock for read access.
- * Promise will resolve when the lock has been granted. 
+ * Promise will resolve when the lock has been granted.
  * @returns {Promise<>}
  */
 Lock.rlock()
@@ -441,8 +443,8 @@ ClearBladeAsync.Users()
 
 /**
  * @typedef {Object} UserInfo
- * @property {string} email 
- * @property {string} password 
+ * @property {string} email
+ * @property {string} password
  */
 
 /**
@@ -490,13 +492,13 @@ ClearBladeAsync.Devices()
 
 /**
  * @typedef {Object} DeviceInfo
- * @property {string} name 
- * @property {string} active_key 
- * @property {string} type 
- * @property {string} state 
- * @property {boolean} allow_key_auth 
- * @property {boolean} allow_certificate_auth 
- * @property {boolean} enabled 
+ * @property {string} name
+ * @property {string} active_key
+ * @property {string} type
+ * @property {string} state
+ * @property {boolean} allow_key_auth
+ * @property {boolean} allow_certificate_auth
+ * @property {boolean} enabled
  */
 
 /**
@@ -544,14 +546,14 @@ ClearBladeAsync.Auth()
 
 /**
  * @typedef {Object} AuthResponse
- * @property {string} auth_token 
- * @property {string} refresh_token 
+ * @property {string} auth_token
+ * @property {string} refresh_token
  * @property {number} expiry - time auth_token expires, given in unix seconds
  */
 
 /**
  * Adds a new anonymous user session.
- * @returns {Promise<AuthResponse>} 
+ * @returns {Promise<AuthResponse>}
  */
 Auth.authAnon()
 
@@ -569,7 +571,7 @@ Auth.authUser(email, password)
 
 /**
  * Adds a new user or device session using a refresh token instead of credentials.
- * @returns {Promise<AuthResponse>} 
+ * @returns {Promise<AuthResponse>}
  */
 Auth.reauth(refreshToken)
 
@@ -617,10 +619,10 @@ Roles.create(info)
  * Queries the roles table.
  * Promise resolves with the requested role table rows.
  * @param {Query} query
- * @returns {Promise<RoleRow[]>} 
+ * @returns {Promise<RoleRow[]>}
  */
 Roles.read(query)
-      
+
 /**
  * Updates roles in the roles table.
  * @param {Query} query
@@ -710,7 +712,7 @@ Role.removeAllPermissions()
 
 /**
  * Applies the role to the given device or user.
- * Promise resolves empty. 
+ * Promise resolves empty.
  * @param {string} deviceNameOrUserID
  * @returns {Promise<>}
  */
@@ -764,18 +766,18 @@ ClearBladeAsync.Cache(name)
 /**
  * Sets a value in the cache.
  * Promise resolves empty.
- * @param {string} key 
+ * @param {string} key
  * @param {*} value
- * @returns {Promise<>} 
+ * @returns {Promise<>}
  */
 Cache.set(key, value)
 
 /**
  * Sets a value in the cache, if it does not already exist.
  * Promise resolves with true if it set the value, false if it already existed.
- * @param {string} key 
+ * @param {string} key
  * @param {*} value
- * @returns {Promise<boolean>} 
+ * @returns {Promise<boolean>}
  */
 Cache.setnx(key, value)
 
@@ -797,7 +799,7 @@ Cache.getAll()
 /**
  * Removes a value from the cache.
  * Promise resolves empty.
- * @param {string} key 
+ * @param {string} key
  * @returns {Promise<>}
  */
 Cache.delete(key)
@@ -811,10 +813,10 @@ Cache.flush()
 
 /**
  * Lists the keys which currently contain values in the cache.
- * Pattern may contain '?' as a single-character wildcard, 
+ * Pattern may contain '?' as a single-character wildcard,
  * or '*' as a multi-character wildcard.
  * Promise resolves with a list of keys matching the given pattern.
- * @param {string} pattern 
+ * @param {string} pattern
  * @returns {Promise<string[]>}
  */
 Cache.keys(pattern)
@@ -920,8 +922,8 @@ ClearBladeAsync.Timers()
 
 /**
  * @typedef {Object} TimerInfo
- * @property {string} name 
- * @property {string} description 
+ * @property {string} name
+ * @property {string} description
  * @property {string} service_name - which service to run when timer fires
  * @property {string} start_time - RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
  * @property {number} repeats - how many times the timer should fire (-1 for infinite)
@@ -975,8 +977,8 @@ ClearBladeAsync.Edges()
 
 /**
  * @typedef {Object} EdgeInfo
- * @property {string} name 
- * @property {string} token 
+ * @property {string} name
+ * @property {string} token
  */
 
 /**
@@ -1013,6 +1015,180 @@ Edges.update(query, changes)
 Edges.delete(query)
 ~~~
 
+## Adapters
+
+[Examples](#adapter-examples)
+
+~~~javascript
+/**
+ * Represents the adapters table
+ * @returns {Adapters}
+ */
+ClearBladeAsync.Adapters()
+
+/**
+ * @typedef {object} AdapterMeta
+ * @property {string} name
+ * @property {string} [description]
+ * @property {string} [protocol]
+ * @property {string} architecture
+ * @property {string} os
+ * @property {string} deploy_command
+ * @property {string} start_command
+ * @property {string} stop_command
+ * @property {string} status_command
+ * @property {string} deploy_command
+ * @property {string} undeploy_command
+ * @property {string} logs_command
+ * @property {boolean} [run_stop_on_deploy]
+ * @property {boolean} [run_start_on_deploy]
+ * @property {boolean} [run_deploy_on_deploy]
+ */
+
+/**
+ * Creates a new adapter.
+ * Promise will return with the newly created adapter's meta.
+ * @param {AdapterMeta} options
+ * @returns {Promise<AdapterMeta>}
+ */
+Adapters.create(options)
+
+/**
+ * Reads all meta from the adapter table.
+ * Promise will return with a list of adapter metas.
+ * @returns {Promise<AdapterMeta[]>}
+ */
+Adapters.list()
+
+/**
+ * Reads a single adapter's meta.
+ * Promise will resolve with the queried adapter's meta.
+ * @param {string} name
+ * @returns {Promise<AdapterMeta>}
+ */
+Adapters.read(name)
+
+/**
+ * Updates an adapter's meta.
+ * Promise will resolve with the updated adapter meta.
+ * @param {string} name
+ * @param {object} changes
+ * @returns {Promise<AdapterMeta>}
+ */
+Adapters.update(name, changes)
+
+/**
+ * Deletes an adapter.
+ * Promise will resolve empty.
+ * @param {string} name
+ * @returns {Promise<>}
+ */
+Adapters.delete(name)
+
+/**
+ * Represents a single adapter.
+ * @returns <Adapter>
+ */
+ClearBladeAsync.Adapter(name)
+
+/**
+ * Reads the given adapter's meta.
+ * Promise will resolve with the adapter's meta.
+ * @returns {Promise<AdapterMeta>}
+ */
+Adapter.read()
+
+/**
+ * Updates the given adapter's meta.
+ * Promise will resolve with the updated adapter meta.
+ * @param {object} changes
+ * @returns {Promise<AdapterMeta>}
+ */
+Adapter.update(changes)
+
+/**
+ * Deletes the given adapter.
+ * Promise will resolve empty.
+ * @returns {Promise<>}
+ */
+Adapter.delete()
+
+/**
+ * @typedef {object} AdapterFileMeta
+ * @property {string} name
+ * @property {string} path_name
+ * @property {string} owner
+ * @property {string} group
+ * @property {string} permissions
+ * @property {string|Uint8Array} file
+ */
+
+/**
+ * Creates a file attached to the given adapter.
+ * Promise will resolve empty.
+ * @param {AdapterFileMeta} options
+ * @returns {Promise<>}
+ */
+Adapter.createFile(options)
+
+/**
+ * Reads a file attached to the given adapter.
+ * Promise will resolve with the queried file meta.
+ * If encoding is provided, file contents are decoded into a string.
+ * Otherwise, file contents will be a Uint8Array.
+ * @param {string} filename
+ * @param {string} [encoding]
+ * @returns {Promise<AdapterFileMeta>}
+ */
+Adapter.readFile(filename[, encoding])
+
+/**
+ * Lists all files attached to the given adapter.
+ * Promise will resolve with a list of file meta.
+ * File contents are not returned.
+ * @returns {Promise<AdapterFileMeta[]>}
+ */
+Adapter.listFiles()
+
+/**
+ * Updates a file attached to the given adapter.
+ * Promise will resolve with the updated file meta.
+ * If encoding is provided, the returned file contents will be decoded into a string.
+ * Otherwise, the returned file contents will be a Uint8Array.
+ * @param {string} filename
+ * @param {object} changes
+ * @param {string} [encoding]
+ * @returns {Promise<AdapterFileMeta>}
+ */
+Adapter.updateFile(filename, changes[, encoding])
+
+/**
+ * Deletes a file attached to the given adapter.
+ * Promise will resolve empty.
+ * @param {string} filename
+ * @returns {Promise<>}
+ */
+Adapter.deleteFile(filename)
+
+/**
+ * @typedef {object} AdapterControlResponse
+ * @property {string} err - will contain an error if the control command fails
+ * @property {string} command - the shell command which got executed
+ * @property {string} output - the combined stdout and stderr output resulting from executing the shell command
+ */
+
+/**
+ * Sends a control command to the given edges.
+ * Valid commands are: "start", "stop", "restart", "status", "undeploy", "logs".
+ * The edges param is an array of edge names.
+ * If run on the edge, the edges param may only include the current edge's name.
+ * Promise will resolve with an object whose keys are edge names and values are AdapterControlResponses.
+ * @param {string} command
+ * @param {string[]} edges
+ * @returns {Promise<object>}
+ */
+Adapter.control(command, edges)
+~~~
 
 # Examples
 
@@ -1043,7 +1219,7 @@ function updateStaleAssets() {
 }
 
 /**
- * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses 
+ * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses
  * a query with multiple conditions to only update assets whose "stale" value
  * is not already true.
  * @return {Promise<AssetRow[]>} the assets which became stale in the past week
@@ -1078,7 +1254,7 @@ function reportDangerousTemperatures() {
 }
 
 /**
- * processAssetMessage decodes a message sent by an asset, 
+ * processAssetMessage decodes a message sent by an asset,
  * and inserts it into the assets collection.
  * If the asset already exists in the collection, we update it.
  * @param  {Object} message - an MQTT message from an asset
@@ -1166,3 +1342,38 @@ function checkAdapterLogsForErrors() {
 }
 ~~~
 
+## Adapter Examples
+
+~~~javascript
+var systemWatcherAdapter = ClearBladeAsync.Adapter('systemWatcher');
+
+/**
+ * updateAdapterStatusFile updates the status command of the systemWatcherAdapter
+ * to print the statuses of the given servicesToWatch.
+ * @param {string[]} the services to watch
+ * @returns {Promise<AdapterFileMeta>} the updated adapter metadata
+ */
+function updateAdapterStatusFile(servicesToWatch) {
+  if(servicesToWatch.length===0) return Promise.resolve();
+  var file = '#!/usr/bin/env bash\n\n';
+  for (var i = 0; i < services.length; i++) {
+      file += 'systemctl --no-pager -l status ' + services[i] + '\n';
+  }
+  return systemWatcherAdapter.updateFile('status.sh', {file: file});
+}
+
+/**
+ * statusFetcher runs the status command of the systemWatcher adapter,
+ * and reports back the result.
+ * @param {string} currentEdgeName
+ * @returns {Promise<string>} status.sh stdout
+ */
+function periodicStatusFetcher(currentEdgeName) {
+  return systemWatcherAdapter.control('status', [currentEdgeName])
+    .then(function(results){
+      var myResults = results[currentEdgeName];
+      if(myResults.err !== "") throw new Error("status check failed: "+myResults.err);
+      return myResults.output;
+    })
+}
+~~~

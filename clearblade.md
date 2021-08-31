@@ -120,7 +120,7 @@ Pre-authed example:
 			systemKey: req.systemKey,
 			systemSecret: req.systemSecret,
 			useUser: {
-				email: req.userid
+				email: req.userid,
 				authToken: req.userToken
 			}
 		});
@@ -1186,7 +1186,7 @@ Updates an existing item or set of items
         }
     };
 
-   	var col = ClearBlade.Collection({collectionName:"<COLLECTION_NAME>");
+   	var col = ClearBlade.Collection({collectionName:"<COLLECTION_NAME>"});
     col.update(query, changes, callback);
     //sets John's age to 23
 
@@ -1261,9 +1261,9 @@ Retrieves the count of items in a collection that match the supplied query
    	var col = ClearBlade.Collection({collectionName: "<COLLECTION_NAME>"});
     col.count(callback);
     //this returns an object in the form of {count: 5}
-
-    Example with Query:
-
+~~~
+**Example with Query:**
+~~~javascript
     var callback = function (err, data) {
         if (err) {
         	resp.error("count error : " + JSON.stringify(data));
@@ -1326,10 +1326,11 @@ This function does not return query results.
 	var db = ClearBlade.Database();
 	var callback = function (err, data) {
         if (err) {
-        	resp.error("Parse error : " + JSON.stringify(data));
+            resp.error("Parse error : " + JSON.stringify(data));
         } else {
-        	resp.success(data);
+            resp.success(data);
         }
+    }
 	db.exec("delete from traffic where entrance='Store_Entrance';", callback);
 ~~~~
 
@@ -2035,7 +2036,7 @@ Events: ClearBlade Timer
 ClearBlade.Timer.Create("runValidatorEveryHour",
     {
         frequency: 3600,
-        service_name: "validator"
+        service_name: "validator",
 		repeats: 1,
         description:"example"
     },
