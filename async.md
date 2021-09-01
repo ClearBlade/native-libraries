@@ -248,9 +248,10 @@ Database.exec(rawQuery)
  * Performs a raw operation on an external database.
  * Promise resolves with the database operation's result.
  * @param {string} operation
+ * @param {...*} [args] optional arguments to operation
  * @returns {Promise<*>}
  */
-Database.performOperation(operation)
+Database.performOperation(operation, args)
 ~~~
 
 ## File Management
@@ -1279,7 +1280,8 @@ function processAssetMessage(message) {
 
 ~~~javascript
 var db = ClearBladeAsync.Database();
-var mongo = ClearBladeAsync.Database({externalDBName: 'ClearBladeMongo'})
+var mongo = ClearBladeAsync.Database({externalDBName: 'ClearBladeMongo'});
+var bigQuery = ClearBladeAsync.Database({externalDBName: 'ClearBladeBigQuery'});
 
 /**
  * @typedef {Object} AssetCounts
@@ -1310,6 +1312,20 @@ function countAssetsByType() {
 function insertAssetHistory(message) {
     var mongoInsertQuery = 'db.assetHistory.insert('+JSON.stringify(message)+')';
     return mongo.performOperation(mongoInsertQuery);
+}
+
+/**
+ * addHistoryToBigQuery inserts an MQTT message into a BigQuery table.
+ * @param  {Object} message - an MQTT message from an asset
+ * @return {Promise<>}
+ */
+function addHistoryToBigQuery(message) {
+    var insertObject = {
+        dataset: "history",
+        table: "mqtt_messages",
+        message: message,
+    }
+    return bigQuery.performOperation("insert", insertObject);
 }
 ~~~
 
