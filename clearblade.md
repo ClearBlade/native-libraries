@@ -1620,6 +1620,8 @@ Example:
 
 ## Messaging
 
+** Please note: we recommend using the [MQTT library](https://github.com/ClearBlade/native-libraries/blob/master/mqtt.md) instead of the Messaging methods. **
+
 Class: ClearBlade.Messaging()
 
 To instantiate a Messaging object all you need to do is call:
