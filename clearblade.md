@@ -1620,7 +1620,7 @@ Example:
 
 ## Messaging
 
-** Please note: we recommend using the [MQTT library](https://github.com/ClearBlade/native-libraries/blob/master/mqtt.md) instead of the Messaging methods. **
+**Please note: we recommend using the [MQTT library](https://github.com/ClearBlade/native-libraries/blob/master/mqtt.md) instead of the Messaging methods.**
 
 Class: ClearBlade.Messaging()
 
