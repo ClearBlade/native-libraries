@@ -1491,7 +1491,7 @@ function testInsert(req,resp) {
         if(err) resp.error("Error inserting data in bigquery: " + JSON.stringify(data));
         resp.success(data);
     }
-    db.performOperation(callback, "insert", insertOptions);
+    db.performOperation(callback, operation, insertOptions);
 }
 ~~~
 
