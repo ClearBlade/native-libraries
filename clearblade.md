@@ -1461,8 +1461,8 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
 
 ~~~javascript
 var db = ClearBlade.Database({externalDBName: "myBigquery"});
-var operation = "query"
-var query = "SELECT name, gender, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name, gender ORDER BY total DESC LIMIT 10"
+var operation = "query";
+var query = "SELECT name, gender, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name, gender ORDER BY total DESC LIMIT 10";
 var callback = function(err, data) {
     if(err) {
          resp.error("Error performing external db operation: " + JSON.stringify(data))
@@ -1471,6 +1471,28 @@ var callback = function(err, data) {
     }
 };
 db.performOperation(callback, operation, query)
+~~~
+
+~~~javascript
+function testInsert(req,resp) {
+    var db = ClearBlade.Database({externalDBName: "myBigquery"});
+    var operation = "insert";
+    var dataToInsert = {
+        name: "John Doe",
+        age: 25,
+        created: new Date(),
+    };
+    var insertOptions = {
+        dataset: "test",
+        table: "testTable",
+        data: dataToInsert,
+    };
+    var callback = function(err, data) {
+        if(err) resp.error("Error inserting data in bigquery: " + JSON.stringify(data));
+        resp.success(data);
+    }
+    db.performOperation(callback, "insert", insertOptions);
+}
 ~~~
 
 ## ClearBlade.Database.performOperationAsync(callback, argument)
