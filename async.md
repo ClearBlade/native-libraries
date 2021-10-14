@@ -162,6 +162,14 @@ Collection.upsert(item, conflictColumn)
 Collection.remove(query)
 
 /**
+ * Counts rows in the collection.
+ * Promise resolves with the number of collection rows matching the provided query.
+ * @param {Query} [query]
+ * @returns {Promise<{count: number}>}
+ */
+Collection.count(query)
+
+/**
  * Gets all column metadata for the collection.
  * Promise resolves with list of column metadata.
  * @returns {Promise<{ColumnName: string, ColumnType: string, PK: boolean}[]>}
@@ -480,6 +488,14 @@ Users.update(query, changes)
  * @returns {Promise<>}
  */
 Users.delete(query)
+
+/**
+ * Counts rows in the user table.
+ * Promise will resolve with the number of user table rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<{count: number}>}
+ */
+Users.count(query)
 ~~~
 
 ## Devices
