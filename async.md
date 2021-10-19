@@ -1339,7 +1339,7 @@ function addHistoryToBigQuery(message) {
     var insertObject = {
         dataset: "history",
         table: "mqtt_messages",
-        message: message,
+        data: message,
     }
     return bigQuery.performOperation("insert", insertObject);
 }
