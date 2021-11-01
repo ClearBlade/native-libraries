@@ -239,18 +239,20 @@ ClearBladeAsync.Database(options)
  * Performs a sql query on ClearBlade collections.
  * Promise resolves with the requested database rows.
  * @param {string} rawQuery
+ * @param {...*} [params] optional parameters for query
  * @returns {Promise<Object[]>}
  */
-Database.query(rawQuery)
+Database.query(rawQuery, params)
 
 /**
  * Executes a sql operation on ClearBlade collections.
  * Promise resolves with the count of rows effected.
  * No database rows are returned with this function.
  * @param {string} rawQuery
+ * @param {...*} [params] optional parameters for query
  * @returns {Promise<{count: number}>}
  */
-Database.exec(rawQuery)
+Database.exec(rawQuery, params)
 
 /**
  * Performs a raw operation on an external database.
@@ -1318,6 +1320,20 @@ function countAssetsByType() {
         }
         return JSON.parse(results[0].counts);
     })
+}
+
+/**
+ * findNewDevices runs a raw sql query against the device table
+ * to find all devices created in the past 7 days whose type is in the allowedDeviceTypes list.
+ * @param {[]string} allowedDeviceTypes
+ * @returns {Promise<[]{name: string, type: string, state: string, created_date: number}>}
+ */
+ function findNewDevices(allowedDeviceTypes) {
+     var sqlQuery = 'SELECT name, type, state, created_date FROM devices WHERE created_date > $1 AND type = ANY($2)';
+     var oneWeekAgo = new Date();
+     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+     var oneWeekAgoUnixMS = Math.floor(oneWeekAgo.getTime()/1000);
+     return ClearBladeAsync.Database().query(q, oneWeekAgoUnixMS, allowedDeviceTypes);
 }
 
 /**

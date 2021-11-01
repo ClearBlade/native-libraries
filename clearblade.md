@@ -1082,17 +1082,6 @@ Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of sqlite json
 
 Click __[HERE](https://www.postgresql.org/docs/current/functions-json.html)__ to see a list of postgres json operators/functions.
 
-Supported Postgres JSON operators:
-
-* ->
-* ->>
-* #>
-* n#>>
-* @>
-* <@
-* ?
-* @?
-
 The available methods for the Collection class and examples of how to use them are listed below:
 
 ## Collection.fetch(query, callback)
@@ -1298,9 +1287,10 @@ Use the Database object with the external database options object for performing
 		 var db = ClearBlade.Database({externalDBName: "externalDB"});
 ~~~
 
-## ClearBlade.Database.query(_query, callback)
+## ClearBlade.Database.query(_query, [params], callback)
 
 This function returns query results to be parsed.
+params are optional.
 
 ~~~~javascript
 	var db = ClearBlade.Database();
@@ -1315,9 +1305,10 @@ This function returns query results to be parsed.
     };
 ~~~~
 
-## ClearBlade.Database.exec(_query, callback)
+## ClearBlade.Database.exec(_query, [params], callback)
 
 This function does not return query results. 
+params are optional.
 
 * @param {Query} _query - Query object that used to define what operations are being used. 
 * @param {function} callback - Function that handles the response from the server
