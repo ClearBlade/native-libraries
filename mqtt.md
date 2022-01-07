@@ -3,9 +3,10 @@ This library allows for the execution of async ClearBlade messaging functions by
 
 The message represents an MQTT message.
 
-* @param {string} payload
+* @param {string|Uint8Array} payload
 * @constructor
 * @property {string} payload
+* @property {Uint8Array} payload_bytes
 * @property {number} qos
 * @property {boolean} retain
 * @property {boolean} duplicate
@@ -78,7 +79,7 @@ This function allows publish to send a MQTT message to the broker.
 
 * publish sends an MQTT message to the broker.
 * @param {string} topic
-* @param {string|Message} payload
+* @param {string|Message|Uint8Array} payload
 * @param {number} [qos]
 * @param {boolean} [retain]
 * @returns {Promise}
