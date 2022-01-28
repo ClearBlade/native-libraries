@@ -16,6 +16,7 @@ __Reference__
 1. [Timers](#timers)
 1. [Edges](#edges)
 1. [Adapters](#adapters)
+1. [Collection Custom Sync](#collection-custom-sync)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1207,6 +1208,29 @@ Adapter.deleteFile(filename)
  * @returns {Promise<object>}
  */
 Adapter.control(command, edges)
+~~~
+
+## Collection Custom Sync
+
+~~~javascript
+/**
+ * Initializes the custom sync object.
+ * @property {string}  CustomSync.Platform - destination type
+ * @property {string}  CustomSync.AllEdges - destination type
+ * @property {string}  CustomSync.Now - interval type
+ * @returns {CustomSync}
+ */
+ClearBladeAsync.CustomSync()
+
+/**
+ * Sends data to the destination at the specified interval.
+ * @param {string} collectionName
+ * @param {Object} data
+ * @param {string} destination
+ * @param {string} [interval=now]
+ * @returns {Promise<>}
+ */
+CustomSync.sync(collectionName, data, destination, interval)
 ~~~
 
 # Examples
