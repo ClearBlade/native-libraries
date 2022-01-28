@@ -1214,7 +1214,7 @@ Adapter.control(command, edges)
 
 ~~~javascript
 /**
- * Initializes the custom sync object.
+ * Initializes the custom sync object
  * @property {string}  CustomSync.Platform - destination type
  * @property {string}  CustomSync.AllEdges - destination type
  * @property {string}  CustomSync.Now - interval type
@@ -1223,7 +1223,7 @@ Adapter.control(command, edges)
 ClearBladeAsync.CustomSync()
 
 /**
- * Sends data to the destination at the specified interval.
+ * Sends data to the destination at the specified interval
  * @param {string} collectionName
  * @param {Object} data
  * @param {string} destination
@@ -1232,6 +1232,9 @@ ClearBladeAsync.CustomSync()
  */
 CustomSync.sync(collectionName, data, destination, interval)
 ~~~
+The data sent using the `sync` function is avaiable to capture on the receiving end by subscribing to the custom sync topic `$custom_sync/receive`. 
+> Note 1: An important thing to note is that your code service needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
+> Note 2: Triggers for collection item create/update/delete are disabled for a service with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop.  
 
 # Examples
 
