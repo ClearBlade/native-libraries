@@ -1233,8 +1233,8 @@ ClearBladeAsync.CustomSync()
 CustomSync.sync(collectionName, data, destination, interval)
 ~~~
 The data sent using the `sync` function is available to capture on the receiving end by subscribing to the custom sync topic `$custom_sync/receive`. 
-> Note 1: An important thing to note is that your code service needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
-> Note 2: Triggers for collection item create/update/delete are disabled for a service with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop.  
+> Note 1: An important thing to note is that your code service name needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
+> Note 2: Triggers for collection item create/update/delete are disabled for a service name with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop.  
 
 # Examples
 
