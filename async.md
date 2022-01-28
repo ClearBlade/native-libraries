@@ -1224,10 +1224,10 @@ ClearBladeAsync.CustomSync()
 
 /**
  * Sends data to the destination at the specified interval
- * @param {string} collectionName
- * @param {Object} data
- * @param {string} destination
- * @param {string} [interval=now]
+ * @param {string} collectionName - collection name of the data you are trying to sync
+ * @param {Object} data - the actual item or items created/updated/deleted
+ * @param {string} destination - can be CustomSync.Platform if on the edge or CustomSync.AllEdges if on the platform or an individual edge name if on the platform
+ * @param {string} [interval=now] - optional but can be CustomSync.Now or be actual interval string values like “60s”, “10m”, “1h”, “5d”. Only seconds, minutes, hours and days are supported. If interval is not specified, CustomSync.Now is the default.
  * @returns {Promise<>}
  */
 CustomSync.sync(collectionName, data, destination, interval)
