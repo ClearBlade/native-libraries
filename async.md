@@ -280,7 +280,7 @@ Note: all file paths are relative to bucket root, except on an edge where you ca
 ClearBladeAsync.FS(deployment_name)
 
 /**
- * Reads the contents of a directory.
+ * Recursively reads the contents of a directory.
  * The promise is resolved with an array of file names in that directory.
  * @param {string} path
  * @returns {Promise<string[]>}
