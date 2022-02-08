@@ -281,7 +281,8 @@ ClearBladeAsync.FS(deployment_name)
 
 /**
  * Recursively reads the contents of a directory.
- * The promise is resolved with an array of file names in that directory.
+ * The promise is resolved with an array of file names in 
+ * that directory and all directories below that directory.
  * @param {string} path
  * @returns {Promise<string[]>}
  */
