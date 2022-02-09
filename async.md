@@ -392,7 +392,7 @@ File.rename(newPath)
 /**
  * Copies file to dstPath, overwriting dstPath if it already exists.
  * The promise is resolved empty.
- * @param {string} dstPath
+ * @param {string} dstPath - relative path including bucket name and filename with extension
  * @returns {Promise<>}
  */
 File.copy(dstPath)
