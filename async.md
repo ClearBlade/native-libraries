@@ -274,7 +274,7 @@ Note: all file paths are relative to bucket root, except on an edge where you ca
 ~~~javascript
 /**
  * Represents a sync'd filesystem.
- * @param {string} deployment_name
+ * @param {string} deployment_name or bucket set name
  * @returns {FS}
  */
 ClearBladeAsync.FS(deployment_name)
@@ -351,7 +351,7 @@ FS.stat(path)
 /**
  * Represents a file on the filesystem.
  * Useful if you're doing multiple operations on a single file.
- * @param {string} deployment_name
+ * @param {string} deployment_name or bucket set name
  * @param {string} path
  * @returns {File}
  */
