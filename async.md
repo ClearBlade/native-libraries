@@ -267,14 +267,16 @@ Database.performOperation(operation, args)
 
 ## File Management
 
-Note: all file paths are relative to bucket root, except on an edge where you can use full paths.
+Note: all file paths are relative to bucket set root, except on an edge where you can use full paths.
 
 [Examples](#file-management-examples)
 
 ~~~javascript
 /**
  * Represents a sync'd filesystem.
+ *
  * @param {string} deployment_name or bucket set name
+ *
  * @returns {FS}
  */
 ClearBladeAsync.FS(deployment_name)
@@ -283,7 +285,9 @@ ClearBladeAsync.FS(deployment_name)
  * Recursively reads the contents of a directory.
  * The promise is resolved with an array of file names in 
  * that directory and all directories below that directory.
+ *
  * @param {string} path
+ *
  * @returns {Promise<string[]>}
  */
 FS.readDir(path)
@@ -293,8 +297,10 @@ FS.readDir(path)
  * The promise is resolved with the file contents.
  * If encoding is not specified, contents will be a UInt8Array.
  * If encoding is specified, contents will be a string.
- * @param {string} path
+ *
+ * @param {string} path - The relative (full if on edge) path with filename with extension.
  * @param {string} [encoding]
+ *
  * @returns {Promise<string|UInt8Array>}
  */
 FS.readFile(path[, encoding])
@@ -302,8 +308,10 @@ FS.readFile(path[, encoding])
 /**
  * Writes the given data to a file, replacing the file if it already exists.
  * The promise is resolved empty.
- * @param {string} path
+ *
+ * @param {string} path - The relative (full if on edge) path with filename with extension.
  * @param {string|Uint8Array} data
+ *
  * @returns {Promise<>}
  */
 FS.writeFile(path, data)
@@ -311,8 +319,10 @@ FS.writeFile(path, data)
 /**
  * Renames (mv's) oldPath to newPath.
  * The promise is resolved empty.
- * @param {string} oldPath
- * @param {string} newPath
+ *
+ * @param {string} oldPath - The relative (full if on edge) path with filename with extension.
+ * @param {string} newPath - The relative (full if on edge) path with filename with extension.
+ *
  * @returns {Promise<>}
  */
 FS.renameFile(oldPath, newPath)
@@ -320,8 +330,10 @@ FS.renameFile(oldPath, newPath)
 /**
  * Copies srcPath to dstPath, overwriting dstPath if it already exists.
  * The promise is resolved empty.
- * @param {string} srcPath
- * @param {string} dstPath
+ *
+ * @param {string} srcPath - The relative (full if on edge) path with filename with extension.
+ * @param {string} dstPath - The relative (full if on edge) path with filename with extension.
+ *
  * @returns {Promise<>}
  */
 FS.copyFile(srcPath, dstPath)
@@ -329,7 +341,9 @@ FS.copyFile(srcPath, dstPath)
 /**
  * Deletes the file at the specified path.
  * The promise is resolved empty.
- * @param {string} path
+ *
+ * @param {string} path - The relative (full if on edge) path with filename with extension.
+ *
  * @returns {Promise<>}
  */
 FS.deleteFile(path)
@@ -337,13 +351,17 @@ FS.deleteFile(path)
 /**
  * @typedef {Object} FileStats
  * Represents file metadata.
+ *
  * @property {number} size - file size in bytes
  * @property {string} permissions - ex: "-rwxrwxrwx"
+ *
  */
 
 /**
  * Retrieves metadata for the given file path.
- * @param {string} path
+ *
+ * @param {string} path - The relative (full if on edge) path with filename with extension.
+ *
  * @returns {Promise<FileStats>}
  */
 FS.stat(path)
@@ -351,14 +369,17 @@ FS.stat(path)
 /**
  * Represents a file on the filesystem.
  * Useful if you're doing multiple operations on a single file.
+ *
  * @param {string} deployment_name or bucket set name
- * @param {string} path
+ * @param {string} path - The relative (full if on edge) path with filename with extension.
+ *
  * @returns {File}
  */
 ClearBladeAsync.File(deployment_name, path)
 
 /**
  * Retrieves metadata for the file.
+ *
  * @returns {Promise<FileStats>}
  */
 File.stat()
@@ -368,7 +389,9 @@ File.stat()
  * The promise is resolved with the file contents.
  * If encoding is not specified, contents will be a UInt8Array.
  * If encoding is specified, contents will be a string.
+ *
  * @param {string} [encoding]
+ *
  * @returns {Promise<string|UInt8Array>}
  */
 File.read([encoding])
@@ -376,7 +399,9 @@ File.read([encoding])
 /**
  * Writes the given data to the file, replacing the contents if it already exists.
  * The promise is resolved empty.
+ *
  * @param {string|Uint8Array} data
+ *
  * @returns {Promise<>}
  */
 File.write(data)
@@ -384,7 +409,9 @@ File.write(data)
 /**
  * Renames (mv's) file to newPath.
  * The promise is resolved empty.
- * @param {string} newPath
+ *
+ * @param {string} newPath - The relative (full if on edge) path with filename with extension
+ *
  * @returns {Promise<>}
  */
 File.rename(newPath)
@@ -392,7 +419,9 @@ File.rename(newPath)
 /**
  * Copies file to dstPath, overwriting dstPath if it already exists.
  * The promise is resolved empty.
- * @param {string} dstPath - relative path including bucket name and filename with extension
+ *
+ * @param {string} dstPath - The relative (full if on edge) path with filename with extension
+ *
  * @returns {Promise<>}
  */
 File.copy(dstPath)
@@ -400,6 +429,7 @@ File.copy(dstPath)
 /**
  * Deletes the file.
  * The promise is resolved empty.
+ *
  * @returns {Promise<>}
  */
 File.delete()
