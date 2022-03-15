@@ -1325,6 +1325,22 @@ params are optional.
 	db.exec("delete from traffic where entrance='Store_Entrance';", callback);
 ~~~~
 
+## ClearBlade.Database.transaction(statements, callback)
+Executes a SQL transaction with the given statements.
+If one of the statements throws an error, the entire transaction is rolled back.
+All statements are treated the same as "exec", no results will be returned.
+
+You can make use of the ClearBlade.Database.statement(statement, args...) helper function to simplify the building of a transaction.
+
+~~~javascript
+    var db = ClearBlade.Database();
+    db.transaction([
+        db.statement("UPDATE users SET email = $1 WHERE item_id = $2", "test@clearblade.com", 123),
+        db.statement("INSERT INTO audit(user_id, action, time) VALUES ($1, $2, $3)", 123, "email updated", new Date()),
+        db.statement("UPDATE assets SET owner_email = $1 WHERE owner_id = $2", "test@clearblade.com", 123),
+    ]);
+~~~
+
 ## ClearBlade.Database.performOperation(callback, arguments)
 
 This function takes a callback as the first argument and a variable number of string arguments after the callback.

@@ -263,6 +263,30 @@ Database.exec(rawQuery, params)
  * @returns {Promise<*>}
  */
 Database.performOperation(operation, args)
+
+/**
+ * @typedef {Object} Statement
+ * @prop {string} statement - a SQL statement
+ * @prop {[]any} args - parameters for the statement
+ */
+
+/**
+ * Helper function to group statements with their queries for transactions.
+ * @param {string} statement - a SQL statement
+ * @param {...*} [args] - parameters for the SQL statement
+ * @returns {Statement}
+ */
+Database.statement(statement[, args])
+
+/**
+ * Executes a SQL transaction with the given statements.
+ * If one of the statements throws an error, the entire transaction is rolled back.
+ * All statements are treated the same as "exec", no results will be returned.
+ * Promise resolves empty on success.
+ * @param {[]Statement} statements
+ * @returns {Promise<>}
+ */
+Database.transaction(statements)
 ~~~
 
 ## File Management
@@ -1391,7 +1415,7 @@ function countAssetsByType() {
      var oneWeekAgo = new Date();
      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
      var oneWeekAgoUnixMS = Math.floor(oneWeekAgo.getTime()/1000);
-     return ClearBladeAsync.Database().query(q, oneWeekAgoUnixMS, allowedDeviceTypes);
+     return db.query(q, oneWeekAgoUnixMS, allowedDeviceTypes);
 }
 
 /**
@@ -1416,6 +1440,19 @@ function addHistoryToBigQuery(message) {
         data: message,
     }
     return bigQuery.performOperation("insert", insertObject);
+}
+
+/**
+ * updateUserEmail updates a user's email, and records the action in the audit table.
+ * @param {uuid} user_id
+ * @param {string} new_email
+ * @return {Promise<>}
+ */
+function updateUserEmail(user_id, new_email) {
+    return db.transaction([
+        db.statement("UPDATE users SET email = $1 WHERE user_id = $2", new_email, user_id),
+        db.statement("INSERT INTO audit(user_id, action, time) VALUES ($1, $2, $3)", user_id, "email updated", new Date()),
+    ]);
 }
 ~~~
 
