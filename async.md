@@ -17,6 +17,7 @@ __Reference__
 1. [Edges](#edges)
 1. [Adapters](#adapters)
 1. [Collection Custom Sync](#collection-custom-sync)
+1. [Secret](#secret)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1289,7 +1290,62 @@ CustomSync.sync(collectionName, data, destination, interval)
 ~~~
 The data sent using the `sync` function is available to capture on the receiving end by subscribing to the custom sync topic `$custom_sync/receive`. 
 > Note 1: An important thing to note is that your code service name needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
-> Note 2: Triggers for collection item create/update/delete are disabled for a service name with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop.  
+> Note 2: Triggers for collection item create/update/delete are disabled for a service name with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop. 
+
+## Secret
+
+~~~javascript
+/**
+ * Initializes the Secret object
+ * @returns {Secret}
+ */
+ClearBladeAsync.Secret()
+
+/**
+ * Encrypts secret and stores in the database
+ * @param {string} name - name of the secret
+ * @param {*} data - secret data
+ * @returns {Promise<>}
+ */
+Secret.create(name, data)
+
+/**
+ * Retrieves encrypted secret from the database, decrypts it and returns plaintext
+ * @param {string} name - name of the secret
+ * @returns {Promise<*>}
+ */
+Secret.read(name)
+
+/**
+ * Retrieves encrypted secret(s) from the database, decrypts and returns name/plaintext object
+ * @param {Query} query object
+ * @returns {Promise<Object>}
+ * Returned object has "name" -> secret name and "data" -> secret data
+ */
+Secret.readWithQuery(query)
+
+/**
+ * Encrypts secret and updates existing secret in the database
+ * @param {string} name - name of the secret
+ * @param {*} data - secret data
+ * @returns {Promise<>}
+ */
+Secret.update(name, data)
+
+/**
+ * Deletes secret from the database
+ * @param {string} name - name of the secret
+ * @returns {Promise<>}
+ */
+Secret.delete(name)
+
+/**
+ * Deletes secret(s) from the database
+ * @param {Query} query object
+ * @returns {Promise<>}
+ */
+Secret.deleteWithQuery(query)
+~~~
 
 # Examples
 
