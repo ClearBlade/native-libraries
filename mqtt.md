@@ -28,6 +28,7 @@ If no options are specified, the client connects to the ClearBlade broker.
 * @param {string} [options.username]
 * @param {string} [options.password]
 * @param {string} [options.client_id={randomUUID}]
+* @param {number} [options.keepalive=30] seconds
 * @param {boolean} [options.use_tls=false]
 * @param {object} [options.tls_config]
 * @param {string} options.tls_config.client_cert
