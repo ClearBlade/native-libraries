@@ -15,6 +15,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 11. __[Roles](#roles)__
 12. __[Permissions](#permissions)__
 13. __[Lock](#lock)__
+14. __[Deployments](#deployments)__
 
 # Overview
 
@@ -2844,4 +2845,83 @@ This method obtains a read lock for multiple users.
 ## myLock.runlock()
 
 This method obtains releases the current read lock.
+
+# Deployments
+
+This class is used for interacting with deployments. You can create, delete, update, read one, or
+read all deployments.
+
+To instantiate a Deployment object all you need to do is call:
+
+~~~ javascript
+    var depl = ClearBlade.Deployment();
+~~~
+
+## Deployment.create(name, description, options, callback)
+
+Creates a new deployment
+
+* @param {string} name The name of the deployment.
+* @param {string} description Describes the purpose of the deployment.
+* @param {object} options Specifies the assets and edges in the deployment.
+* @param {function} callback Supplies processing for what to do with any data supplied when the invocation completes.
+
+Example:
+
+~~~ javascript
+
+~~~
+
+## Deployment.read(name, callback)
+
+Reads one deployment
+
+* @param {string} name The name of the deployment.
+* @param {function} The processing to do with the returned deployment information.
+
+Example:
+
+~~~ javascript
+
+~~~
+
+## Deployment.readAll(query, callback)
+
+Reads zero or more deployments based on the query parameter
+
+* @param {Query} query A query object used to filter the deployments that are passed to the callback.
+* @param {function} callback The function that processes the results of the query.
+
+Example:
+
+~~~ javascript
+
+~~~
+
+## Deployment.update(name, options, callback)
+
+Updates the options (edges, assets) of a deployment.
+
+* @param {string} name The name of the deployment.
+* @param {object} options Specifies the changes (assets, edges) to the deployment.
+* @param {function} callback Processing to perform when the update completes.
+
+## Example:
+
+~~~ javascript
+
+~~~
+
+## Deployment.delete(name, callback) 
+
+Deletes a deployment.
+
+* @param {string} name The name of the deployment
+* @param {function} callback Processing to be performed when the deployment is deleted.
+
+## Example:
+
+~~~ javascript
+
+~~~
 
