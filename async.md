@@ -1004,7 +1004,7 @@ ClearBladeAsync.Timers()
  * @property {string} start_time - RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
  * @property {number} repeats - how many times the timer should fire (-1 for infinite)
  * @property {number} frequency - how often the timer should fire, in seconds
- * @property {boolean} [user_id] - which user to run the service as, defaults to caller
+ * @property {string} [user_id] - which user to run the service as, defaults to caller
  * @property {number} [user_type] - user type of user_id (1=dev, 2=user, 3=device)
  */
 
