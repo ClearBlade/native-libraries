@@ -58,3 +58,5 @@ See detailed documentation of the following at [the official node docs](https://
     - socket.bind()
     - socket.close()
   - dgram.createSocket()
+- Module: child_process
+  - child_process.execSync()
