@@ -2866,9 +2866,77 @@ Creates a new deployment
 * @param {object} options Specifies the assets and edges in the deployment.
 * @param {function} callback Supplies processing for what to do with any data supplied when the invocation completes.
 
+The options parameter is a json object that specifies the assets and edges in the deployment. The structure
+is as follows:
+
+~~~ json
+[
+  {
+    "assets": [
+        {
+            "asset_class": "services",
+            "asset_id": "",
+            "sync_to_edge": true,
+            "sync_to_platform": false
+        },
+        {
+            "asset_class": "devices",
+            "asset_id": "myDevice1",
+            "sync_to_edge": true,
+            "sync_to_platform": true
+        },
+        ...
+    ],
+    "edges": [
+        "edge1Name",
+        "edge2Name",
+        ...
+        "edgeNname"
+    ]
+  }
+]
+~~~
+
+If asset_id == "", then all assets of that type are synced as specified. If you
+want both sync_to_edge and sync_to_platform to be true, you can just specify,
+"sync": true.
+
+The types of assets that can be deployed (asset_class) are specified ClearBlade
+documentation online in the "Asset" subheading in the "Deployment" section.
+
 Example:
 
 ~~~ javascript
+	ClearBlade.init({request: req});
+
+	var options = {
+        "assets": [
+            {
+                "asset_class": "services",
+                "asset_id": "",
+                "sync_to_edge": true,
+                "sync_to_platform": false
+            },
+            {
+                "asset_class": "devices",
+                "asset_id": "myDevice1",
+                "sync_to_edge": true,
+                "sync_to_platform": true
+            }
+        ],
+        "edges": [
+            "edge1Name",
+            "edge2Name",
+            "edgeNname"
+        ]
+      };
+
+	ClearBlade.createDeployment(name, description, options, function(err, data) {
+		if(err){
+			resp.error("Unable to create deployment: " + JSON.stringify(data))
+		}
+		resp.success(data);
+	});
 
 ~~~
 
