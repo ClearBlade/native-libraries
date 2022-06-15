@@ -2931,12 +2931,43 @@ Example:
         ]
       };
 
-	ClearBlade.createDeployment(name, description, options, function(err, data) {
+    var depl = ClearBlade.Deployment();
+
+	depl.create(name, description, options, function(err, data) {
 		if(err){
 			resp.error("Unable to create deployment: " + JSON.stringify(data))
 		}
 		resp.success(data);
 	});
+
+~~~
+
+The createDeployment() call returns the deployment object on success. For example:
+
+~~~ json
+    {
+        "name": "<deployment name>",
+        "description": "<deployment description>",
+        "assets": [
+            {
+                "asset_class": "services",
+                "asset_id": "",
+                "sync_to_edge": true,
+                "sync_to_platform": false
+            },
+            {
+                "asset_class": "devices",
+                "asset_id": "myDevice1",
+                "sync_to_edge": true,
+                "sync_to_platform": true
+            }
+        ],
+        "edges": [
+            "edge1Name",
+            "edge2Name",
+            "edgeNname"
+        ]
+      };
 
 ~~~
 
@@ -2950,8 +2981,20 @@ Reads one deployment
 Example:
 
 ~~~ javascript
+	ClearBlade.init({request: req});
 
+    var depl = ClearBlade.Deployment();
+
+	depl.read(name, function(err, data) {
+		if(err){
+			resp.error("Unable to read deployment: " + JSON.stringify(data))
+		}
+		resp.success(data);
+	});
 ~~~
+
+Deployment.read returns the requested deployment. It is structured identically to the
+return value of createDeployment() above.
 
 ## Deployment.readAll(query, callback)
 
@@ -2963,8 +3006,21 @@ Reads zero or more deployments based on the query parameter
 Example:
 
 ~~~ javascript
+	ClearBlade.init({request: req});
+
+    var depl = ClearBlade.Deployment();
+
+	depl.readAll(query, function(err, data) {
+		if(err){
+			resp.error("Unable to read deployments: " + JSON.stringify(data))
+		}
+		resp.success(data);
+	});
 
 ~~~
+
+Deployment.readAll return an array of deployments, where each deployment has the exact
+structure as in Deployment.create() and Deployment.read().
 
 ## Deployment.update(name, options, callback)
 
