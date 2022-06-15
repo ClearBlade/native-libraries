@@ -3022,19 +3022,68 @@ Example:
 Deployment.readAll return an array of deployments, where each deployment has the exact
 structure as in Deployment.create() and Deployment.read().
 
-## Deployment.update(name, options, callback)
+## Deployment.update(name, changes, callback)
 
 Updates the options (edges, assets) of a deployment.
 
 * @param {string} name The name of the deployment.
-* @param {object} options Specifies the changes (assets, edges) to the deployment.
+* @param {object} changes Specifies the changes (assets, edges) to the deployment.
 * @param {function} callback Processing to perform when the update completes.
+
+the "changes" parameter is an object. It contains optionally a new description, changed assets,
+and changed edges. It looks as follows:
+
+~~~ json
+    {
+        "description": "<optional new deployment description>",
+        "assets": {
+            "add": [
+                {
+                    "asset_class": "services",
+                    "asset_id": "",
+                    "sync_to_edge": true,
+                    "sync_to_platform": false
+                }
+            ],
+            "remove": [
+                {
+                    "asset_class": "devices",
+                    "asset_id": "myDevice1"
+                }
+            ],
+        },
+        "edges": {
+            "add": [
+                "newEdge1Name",
+                "newEdge2Name"
+            ],
+            "remove": [
+                "edgeToGoAway"
+            ]
+         }
+      };
+~~~
 
 ## Example:
 
 ~~~ javascript
+	ClearBlade.init({request: req});
+
+    var depl = ClearBlade.Deployment();
+
+    var changes = {<object similar to the one shown above>}
+
+	depl.update(name, changes, function(err, data) {
+		if(err){
+			resp.error("Unable to read deployments: " + JSON.stringify(data))
+		}
+		resp.success(data);
+	});
 
 ~~~
+
+Deployment.update() returns the deployment with all of the changes applied. The
+structure of the return value is the same as in Deployment.create() above.
 
 ## Deployment.delete(name, callback) 
 
@@ -3046,6 +3095,19 @@ Deletes a deployment.
 ## Example:
 
 ~~~ javascript
+	ClearBlade.init({request: req});
+
+    var depl = ClearBlade.Deployment();
+
+
+	depl.delete(name, function(err, data) {
+		if(err){
+			resp.error("Unable to read deployments: " + JSON.stringify(data))
+		}
+		resp.success(data);
+	});
 
 ~~~
+
+There is no return value other than if an error occurs.
 
