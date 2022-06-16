@@ -1276,6 +1276,8 @@ Class: ClearBlade.Database();
 
 This class allows you to specify the query in raw SQL on platform and edge instead of using the existing ClearBlade query model. The function can be used for operations, such as `JOIN` and `SOME`, that are not supported by the ClearBlade Query Model.
 
+Note: using a raw query will not fire triggers or sync your changes.
+
 Use the Database object without the options object for performing query and exec operations on collections.
 
 ~~~javascript

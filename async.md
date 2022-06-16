@@ -240,6 +240,7 @@ ClearBladeAsync.Database(options)
 /**
  * Performs a sql query on ClearBlade collections.
  * Promise resolves with the requested database rows.
+ * Note: using a raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
  * @param {...*} [params] optional parameters for query
  * @returns {Promise<Object[]>}
@@ -250,6 +251,7 @@ Database.query(rawQuery, params)
  * Executes a sql operation on ClearBlade collections.
  * Promise resolves with the count of rows effected.
  * No database rows are returned with this function.
+ * Note: using a raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
  * @param {...*} [params] optional parameters for query
  * @returns {Promise<{count: number}>}
