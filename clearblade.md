@@ -3075,7 +3075,7 @@ and changed edges. It looks as follows:
 
 	depl.update(name, changes, function(err, data) {
 		if(err){
-			resp.error("Unable to read deployments: " + JSON.stringify(data))
+			resp.error("Unable to update deployment: " + JSON.stringify(data))
 		}
 		resp.success(data);
 	});
@@ -3102,7 +3102,7 @@ Deletes a deployment.
 
 	depl.delete(name, function(err, data) {
 		if(err){
-			resp.error("Unable to read deployments: " + JSON.stringify(data))
+			resp.error("Unable to delete deployment: " + JSON.stringify(data))
 		}
 		resp.success(data);
 	});
