@@ -25,6 +25,7 @@ __Examples__
 1. [Databases](#database-examples)
 1. [File Management](#file-management-examples)
 1. [Adapter Examples](#adapter-examples)
+1. [Preloader Example](#preloader-example)
 
 # Reference
 
