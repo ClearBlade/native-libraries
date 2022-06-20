@@ -1613,4 +1613,4 @@ function myStreamService(req, resp) {
   });
 }
 ~~~
-Note that the onRequest function receives a new request and a new response object. The methods on the new response object don't exit the service, they send the response back via HTTP. Whereas, the original request object if called will exit the service. 
+Note that the onRequest function receives a new request and a new response object. The methods on the new response object don't exit the service, they send the response back via HTTP. Whereas, the original response object if called will exit the service. 
