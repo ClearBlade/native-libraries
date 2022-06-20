@@ -18,6 +18,7 @@ __Reference__
 1. [Adapters](#adapters)
 1. [Collection Custom Sync](#collection-custom-sync)
 1. [Secret](#secret)
+1. [Preloader](#preloader)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1349,6 +1350,24 @@ Secret.delete(name)
 Secret.deleteWithQuery(query)
 ~~~
 
+## Preloader
+The Preloader object enables a stream service to listen and respond to HTTP requests like a regular micro service. The advantage of this is the reduced overhead of spawning and tearing down a micro service when called repeatedly. 
+
+~~~javascript
+/**
+ * Initializes the Preloader object
+ * @returns {Preloader}
+ */
+ClearBladeAsync.Preloader()
+
+/**
+ * Preloader starts listening for HTTP requests
+ * @param {function} onRequest - function to handle HTTP request
+ * @returns {Promise<>}
+ */
+Preloader.listen(onRequest)
+~~~
+
 # Examples
 
 ## Collection Examples
@@ -1578,3 +1597,19 @@ function periodicStatusFetcher(currentEdgeName) {
     })
 }
 ~~~
+
+## Preloader Example
+
+~~~javascript
+function myStreamService(req, resp) {
+  var preloader = ClearBladeAsync.Preloader();
+  var onRequest = function(newReq, newResp) {
+    // dosomething
+    newResp.success("Yay!");
+  };
+  preloader.listen(onRequest).catch(function(e) {
+    resp.error(e);
+  });
+}
+~~~
+Note that the onRequest function receives a new request and a new response object. The methods on the new response object don't exit the service, they send the response back via HTTP. Whereas, the original request object if called will exit the service. 
