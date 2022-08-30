@@ -387,6 +387,17 @@ FS.deleteFile(path)
  */
 
 /**
+ * Syncs path (on he platform) to the specified edge's inbox
+ * The promise is resolved empty.
+ *
+ * @param {string} path - The relative path (in platform bucket set) with filename with extension.
+ * @param {string} edge - The name of the edge to sync with. path will end up in that edge's inbox
+ *
+ * @returns {Promise<>}
+ */
+FS.syncFileToEdge(path, edge)
+
+/**
  * Retrieves metadata for the given file path.
  *
  * @param {string} path - The relative (full if on edge) path with filename with extension.
