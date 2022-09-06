@@ -284,7 +284,7 @@ Database.performOperation(operation, args)
 Database.statement(statement[, args])
 
 /**
- * Executes a SQL transaction with the given statements.
+ * Executes a SQL transaction on a ClearBlade collection with the given statements.
  * If one of the statements throws an error, the entire transaction is rolled back.
  * All statements are treated the same as "exec", no results will be returned.
  * Promise resolves empty on success.
