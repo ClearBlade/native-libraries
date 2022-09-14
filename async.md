@@ -19,6 +19,7 @@ __Reference__
 1. [Collection Custom Sync](#collection-custom-sync)
 1. [Secret](#secret)
 1. [Preloader](#preloader)
+1. [GoogleCloudLogger](#google-cloud-logger)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1378,6 +1379,36 @@ ClearBladeAsync.Preloader()
  * @returns {Promise<>}
  */
 Preloader.listen(onRequest)
+~~~
+
+## Google Cloud Logger
+
+~~~javascript
+/**
+ * Initializes the GoogleCloudLogger object
+ * @returns {GoogleCloudLogger}
+ */
+ ClearBladeAsync.GoogleCloudLogger()
+
+/**
+ * @typedef {object} AdminAuditLogInfo
+ * @property {string} service_name - the name of the api service performing the operation
+ * @property {string} method_name - the name of the operation
+ * @property {string} requester_email - the email of the dev or user who requested the operation
+ * @property {string} permission_name - the permission name that this operation requires
+ * @property {string} device_name - the device's name
+ * @property {string} device_num_id - the device's num_id
+ * @property {object} request - any request data you want to log
+ * @property {object} [response] - any response data you want to log
+ */
+
+/**
+ * Sends an admin audit log to Google Cloud Logging, if it's set up.
+ * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
+ * @param{AdminAuditLogInfo} info
+ * @returns {Promise<>}
+ */
+GoogleCloudLogger.adminAuditLog(info)
 ~~~
 
 # Examples
