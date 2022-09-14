@@ -4,6 +4,8 @@ The crypto module offers a way of encapsulating secure credentials.
 * crypto.createHash()
 * crypto.update()
 * crypto.digest()
+* crypto.encode()
+* crypto.decode()
 	
 
 ## crypto.createHash(hashName)		
@@ -34,4 +36,23 @@ Calculates the digest of all of the passed data to be hashed. The encoding can b
 	var sha1 = crypto.createHash("sha1");
 	sha1.update("Hello World");
 	var hash = sha1.digest("hex");
+~~~
+
+## crypto.encode(encodingType, data)
+
+Encodes data depending on the encoding type. Encoding type currently supported is 'base64'.
+
+**Example:**
+~~~javascript
+	var encData = crypto.encode("base64", "myData");
+~~~
+
+## crypto.decode(decodingType, encodedData)
+
+Decodes data depending on the encoding type. Decoding  type currently supported is 'base64';
+
+**Example:**
+~~~javascript
+	var encodedData = "aGVsbG8=";
+	var decData = crypto.decode("base64", encodedData);
 ~~~
