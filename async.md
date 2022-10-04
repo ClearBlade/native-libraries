@@ -1409,6 +1409,23 @@ Preloader.listen(onRequest)
  * @returns {Promise<>}
  */
 GoogleCloudLogger.adminAuditLog(info)
+
+/**
+ * @typedef {object} DeviceEventLogInfo
+ * @property {string} device_name - the name of the device performing the event
+ * @property {string} event_type - the name of the event
+ * @property {boolean} success - if the event succeeded or not
+ * @property {object} payload - any event data you want to log
+ */
+
+/**
+ * Sends a device event log to Google Cloud Logging, if it's set up.
+ * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
+ * The "resourceName" field of the payload will be auto-populated if not provided.
+ * @param{DeviceEventLogInfo} info
+ * @returns {Promise<>}
+ */
+GoogleCloudLogger.deviceEventLog(info)
 ~~~
 
 # Examples
