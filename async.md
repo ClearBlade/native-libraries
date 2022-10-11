@@ -20,6 +20,7 @@ __Reference__
 1. [Secret](#secret)
 1. [Preloader](#preloader)
 1. [GoogleCloudLogger](#google-cloud-logger)
+2. [Data Usage](#data-usage)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1426,6 +1427,24 @@ GoogleCloudLogger.adminAuditLog(info)
  * @returns {Promise<>}
  */
 GoogleCloudLogger.deviceEventLog(info)
+~~~
+
+## Data Usage
+
+~~~javascript
+/**
+ * Initializes the DataUsage object
+ * @returns {DataUsage}
+ */
+ ClearBladeAsync.DataUsage()
+
+/**
+ * Reports the HTTP data size to the platform
+ * @param {string} systemKey
+ * @param {integer} size
+ * @returns {Promise<>}
+ */
+DataUsage.reportHTTPDataUsage(systemKey, size)
 ~~~
 
 # Examples
