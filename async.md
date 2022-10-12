@@ -1407,9 +1407,10 @@ Preloader.listen(onRequest)
  * Sends an admin audit log to Google Cloud Logging, if it's set up.
  * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
  * @param{AdminAuditLogInfo} info
+ * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
  * @returns {Promise<>}
  */
-GoogleCloudLogger.adminAuditLog(info)
+GoogleCloudLogger.adminAuditLog(info[, project])
 
 /**
  * @typedef {object} DeviceEventLogInfo
@@ -1424,9 +1425,10 @@ GoogleCloudLogger.adminAuditLog(info)
  * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
  * The "resourceName" field of the payload will be auto-populated if not provided.
  * @param{DeviceEventLogInfo} info
+ * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
  * @returns {Promise<>}
  */
-GoogleCloudLogger.deviceEventLog(info)
+GoogleCloudLogger.deviceEventLog(info[, project])
 ~~~
 
 ## Data Usage
