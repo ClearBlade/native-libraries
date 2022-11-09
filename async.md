@@ -21,6 +21,7 @@ __Reference__
 1. [Preloader](#preloader)
 1. [GoogleCloudLogger](#google-cloud-logger)
 2. [Data Usage](#data-usage)
+1. [GoogleCloudMonitoring](#google-cloud-monitoring)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1447,6 +1448,82 @@ GoogleCloudLogger.deviceEventLog(info[, project])
  * @returns {Promise<>}
  */
 DataUsage.reportHTTPDataUsage(systemKey, size)
+~~~
+
+## Google Cloud Monitoring
+
+~~~javascript
+/**
+ * Initializes the GoogleCloudMonitoring object
+ * @property {string}  GoogleCloudMonitoring.Protocol.MQTT - protocol type
+ * @property {string}  GoogleCloudMonitoring.Protocol.HTTP - protocol type
+ * @property {string}  GoogleCloudMonitoring.Direction.INGRESS - network data direction
+ * @property {string}  GoogleCloudMonitoring.Direction.EGRESS - network data direction
+ * @property {string}  GoogleCloudMonitoring.OperationType.EVENT - operation type event
+ * @property {string}  GoogleCloudMonitoring.OperationType.STATE - operation type state
+ * @property {string}  GoogleCloudMonitoring.OperationType.HEARTBEAT - operation type heartbeat
+ * @property {string}  GoogleCloudMonitoring.OperationType.SUBSCRIBE - operation type subscribe
+ * @property {string}  GoogleCloudMonitoring.OperationType.UNSUBSCRIBE - operation type unsubscribe
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_SENT - operation type config_sent
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_ACK - operation type config_ack
+ * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_SENT - operation type command_sent
+ * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_ACK - operation type command_ack
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONNECTION_OPEN - operation type connection_open
+ * @property {string}  GoogleCloudMonitoring.OperationType.DISCONNECT - operation type disconnect
+ * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_INTERNAL - error type telemetry_publish_internal
+ * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_USER - error type telemetry_publish_user
+ * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_INTERNAL - error type set_state_internal
+ * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_USER - error type set_state_user
+ * @property {string}  GoogleCloudMonitoring.ErrorType.INCOMING_BUFFER_FULL - error type incoming_buffer_full
+ * @returns {GoogleCloudMonitoring}
+ */
+ ClearBladeAsync.GoogleCloudMonitoring()
+
+/**
+ * Reports the active devices metric.
+ * @param{Protocol} protocol
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportActiveDevicesMetric(protocol)
+
+/**
+ * Reports the billing bytes count metric.
+ * @param{Protocol} protocol
+ * @param{Direction} direction
+ * @param{integer} bytescount
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportBillingBytesCountMetric(protocol, direction, bytescount)
+
+/**
+ * Reports the error count metric.
+ * @param{Protocol} protocol
+ * @param{ErrorType} errorType
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportErrorCountMetric(protocol, errorType)
+
+/**
+ * Reports the operation count metric.
+ * @param{Protocol} protocol
+ * @param{OperationType} operationType
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportOperationCountMetric(protocol, operationType)
+
+/**
+ * Reports the received bytes count metric.
+ * @param{integer} bytescount
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportReceivedBytesCountMetric(bytesCount)
+
+/**
+ * Reports the sent bytes count metric.
+ * @param{integer} bytescount
+ * @returns {Promise<>}
+ */
+GoogleCloudMonitoring.reportSentBytesCountMetric(bytesCount)
 ~~~
 
 # Examples
