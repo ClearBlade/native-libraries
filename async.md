@@ -1505,11 +1505,10 @@ GoogleCloudMonitoring.reportErrorCountMetric(protocol, errorType)
 
 /**
  * Reports the operation count metric.
- * @param{Protocol} protocol
  * @param{OperationType} operationType
  * @returns {Promise<>}
  */
-GoogleCloudMonitoring.reportOperationCountMetric(protocol, operationType)
+GoogleCloudMonitoring.reportOperationCountMetric(operationType)
 
 /**
  * Reports the received bytes count metric.
