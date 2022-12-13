@@ -6,7 +6,8 @@ The crypto module offers a way of encapsulating secure credentials.
 * crypto.digest()
 * crypto.encode()
 * crypto.decode()
-	
+* crypto.hmac()
+
 
 ## crypto.createHash(hashName)		
 
@@ -40,7 +41,9 @@ Calculates the digest of all of the passed data to be hashed. The encoding can b
 
 ## crypto.encode(encodingType, data)
 
-Encodes data depending on the encoding type. Encoding type currently supported is 'base64'.
+Encodes data depending on the encoding type. 
+Encoding types currently supported are 'base64' and 'hex'.
+Data may be either a string or a Uint8Array.
 
 **Example:**
 ~~~javascript
@@ -49,10 +52,28 @@ Encodes data depending on the encoding type. Encoding type currently supported i
 
 ## crypto.decode(decodingType, encodedData)
 
-Decodes data depending on the encoding type. Decoding  type currently supported is 'base64';
+Decodes data depending on the encoding type.
+Decoding types currently supported are 'base64' and 'hex'.
+Encoded data may be either a string or a Uint8Array.
+Returns a Uint8Array.
 
 **Example:**
 ~~~javascript
 	var encodedData = "aGVsbG8=";
 	var decData = crypto.decode("base64", encodedData);
 ~~~
+
+## crypto.hmac(data, key, hashType)
+
+Returns the hmac signature of the supplied data. 
+The only hash type currently supported is "sha256".
+Data and key may be either strings or Uint8Arrays.
+Returns a Uint8Array.
+
+**Example:**
+~~~javascript
+    var data = "hello world";
+    var key = "my key";
+    var hmac = crypto.hmac(data, key, "sha256");
+~~~
+
