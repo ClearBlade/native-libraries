@@ -77,3 +77,23 @@ Returns a Uint8Array.
     var hmac = crypto.hmac(data, key, "sha256");
 ~~~
 
+## crypto.create_jwt(claims, algorithm, privateKey)
+
+Assembles and signs a JWT with the given claims.
+Claims is an object, algorithm and privateKey are both strings.
+The only algorithms supported are "RS256", "ES256", and "HS256".
+Returns a string.
+
+**Example**
+~~~javascript
+    var privateKey = "-----BEGIN EC PRIVATE KEY-----\nREDACTED obviously but put your real key here or this won't work\n-----END EC PRIVATE KEY-----";
+    var claims = {
+        sk: cbmeta.system_key,
+        iat: (new Date() / 1000), // current unix seconds
+        exp: (new Date() / 1000) + 3600, // current unix seconds + 1 hour
+        uid: "test-device", // device name
+        ut: 3, // user type = device
+    }
+    var token = crypto.create_jwt(claims, "ES256", privateKey);
+~~~
+
