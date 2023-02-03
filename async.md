@@ -537,7 +537,7 @@ ClearBladeAsync.Users()
  * Creates a new user in the user table.
  * Promise will resolve with the user table row of the new user.
  * @param {UserInfo} info - initial data describing the new user.
- * @returns {Promise<Object>}
+ * @returns {Promise<string>} - the user_id for the newly created user
  */
 Users.create(info)
 
