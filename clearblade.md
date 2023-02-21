@@ -305,7 +305,6 @@ This method is used to retrieve all devices from the Devices Auth table. If succ
 [
   {
     "__HostId__": "20b6b826-39f3-4a23-9559-62099d08c42a",
-    "active_key": "1234567890",
     "allow_certificate_auth": true,
     "allow_key_auth": true,
     "certificate": "",
@@ -344,7 +343,6 @@ This method is used to retrieve a device from the Devices Auth table. If success
 ~~~json
 {
   "__HostId__": "20b6b826-39f3-4a23-9559-62099d08c42a",
-  "active_key": "1234567890",
   "allow_certificate_auth": true,
   "allow_key_auth": true,
   "certificate": "",
