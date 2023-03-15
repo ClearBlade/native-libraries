@@ -22,7 +22,7 @@ This method writes the specified data to a file in txt/doc format. On successful
 	var fileWriter = new Writer();
 	var text = "This is a test string";
 	var fileName = "Test.doc";
-	fileWriter.writeToFile("sfopera.com", text, fileName, function(err,url) {
+	fileWriter.writeToFile("yourdomain.com", text, fileName, function(err,url) {
 		if (err) {
 			resp.error("Write failed");
 		} else {
