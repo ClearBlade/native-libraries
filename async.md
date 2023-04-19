@@ -627,6 +627,28 @@ Devices.update(query, changes)
  * @returns {Promise<>}
  */
 Devices.delete(query)
+
+/**
+ * Gets information about the devices currently connected to the platform via MQTT.
+ * Promise will resolve  with the connected devices information.
+ * @returns {Promise<Object>}
+ */
+Devices.connectedDevices()
+
+/**
+ * Gets information about a single device currently connected to the platform via MQTT.
+ * Promise will resolve empty with the connected device information.
+ * @param {string} deviceName
+ * @returns {Promise<Object>}
+ */
+Devices.deviceConnections(deviceName)
+
+/**
+ * Gets the number of devices currently connected to the platform via MQTT.
+ * Promise will resolve with the number of connected devices.
+ * @returns {Promise<Object>}
+ */
+Devices.connectedDeviceCount()
 ~~~
 
 ## Auth
