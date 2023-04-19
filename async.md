@@ -630,14 +630,14 @@ Devices.delete(query)
 
 /**
  * Gets information about the devices currently connected to the platform via MQTT.
- * Promise will resolve  with the connected devices information.
+ * Promise will resolve with the connected devices information.
  * @returns {Promise<Object>}
  */
 Devices.connectedDevices()
 
 /**
  * Gets information about a single device currently connected to the platform via MQTT.
- * Promise will resolve empty with the connected device information.
+ * Promise will resolve with the connected device information.
  * @param {string} deviceName
  * @returns {Promise<Object>}
  */
