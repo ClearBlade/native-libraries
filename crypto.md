@@ -1,5 +1,5 @@
 # crypt.crypto
-The crypto module offers a way of encapsulating secure credentials.
+The crypto module can encapsulate secure credentials.
 
 * crypto.createHash()
 * crypto.update()
@@ -12,7 +12,7 @@ The crypto module offers a way of encapsulating secure credentials.
 ## crypto.createHash(hashName)		
 
 Creates and returns a hash object, which can be used to generate hash digests.
-Supported hash types for "sha1","md5","sha256","sha512".
+Sha1, md5, sha256, and sha512 hash types are supported.
 	
 **Example:**
 ~~~javascript
@@ -30,7 +30,7 @@ Updates the hash content with the given data.
 
 ## crypto.digest(encodingType)
 	
-Calculates the digest of all of the passed data to be hashed. The encoding can be "binary","base64" or "hex".
+Calculates the digest of all of the passed data to be hashed. The encoding can be binary, base64, or hex.
 
 **Example:**
 ~~~javascript
@@ -42,8 +42,8 @@ Calculates the digest of all of the passed data to be hashed. The encoding can b
 ## crypto.encode(encodingType, data)
 
 Encodes data depending on the encoding type. 
-Encoding types currently supported are 'base64' and 'hex'.
-Data may be either a string or a Uint8Array.
+Encoding types supported are base64 and hex.
+Data may be a string or a Uint8Array.
 
 **Example:**
 ~~~javascript
@@ -53,8 +53,8 @@ Data may be either a string or a Uint8Array.
 ## crypto.decode(decodingType, encodedData)
 
 Decodes data depending on the encoding type.
-Decoding types currently supported are 'base64' and 'hex'.
-Encoded data may be either a string or a Uint8Array.
+Decoding types supported are base64 and hex.
+Encoded data may be a string or a Uint8Array.
 Returns a Uint8Array.
 
 **Example:**
@@ -65,9 +65,9 @@ Returns a Uint8Array.
 
 ## crypto.hmac(data, key, hashType)
 
-Returns the hmac signature of the supplied data. 
-The only hash type currently supported is "sha256".
-Data and key may be either strings or Uint8Arrays.
+Returns the supplied data's HMAC signature. 
+The only hash type supported is sha256.
+Data and keys are strings or Uint8Arrays.
 Returns a Uint8Array.
 
 **Example:**
@@ -80,8 +80,8 @@ Returns a Uint8Array.
 ## crypto.create_jwt(claims, algorithm, privateKey)
 
 Assembles and signs a JWT with the given claims.
-Claims is an object, algorithm and privateKey are both strings.
-The only algorithms supported are "RS256", "ES256", and "HS256".
+Claims is an object. Algorithm and privateKey are strings.
+The only algorithms supported are RS256, ES256, and HS256.
 Returns a string.
 
 **Example**
@@ -89,11 +89,10 @@ Returns a string.
     var privateKey = "-----BEGIN EC PRIVATE KEY-----\nREDACTED obviously but put your real key here or this won't work\n-----END EC PRIVATE KEY-----";
     var claims = {
         sk: cbmeta.system_key,
-        iat: (new Date() / 1000), // current unix seconds
-        exp: (new Date() / 1000) + 3600, // current unix seconds + 1 hour
+        iat: (new Date() / 1000), // current Unix seconds
+        exp: (new Date() / 1000) + 3600, // current Unix seconds + 1 hour
         uid: "test-device", // device name
         ut: 3, // user type = device
     }
     var token = crypto.create_jwt(claims, "ES256", privateKey);
 ~~~
-
