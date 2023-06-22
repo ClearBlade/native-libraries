@@ -1,4 +1,4 @@
-The file library helps to create files on server and remove when needed.
+The file library helps to create files on the server and removes them when needed.
 
 # Writer()
 
@@ -10,11 +10,11 @@ This method creates an object for the file library.
 ~~~
 
 ## fileWriter.writeToFile
-This method writes the specified data to a file in txt/doc format. On successful write, a url is returned which points to the location of file on server
+This method writes the specified data to a file in txt/doc format. On successful write, an URL is returned, which points to the server file's location.
 
-* host - the server on which platform is running
-* data - string that is to be written to file
-* file_name - name of file as string
+* host: The server on which the Platform is running
+* data: String that is to be written to a file
+* file_name: File name as a string
 
 **Example:**
 	
@@ -32,9 +32,9 @@ This method writes the specified data to a file in txt/doc format. On successful
 ~~~
 
 ## file_writer.removeFile
-This method removes the file from server on which it is stored. Cannot be retrieved again.
+This method removes the file from the server on which it is stored. It cannot be retrieved again.
 
-* file_name - name of file to be removed as string					
+* file_name: File name to be removed as a string					
 
 **Example:**
 
