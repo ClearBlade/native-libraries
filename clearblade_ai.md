@@ -1,14 +1,14 @@
-This library allows users to run ONNX (https://onnx.ai) based AI models on the ClearBlade Platform and Edge
+This library allows users to run ONNX (https://onnx.ai) based AI models on the ClearBlade Platform and Edge.
 ## ClearBladeAI.Model(options)
 
-The model represents an ONNX AI Model. An options object is needed to initialize the Model. The options object contains the details needed to load the model in memory. Model files are stored on the platform/edge using the File Management system. More details on how to use the File Management system can be found on https://docs.clearblade.com/v/4/files/
+An options object is needed to initialize the models. The options object contains the details needed to load the model in memory. The file management system stores model files on the Platform and Edge. More details on how to use the file management system can be found at https://docs.clearblade.com/v/4/files/.
 
 * @param {object} options
-* @param {string} options.bucket_set - Name of the bucket set containing the model file
-* @param {string} options.path - Location of the ONNX model file in the bucket set
+* @param {string} options.bucket_set: The bucket set name containing the model file
+* @param {string} options.path: Location of the ONNX model file in the bucket set
 * @constructor
-* @prop {Array} inputs - a list of inputs for the given model
-* @prop {Array} outputs - a list of outputs for the given model
+* @prop {Array} inputs: A list of inputs for the given model
+* @prop {Array} outputs: A list of outputs for the given model
 
 Example
 
@@ -25,9 +25,9 @@ var model = new ClearBladeAI.Model(options);
 
 This function supplies the data as inputs to the model and returns the output.
 
-* @param {Array} desiredOutputs - a list of output names whose data you want returned in the output. An empty array will return all outputs.
-* @param {Object} inputs - A map of input name to multi-dimensional array
-* @param {Promise} - Returns a promise with an array containing the results
+* @param {Array} desiredOutputs: A list of output names whose data you want returned in the output. An empty array will return all outputs.
+* @param {Object} inputs: A map of input name to a multi-dimensional array.
+* @param {Promise}: Returns a promise with an array containing the results.
 
 Example
 
@@ -41,9 +41,9 @@ model.exec(["label", "probabilities"], {"input1": data}).then(function(results) 
 });
 ~~~
 
-## Data Preprocessing and Analysis
+## Data preprocessing and analysis
 
-The ClearBlade Platform and Edge provides native support for data analysis and processing libraries like ```zebras.js```, ```danfo.js``` and ```scikit_learn.js```. Zebra APIs can be accessed via the ```Zebras``` object, Danfo APIs can be accessed via the ```Danfo``` object and Scikit Learn APIs can be accessed via the ```Scikit``` object. More information on their API usage can be found at:
+The ClearBlade Platform and Edge provide native support for data analysis and processing libraries like ```zebras.js```, ```danfo.js```, and ```scikit_learn.js```. Zebra APIs can be accessed via the ```Zebras``` object. Danfo APIs can be accessed via the ```Danfo``` object and Scikit. Learn APIs can be accessed via the ```Scikit``` object. More information on their API usage can be found at:
 - Zebras: https://zebrasjs.com
 - Danfo: https://danfo.jsdata.org
-- Scikit Learn: https://www.npmjs.com/package/scikit-learn 
+- Scikit learn: https://www.npmjs.com/package/scikit-learn
