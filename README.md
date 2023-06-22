@@ -1,6 +1,5 @@
 # native-libraries
-Documentation for ClearBlade Native Code Libraries
-These are ClearBlade's Native Libraries that are out-of-box. They can be used in Code Services.
+Documentation for ClearBlade native out-of-box code libraries that can be used in code services.
 
 ### included by default
 
