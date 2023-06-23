@@ -44,7 +44,7 @@ Note: by default, all queries are limited to 100 results. To change this limit, 
 ClearBladeAsync.Query()
 
 /**
- * Modifies a query in place and the given filter.
+ * Modifies a query in place, ANDing the given filter.
  * @param {string} column
  * @param {*} value
  * @returns {Query} with the filter applied
@@ -428,8 +428,7 @@ ClearBladeAsync.File(deployment_name, path)
 File.stat()
 
 /**
- * Reads the file's entire contents.
- * The promise is resolved with them.
+ * Reads the file's entire contents (where the promise is resolved).
  * If encoding is not specified, contents will be a Uint8Array.
  * If encoding is specified, contents will be a string.
  *
@@ -1295,10 +1294,10 @@ Adapter.deleteFile(filename)
 
 /**
  * Sends a control command to the given edges.
- * Valid commands are: start, stop, restart, status, undeploy, and logs.
+ * Valid commands are: "start", "stop", "restart", "status", "undeploy", "logs".
  * The edges param is an array of edge names.
  * If run on the edge, the edges param may only include the current edge's name.
- * Promise will resolve with an object whose keys are edge names whose and values are AdapterControlResponses.
+ * Promise will resolve with an object whose keys are edge names and whose values are AdapterControlResponses.
  * @param {string} command
  * @param {string[]} edges
  * @returns {Promise<object>}
@@ -1323,7 +1322,7 @@ ClearBladeAsync.CustomSync()
  * @param {string} collectionName: Collection name of the data you are trying to sync
  * @param {Object} data: The actual item or items created/updated/deleted
  * @param {string} destination: Can be CustomSync.Platform if on the edge or CustomSync.AllEdges or an individual edge name if on the platform
- * @param {string} [interval=now]: Optional but can be CustomSync.Now or be actual interval string values like 60s, 10m, 1h, and 5d. Only seconds, minutes, hours, and days are supported. If the interval is not specified, CustomSync.Now is the default.
+ * @param {string} [interval=now]: Optional but can be CustomSync.Now or be actual interval string values like “60s”, “10m”, “1h”, “5d”. Only seconds, minutes, hours, and days are supported. If the interval is not specified, CustomSync.Now is the default.
  * @returns {Promise<>}
  */
 CustomSync.sync(collectionName, data, destination, interval)
@@ -1557,7 +1556,7 @@ var assetsCollection = ClearBladeAsync.Collection('assets');
 /**
  * @typedef {Object} AssetRow: A row in the assets collection
  * @property {string} asset_id: Each asset's unique identifier
- * @property {string} asset_type: Can be thermometer or barometer
+ * @property {string} asset_type: Can be "thermometer" or "barometer"
  * @property {number} reading: The temperature or pressure value
  * @property {string} last_updated: Timestamp when the asset last sent an update
  * @property {boolean} stale: Indicates the asset hasn't sent an update in over a week
@@ -1662,7 +1661,7 @@ function countAssetsByType() {
 
 /**
  * findNewDevices runs a raw SQL query against the device table
- * To find all devices created in the past seven days whose type is in the allowedDeviceTypes list.
+ * to find all devices created in the past seven days whose type is in the allowedDeviceTypes list.
  * @param {[]string} allowedDeviceTypes
  * @returns {Promise<[]{name: string, type: string, state: string, created_date: number}>}
  */
@@ -1727,7 +1726,7 @@ function sendAdapterLogsToPlatform() {
 
 /**
  * checkAdapterLogsForErrors reads a log file from the platform's inbox,
- * and returns the lines from those logs containing the ERROR string.
+ * and returns the lines from those logs containing the "ERROR" string.
  * @return {Promise<string[]>} the error logs
  */
 function checkAdapterLogsForErrors() {
