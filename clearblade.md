@@ -655,7 +655,7 @@ Example:
 
 Class: ClearBlade.Cache(cacheName);
 
-Caches can be shared across services, making data access faster than database operations. The ClearBlade.Cache object performs cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE, and FLUSH. __Please note that setting `undefined` values in the cache causes abnormal behavior.__  
+Caches can be shared across services and make data access faster than database operations. The ClearBlade.Cache object performs cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE, and FLUSH. __Please note that setting `undefined` values in the cache causes abnormal behavior.__  
 
 To instantiate the cache object, you need your cache name.
 
@@ -672,7 +672,7 @@ The following callback function can be used for all cache callbacks.
 @param {string} data: Data or error description in case of an error
 
 ## Cache.set(key, value, callback)
-Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a Set done string.
+Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a "Set done" string.
 
 * @param {string} key: Key in cache
 * @param {string|number|object|array|boolean|null} value: Data to be stored in the cache
@@ -716,7 +716,7 @@ Sets data in the cache if it does not exist. Requires that the cache object was 
 ~~~~
 
 ## Cache.setMultiple(data, callback)
-Sets multiple entries in the cache at once. Requires that the cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a SetMultiple done string.
+Sets multiple entries in the cache at once. Requires that the cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a "SetMultiple done" string.
 
 * @param {object} data: Multiple data entries to be stored in the cache
 * @param {function} callback: Returns error or success messages
@@ -772,7 +772,7 @@ Gets all data from the cache. Requires that the cache object was initialized wit
 ~~~~
 
 ## Cache.delete(key, callback)
-Deletes data corresponding to the cache's key. Requires that the cache object was initialized with a cache name. On success, returns a Delete done string.
+Deletes data corresponding to the cache's key. Requires that the cache object was initialized with a cache name. On success, returns a "Delete done" string.
 
 * @param {string} key: Key in cache
 * @param {function} callback: Returns error or success messages
@@ -790,7 +790,7 @@ Deletes data corresponding to the cache's key. Requires that the cache object wa
 ~~~~
 
 ## Cache.flush(callback)
-Deletes all data from the cache. Requires that the cache object was initialized with a cache name. On success, returns a Flush done string.
+Deletes all data from the cache. Requires that the cache object was initialized with a cache name. On success, returns a "Flush done" string.
 
 * @param {function} callback: Returns error or success messages
 
@@ -1007,7 +1007,7 @@ Updates an existing item or set of items. Requires that a collection was set whe
 ~~~~javascript
 	// @param {Object} changes: Object representing the attributes that you want to be changed
 	// @param {function} callback: Function that handles the server's response
-    //This example assumes an item collection with name and age columns.
+    //This example assumes a collection with name and age columns.
     var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
     query.equalTo('name', 'John');
     var changes = {
@@ -1031,7 +1031,7 @@ Removes an existing item or set of items. Requires that a collection was set whe
 ~~~~javascript
 	//@param {function} callback Function that handles the server's response
     var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-    //This example contains the item with the John name column entry.
+    //This example contains the item whose name value is John.
     query.equalTo('name', 'John');
     var callback = function (err, data) {
         if (err) {
@@ -1128,7 +1128,7 @@ Creates a new item in the collection and returns the created item to the callbac
 
 **Example:**
 ~~~javascript
-   	//This example assumes an item collection with name, height, and age columns.
+   	//This example assumes a collection with name, height, and age columns.
     var newPerson = {
         name: 'Jim',
         height: 70,
@@ -1158,7 +1158,7 @@ Updates an existing item or set of items
 **Example:**
 
 ~~~javascript
-    //This example assumes an item collection with name and age columns.
+    //This example assumes a collection with name and age columns.
     var query = ClearBlade.Query();
     query.equalTo('name', 'John');
     var changes = {
@@ -1228,7 +1228,7 @@ Adds a column to a specified collection.
 
 ## Collection.count(_query, callback)
 
-Retrieves the item count in a collection that match the supplied query
+Retrieves the count of items in a collection that match the supplied query
 
 * @param {Query} _query: Query object that defines what item or set of items to remove. Optional
 * @param {function} callback: Function that handles the server's response
@@ -1826,7 +1826,7 @@ Returns a system's current topics
 
  This call deletes the MQTT topic's message history. It has four options to set when you delete it. 'count' is the number of messages you wish to delete. For count = 0, all messages for that topic are deleted. You can also use the last or start and stop options to widen your search. The last option, an epoch timestamp in seconds, will retrieve and delete 'count' number of messages before that timestamp. The start and stop options, an epoch timestamp, will retrieve and delete the 'count' number of messages within that timeframe. For each case, you can set 'count' to zero or a non-zero value depending on how many messages you wish to delete.
 
- The return value is a JS object list, one for each returned item in the message history.
+ The return value is a list of objects, one for each returned item in the message history.
 
  * @param {string} topic: String that signifies which topic to search
  * @param {number} count: Number that signifies how many messages to return and delete; 0 returns and deletes all messages
@@ -2894,7 +2894,7 @@ is as follows:
 ~~~
 
 If asset_id == "", all assets of that type are synced as specified. If you
-want sync_to_edge and sync_to_platform to be true, you can specify,
+want both sync_to_edge and sync_to_platform to be true, you can specify,
 "sync": true.
 
 The types of assets that can be deployed (asset_class) are specified in the ClearBlade
