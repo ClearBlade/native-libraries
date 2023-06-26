@@ -1,4 +1,4 @@
-The Log library is a library for issuing log statements during the execution of a service.  These logs can be reviewed later from the console or the returning payload
+The Log library issues log statements during service execution. They can be reviewed later from the console or the returning payload.
 
 ## log(STRING)
 
