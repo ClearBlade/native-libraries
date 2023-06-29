@@ -12,7 +12,7 @@ The crypto module can encapsulate secure credentials.
 ## crypto.createHash(hashName)		
 
 Creates and returns a hash object, which can be used to generate hash digests.
-Sha1, md5, sha256, and sha512 hash types are supported.
+Supported hash types for "sha1","md5","sha256","sha512".
 	
 **Example:**
 ~~~javascript
@@ -30,7 +30,7 @@ Updates the hash content with the given data.
 
 ## crypto.digest(encodingType)
 	
-Calculates the digest of all of the passed data to be hashed. The encoding can be binary, base64, or hex.
+Calculates the digest of all of the passed data to be hashed. The encoding can be "binary","base64", or "hex".
 
 **Example:**
 ~~~javascript
@@ -42,8 +42,8 @@ Calculates the digest of all of the passed data to be hashed. The encoding can b
 ## crypto.encode(encodingType, data)
 
 Encodes data depending on the encoding type. 
-Encoding types supported are base64 and hex.
-Data may be a string or a Uint8Array.
+Encoding types supported are 'base64' and 'hex'.
+Data may be a string or Uint8Array.
 
 **Example:**
 ~~~javascript
@@ -53,8 +53,8 @@ Data may be a string or a Uint8Array.
 ## crypto.decode(decodingType, encodedData)
 
 Decodes data depending on the encoding type.
-Decoding types supported are base64 and hex.
-Encoded data may be a string or a Uint8Array.
+Decoding types supported are 'base64' and 'hex'.
+Encoded data may be a string or Uint8Array.
 Returns a Uint8Array.
 
 **Example:**
@@ -66,7 +66,7 @@ Returns a Uint8Array.
 ## crypto.hmac(data, key, hashType)
 
 Returns the supplied data's HMAC signature. 
-The only hash type supported is sha256.
+The only hash type supported is "sha256".
 Data and keys are strings or Uint8Arrays.
 Returns a Uint8Array.
 
@@ -81,7 +81,7 @@ Returns a Uint8Array.
 
 Assembles and signs a JWT with the given claims.
 Claims is an object. Algorithm and privateKey are strings.
-The only algorithms supported are RS256, ES256, and HS256.
+The only algorithms supported are "RS256", "ES256", and "HS256".
 Returns a string.
 
 **Example**
