@@ -1,4 +1,4 @@
-The file library helps to create files on the server and removes them when needed.
+The file library helps to create files on the server and remove them when needed.
 
 # Writer()
 
@@ -10,7 +10,7 @@ This method creates an object for the file library.
 ~~~
 
 ## fileWriter.writeToFile
-This method writes the specified data to a file in txt/doc format. On successful write, an URL is returned, which points to the server file's location.
+This method writes the specified data to a file in txt/doc format. On successful write, a URL is returned, which points to the file's location on the server.
 
 * host: The server on which the Platform is running
 * data: String that is to be written to a file
