@@ -19,11 +19,11 @@ The ClearBlade library provides all the methods necessary for interacting with t
 
 # Overview
 
-ClearBlade.js Library enables users to:
+ClearBlade.js library enables users to:
 
 >1. Query a local or remote data collection
 >2. Listen to an MQTT topic and process the payload
->3. Store data into a collection
+>3. Store data in a collection
 >3. Modify devices attributes
 >4. Create a timer or trigger
 >5. Register new users
@@ -33,7 +33,7 @@ ClearBlade.js Library enables users to:
 
 # ClearBlade
 
-The available methods for the ClearBlade class and examples of how to use them are listed below:
+The available methods for the ClearBlade class and examples of how to use them are listed below.
 
 
 ## init
@@ -42,43 +42,43 @@ This method sets up the ClearBlade object with a few configuration values necess
 
 Note: You must init before accessing any ClearBlade resources within your system
 
-Passing the request into the init function is the simplest and most performant way to establish an authorized instance of the ClearBlade object.  The ClearBlade object will inherit the permissions associated with the calling user.
+Passing the request into the init function is the simplest and most performant way to establish an authorized instance of the ClearBlade object. The ClearBlade object will inherit the permissions associated with the calling user.
 
 Recommended:
 
 ~~~javascript
-	//In this example the passed in information on the request object is used to init the ClearBlade object
+	//In this example, the passed-in information on the request object is used to init the ClearBlade object.
 	ClearBlade.init({request:req});
 ~~~
 
-To establish a new session for the ClearBlade object; the `options` object contains all the parameters passed into the `init` method. It can contain the following keys / value pairs:
+To establish a new session for the ClearBlade object, the `options` object contains all the parameters passed into the `init` method. It can contain the following keys/value pairs:
 
-Mandatory Parameters:
+Mandatory parameters:
 
->- systemKey - the system key of the system you would like to access (available in req object)
+>- systemKey: The system key of the system you would like to access (available in the req object).
 
->- systemSecret - the system secret of the system you would like to access (available in req object)
-
-
-Optional Parameters:
-
->- email - the email of the user you would like to login/register for subsequent operations
->- password - the password of the user you would like to login/register for subsequent operations
->- registerUser - boolean that signifies that the email and password params should be used to register a new user with the platform. The newly registered user will be logged in
->- useUser - an object in the form of {"authToken": "userToken"} used to set the user for any ensuing operations
->- callback - a function that takes a boolean for error checking and a JSON object. Must be supplied if any of the following options are supplied: email, password
+>- systemSecret: The system secret of the system you would like to access (available in the req object).
 
 
-Basic Example:
+Optional parameters:
+
+>- email: The email of the user you would like to log in/register for subsequent operations.
+>- password: The password of the user you would like to log in/register for subsequent operations.
+>- registerUser: Boolean that signifies that the email and password params should be used to register a new user with the Platform. The newly registered user will be logged in.
+>- useUser: An object in the form of {"authToken": "userToken"} used to set the user for any ensuing operations.
+>- callback: A function that takes a boolean for error checking and a JSON object. Must be supplied if email and password options are provided.
+
+
+Basic example:
 ~~~javascript
-		//this example simply initializes the ClearBlade object with the desired system.
+		//This example initializes the ClearBlade object with the desired system.
 		ClearBlade.init({request:req});
 ~~~
 
-Authentication Example:
+Authentication example:
 
 ~~~javascript
-		//this example uses a users email and password to log in
+		//This example uses a users email and password to log in.
 		ClearBlade.init({
 			systemKey: req.systemKey,
 			systemSecret: req.systemSecret,
@@ -94,11 +94,11 @@ Authentication Example:
 		});
 ~~~
 
-Note: Invalid credentials (bad username or password) leads to the #init methods to throw an error. You must catch this error using a try catch block.
+Note: Invalid credentials (bad username or password) leads to the #init methods throwing an error. You must catch this error using a try catch block.
 
-Registration Example:
+Registration example:
 ~~~javascript
-		//this example uses an email and password to register a new user with the platform
+		//This example uses an email and password to register a new user with the Platform.
 		ClearBlade.init({
 			systemKey: req.systemKey,
 			systemSecret: req.systemSecret,
@@ -116,7 +116,7 @@ Registration Example:
 ~~~
 Pre-authed example:
 ~~~javascript
-		// Uses an email and auth token of a pre-authorized user - no need for a callback
+		// Uses an email and auth token of a pre-authorized user: no need for a callback.
 		ClearBlade.init({
 			systemKey: req.systemKey,
 			systemSecret: req.systemSecret,
@@ -142,7 +142,7 @@ Example:
 
 ## ClearBlade.loginAnon(callback)
 
-This method will log into the ClearBlade platform anonymously and use the token for subsequent requests.
+This method will log into the ClearBlade Platform anonymously and use the token for subsequent requests.
 
 Example:
 ~~~javascript
@@ -180,7 +180,7 @@ Example:
 
 ## ClearBlade.isCurrentUserAuthenticated(callback)
 
-This method is used to check and see if current users authentication token is still valid.
+This method checks whether the current users authentication token is still valid.
 
 Example:
 ~~~javascript
@@ -199,7 +199,7 @@ Example:
 
 ## ClearBlade.loginUser(email, password, callback)
 
-This method is used to log a user into the ClearBlade Platform before making requests.
+This method logs a user into the ClearBlade Platform before making requests.
 
 Example:
 ~~~javascript
@@ -218,7 +218,7 @@ Example:
 
 ## ClearBlade.logoutUser(callback)
 
-This method is used to log the current user out from the platform.
+This method is used to log the user out of the Platform.
 
 Example:
 ~~~javascript
@@ -299,7 +299,7 @@ ClearBlade.reauthUser(usertoken, refreshtoken, function(err, data) {
 
 ClearBlade.getAllDevicesForSystem(callback)
 
-This method is used to retrieve all devices from the Devices Auth table. If successful, the response will contain an array of every device defined within a System. Each element in the array will be a JSON object whose attributes correspond to the columns in the Devices table, including any custom columns.
+This method retrieves all devices from the Devices Auth table. If successful, the response will contain an array of every device defined within a system. Each array element will be a JSON object whose attributes correspond to the columns in the Devices table, including any custom columns.
 
 ~~~json
 [
@@ -338,7 +338,7 @@ Example:
 
 ## ClearBlade.getDeviceByName(name, callback)  
 
-This method is used to retrieve a device from the Devices Auth table. If successful, the response will contain a JSON object representing the requested device. The attributes in the JSON object correspond to the columns in the Devices table, including any custom columns.
+This method retrieves a device from the Devices Auth table. If successful, the response will contain a JSON object representing the requested device. The attributes in the JSON object correspond to the columns in the Devices table, including any custom columns.
 
 ~~~json
 {
@@ -361,7 +361,7 @@ This method is used to retrieve a device from the Devices Auth table. If success
 }
 ~~~
 
-If unsuccessful, an error will be returned in the __data__ parameter passed to the callback function.
+An error will be returned in the __data__ parameter passed to the callback function if unsuccessful.
 ~~~json
 {
 	"error": {
@@ -390,7 +390,7 @@ Example:
 
 ## ClearBlade.createDevice(name, object, causeTrigger, callback)  
 
-This method is used to create a new device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns, and will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a json object representing the created device.
+This method creates a new device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns. They will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a JSON object representing the created device.
 
 ~~~json
 {
@@ -409,7 +409,7 @@ This method is used to create a new device in the Devices Auth table. The attrib
 }
 ~~~  
 
-If unsuccessful, an error will be returned in the __data__ parameter passed to the callback function.
+An error will be returned in the __data__ parameter passed to the callback function if unsuccessful.
 ~~~json
 {
 	"error": {
@@ -428,7 +428,7 @@ Example:
 ~~~javascript
 	ClearBlade.init({request: req});
 
-	// Default is true, so device table changes can trigger code services
+	// Default is true so that device table changes can trigger code services.
 	var DEVICE_TRIGGER_ENABLED = true
 
 	var device = {
@@ -451,10 +451,10 @@ Example:
 
 ## ClearBlade.updateDevice(name, object, causeTrigger, callback)  
 
-This method is used to update a device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns, and will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a __success__ attribute.
+This method is used to update a device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns. They will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a __success__ attribute.
 
 {{< warning title="Heads Up!" >}}
-Once a device has been created, you CANNOT change its name. Do not specify the __name__ attribute when updating a device.
+Once a device has been created, you cannot change its name. Do not specify the __name__ attribute when updating a device.
 {{< /warning >}}
 
 ~~~json
@@ -463,7 +463,7 @@ Once a device has been created, you CANNOT change its name. Do not specify the _
 }
 ~~~  
 
-If unsuccessful, an error will be returned in the __data__ parameter passed to the callback function.
+An error will be returned in the __data__ parameter passed to the callback function if unsuccessful.
 ~~~json
 {
 	"error":{
@@ -484,7 +484,7 @@ Example:
 
     var deviceNameToUpdate = "<DEVICE_NAME>"
 
-    // Default is true, so device table changes can trigger code services
+    // Default is true so that device table changes can trigger code services.
 	var DEVICE_TRIGGER_ENABLED = true
 
 	var deviceUpdates = {
@@ -507,7 +507,7 @@ Example:
 
 ## ClearBlade.deleteDevice(name, causeTrigger, callback)  
 
-This method is used to create a device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns, and will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a __success__ attribute.
+This method creates a device in the Devices Auth table. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns. They will be used to initialize the contents of the respective column. If successful, the __data__ parameter passed to the callback will contain a __success__ attribute.
 
 ~~~json
 {
@@ -515,7 +515,7 @@ This method is used to create a device in the Devices Auth table. The attributes
 }
 ~~~  
 
-If unsuccessful, an error will be returned in the __data__ parameter passed to the callback function.
+An error will be returned in the __data__ parameter passed to the callback function if unsuccessful.
 ~~~json
 {
 	"error":{
@@ -534,7 +534,7 @@ Example:
 ~~~javascript
     ClearBlade.init({request: req});
 
-	// Default is true, so device table changes can trigger code services
+	// Default is true so that device table changes can trigger code services.
 	var DEVICE_TRIGGER_ENABLED = true
 
 	ClearBlade.deleteDevice("<DEVICE_NAME>", DEVICE_TRIGGER_ENABLED, function(err, data) {
@@ -548,9 +548,9 @@ Example:
 
 ## ClearBlade.connectedDevices(callback)
 
-This method is used to retrieve information about the devices currently connected to the platform via MQTT.
+This method retrieves information about the devices connected to the platform via MQTT.
 The response is a map from the device names to a list of connection details.
-The connection details include the clientID the device connected with, and the time it started the connection (UTC).
+The connection details include the clientID the device connected with and the time it started the connection (UTC).
 
 ~~~json
 {
@@ -583,9 +583,9 @@ Example:
 
 ## ClearBlade.deviceConnections(deviceName, callback)
 
-This method is used to retrieve information about a single device currently connected to the platform via MQTT.
-The response is a map containing all the usual device details, as well as a list of connection details for each active connection.
-The connection details include the clientID the device connected with, and the time it started the connection (UTC).
+This method retrieves information about a single device connected to the platform via MQTT.
+The response is a map containing all the usual device details and a list of connection details for each active connection.
+The connection details include the clientID the device connected with and the time it started the connection (UTC).
 
 ~~~json
 {
@@ -625,11 +625,11 @@ Example:
 
 ## ClearBlade.connectedDeviceCount(callback)
 
-This method is used to retrieve the number of devices connected to the platform via MQTT.
-The response contains three keys: unique\_device\_connections, total\_device\_connections, and total\_devices.
-Total devices is simply a count of the devices in your device table.
-Unique device connections is how many of those devices have at least one active MQTT connection to the platform.
-Total device connections is how many active MQTT connections to the platform are being made by your devices.
+This method retrieves the number of devices connected to the platform via MQTT.
+The response contains unique\_device\_connections, total\_device\_connections, and total\_devices keys.
+Total devices is a device count in your device table.
+Unique device connections are how many of those devices have at least one active MQTT connection to the Platform.
+Total device connections are how many active MQTT connections to the Platform are made by your devices.
 
 ~~~json
 {
@@ -655,9 +655,9 @@ Example:
 
 Class: ClearBlade.Cache(cacheName);
 
-Caches can be shared across services and make data access faster as compared to database operations. The ClearBlade.Cache object is used perform cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE and FLUSH. __Please note that setting `undefined` values in the cache cause abnormal behavior.__  
+Caches can be shared across services and make data access faster than database operations. The ClearBlade.Cache object performs cache operations like GET, GETALL, SET, SETNX, SETMULTIPLE, DELETE, and FLUSH. __Please note that setting `undefined` values in the cache causes abnormal behavior.__  
 
-To instantiate the cache object you need the name of your cache.
+To instantiate the cache object, you need your cache name.
 
 ~~~javascript
 	var cache = ClearBlade.Cache('<CACHE_NAME>');
@@ -668,15 +668,15 @@ To instantiate the cache object you need the name of your cache.
 The following callback function can be used for all cache callbacks.
 
 @callback cbCallback:  
-@param {boolean} err - Is true if there is an error  
-@param {string} data - data or error description in case of an error
+@param {boolean} err: Is true if an error exists  
+@param {string} data: Data or error description in case of an error
 
 ## Cache.set(key, value, callback)
-Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a string "Set done".
+Sets data in the cache. Requires that the Cache object was initialized with a cache name. On success, this returns a "Set done" string.
 
-* @param {string} key - Key in cache
-* @param {string|number|object|array|boolean|null} value - Data to be stored in the cache
-* @param {function} callback - callback that returns error or success messages
+* @param {string} key: Key in cache
+* @param {string|number|object|array|boolean|null} value: Data to be stored in the cache
+* @param {function} callback: Returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -692,11 +692,11 @@ Sets data in the cache. Requires that the Cache object was initialized with a ca
 ~~~~
 
 ## Cache.setnx(key, value, callback)
-Sets data in the cache if it does not exist. Requires that the Cache object was initialized with a cache name. On success, this returns a boolean string. Returns boolean __true__ if it set the data in the cache. Returns boolean __false__ if the data already exists
+Sets data in the cache if it does not exist. Requires that the cache object was initialized with a cache name. On success, this returns a boolean string. It returns boolean __true__ if it sets the cache data and boolean __false__ if the data already exists.
 
-* @param {string} key - Key in cache
-* @param {string|number|object|array|boolean|null} value - Data to be stored in the cache
-* @param {function} callback - callback that returns error or success messages
+* @param {string} key: Key in cache
+* @param {string|number|object|array|boolean|null} value: Data to be stored in the cache
+* @param {function} callback: Returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, wasSet) {
@@ -716,10 +716,10 @@ Sets data in the cache if it does not exist. Requires that the Cache object was 
 ~~~~
 
 ## Cache.setMultiple(data, callback)
-Sets multiple entries in the cache at once. Requires that the Cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a string "SetMultiple done"
+Sets multiple entries in the cache at once. Requires that the cache object was initialized with a cache name. Requires that the data passed to this function is a JSON object. On success, returns a "SetMultiple done" string.
 
-* @param {object} data - Multiple data entries to be stored in the cache
-* @param {function} callback - callback that returns error or success messages
+* @param {object} data: Multiple data entries to be stored in the cache
+* @param {function} callback: Returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -735,12 +735,12 @@ Sets multiple entries in the cache at once. Requires that the Cache object was i
 ~~~~
 
 ## Cache.get(key, callback)    
-Gets data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. Two possible return values on success:       
+Gets data corresponding to the key from the cache. Requires that the cache object was initialized with a cache name. There are two possible return values on success:       
 	- If key not found, returns undefined.   
 	- If key found, returns data. __(Type of data is same as set in the cache)__.   
 
-* @param {string} key - Key in cache
-* @param {function} callback - callback that returns error or data corresponding to the key
+* @param {string} key: Key in cache
+* @param {function} callback: Returns an error or data corresponding to the key
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -755,9 +755,9 @@ Gets data corresponding to the key from the cache. Requires that the Cache objec
 ~~~~
 
 ## Cache.getAll(callback)
-Gets all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns all data as a JSON object with key/value pairs. If the cache is empty, an empty JSON object is returned
+Gets all data from the cache. Requires that the cache object was initialized with a cache name. On success, returns all data as a JSON object with key/value pairs. If the cache is empty, an empty JSON object is returned.
 
-* @param {function} callback - callback that returns error or all data from the cache
+* @param {function} callback: Returns an error or all data from the cache
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -772,10 +772,10 @@ Gets all data from the cache. Requires that the Cache object was initialized wit
 ~~~~
 
 ## Cache.delete(key, callback)
-Deletes data corresponding to the key from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Delete done"
+Deletes data corresponding to the cache's key. Requires that the cache object was initialized with a cache name. On success, returns a "Delete done" string.
 
-* @param {string} key - Key in cache
-* @param {function} callback - callback that returns error or success messages
+* @param {string} key: Key in cache
+* @param {function} callback: Returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -790,9 +790,9 @@ Deletes data corresponding to the key from the cache. Requires that the Cache ob
 ~~~~
 
 ## Cache.flush(callback)
-Deletes all data from the cache. Requires that the Cache object was initialized with a cache name. On success, returns a string "Flush done"
+Deletes all data from the cache. Requires that the cache object was initialized with a cache name. On success, returns a "Flush done" string.
 
-* @param {function} callback - callback that returns error or success messages
+* @param {function} callback: Returns error or success messages
 
 ~~~~javascript
    	var callback = function (err, data) {
@@ -810,36 +810,34 @@ Deletes all data from the cache. Requires that the Cache object was initialized 
 
 Class: ClearBlade.Query(options);
 
-Queries make it possible to retrieve and update data in collections based on criteria.  The ClearBlade.Query object is used to rapidly create the query and ultimately perform possible fetch, update, create, and delete actions.  
+Queries allow retrieving and updating data in collections based on criteria. The ClearBlade.Query object is used to create the query rapidly and perform possible fetch, update, create, and delete actions.
 
 {{< note title="Query Default Page Size" >}}
-Query will return 100 results by default, unless specified by Query.setPage
+The query will return 100 results by default unless specified by Query.setPage.
 {{< /note >}}
 
-Dive into the Query concept: [Query: Learn More](/1-platform_concepts/data/query/)
+Dive into the query concept: [Query: Learn More](/1-platform_concepts/data/query/)
 
-To instantiate a query object you have three options:
+To instantiate a query object, you have three options:
 
-Here are the mutually exclusive values for the object:
-
->- collectionName (string) - the name of the collection you want to access
->- collectionID (string) - the ID of the collection you want to access
->- collection (string) - the ID of the collection you want to access
+>- collectionName (string): The collection name you want to access
+>- collectionID (string): The collection ID you want to access
+>- collection (string): The collection ID you want to access
 
 1) Supply an object containing the <COLLECTION_NAME>
 ~~~javascript
 		var query = ClearBlade.Query({collectionName:"<COLLECTION_NAME>"});
 ~~~
-Alternatively, the collectionID key can be used with the <COLLECTION_ID> value
+Alternatively, the collectionID key can be used with the <COLLECTION_ID> value.
 ~~~javascript
 		var query = ClearBlade.Query({collectionID:"<COLLECTION_ID>"});
 ~~~
-Additionally, the <COLLECTION_ID> can be used
+Additionally, the <COLLECTION_ID> can be used.
 ~~~javascript
 		var query = ClearBlade.Query("<COLLECTION_ID>");
 ~~~
 
-3) Supply nothing (this only applies when using the methods on the ClearBlade.Collection or ClearBlade.User classes to make requests against data)
+3) Supply nothing (this only applies when using the methods on the ClearBlade.Collection or ClearBlade.User classes to make requests against data).
 ~~~javascript
 		var query = ClearBlade.Query();
 ~~~
@@ -857,7 +855,7 @@ This method is used to sort the response from the query by a particular field in
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.ascending("<COLUMN_NAME_1>");
-	// if applicable, apply second sort for entries with same value for column 'colName'
+	// If applicable, apply a second sort for entries with the same value for column colName.
 	query.ascending("<COLUMN_NAME_2>");
 ~~~~
 
@@ -866,7 +864,7 @@ This method is used to sort the response from the query by a particular field in
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.descending("<COLUMN_NAME_1>");
-	// if applicable, apply second sort for entries with same value for column 'colName'
+	// If applicable, apply a second sort for entries with the same value for column colName.
 	query.descending("<COLUMN_NAME_2>");
 ~~~~
 
@@ -875,7 +873,7 @@ ClearBlade timestamp types are in ms (milliseconds), not ns (nanoseconds). If yo
 {{< /warning >}}
 
 ## Query.equalTo(field, value)
-This method is used to filter the data by using an equality operator on a given column.
+This method filters the data using an equality operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 
@@ -892,35 +890,35 @@ This method is used to filter the data by using an equality operator on a given 
 ~~~~
 
 ## Query.greaterThan(field, value)
-This method is used to filter the data by using a greater than operator on a given column.
+This method filters the data using a greater than operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.greaterThan("YOUR_COLUMN_OF_TYPE_INT", 4);
 ~~~~
 
 ## Query.greaterThanEqualTo(field, value)
-This method is used to filter the data by using a greater than equal to operator on a given column.
+This method filters the data using a greater than equal to operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.greaterThanEqualTo("YOUR_COLUMN_OF_TYPE_INT", 4);
 ~~~~
 
 ## Query.lessThan(field, value)
-This method is used to filter the data by using a less than operator on a given column.
+This method filters the data using a less than operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.lessThan("YOUR_COLUMN_OF_TYPE_INT", 4);
 ~~~~
 
 ## Query.lessThanEqualTo(field, value)
-This method is used to filter the data by using a less than equal to operator on a given column.
+This method filters the data using a less than equal to operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.lessThanEqualTo("YOUR_COLUMN_OF_TYPE_INT", 4);
 ~~~~
 
 ## Query.notEqualTo(field, value)
-This method is used to filter the data by using a not equal to operator on a given column.
+This method filters the data using a not equal to operator on a given column.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.notEqualTo("YOUR_COLUMN_OF_TYPE_STRING", "hello");
@@ -928,8 +926,8 @@ This method is used to filter the data by using a not equal to operator on a giv
 
 ## Query.rawQuery(rawQueryString)
 This method is used to supply a raw query string to the query object.  
-__NOTE:__ This is currently only supported for MongoDB. Also note that if you use this, it will override
-all other query operations like equalTo, lessThan, greaterThan etc. You can still use ___Query.ascending___,
+__NOTE:__ This is currently only supported for MongoDB. This will override all other query operations like 
+equalTo, lessThan, greaterThan, etc. You can still use ___Query.ascending___,
 ___Query.descending___ or ___Query.setPage___ to set sort order or paging.   
 ~~~~javascript
 	// MongoDB query example
@@ -942,7 +940,7 @@ ___Query.descending___ or ___Query.setPage___ to set sort order or paging.
 
 The default paging is page 1 with 100 results.  
 
-This method is used to set the desired page and page size for the request.
+This method sets the desired page and page size for the request.
 ~~~~javascript
 	var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
 	query.setPage(25, 3);
@@ -955,40 +953,40 @@ You can set the page number to 0 to retrieve all results.
 ~~~~
 
 ## Query.or(query)
-chains an existing query object to the Query object with or on the same column - "title"
+Chains an existing query object to the query object with or on the same column: title
 ~~~~javascript
-   // Assume your collection's name is "Activity"
+   // Assume your collection's name is Activity
 	var query1 = ClearBlade.Query({collectionName: "Activity"})
 	var query2 = ClearBlade.Query({collectionName: "Activity"})
 
 	query1.equalTo('title','Engineer')
 	query2.equalTo('title','Manager')
 
-	// If an entry has 'Engineer' or 'Manager' in 'title' column
-	// they will be fetched with `finalQuery`
+	// If an entry has Engineer or Manager in the title column
+	// they will be fetched with finalQuery.
 	var finalQuery = query1.or(query2)
 ~~~~
 
-chains an existing query object to the Query object with or on different columns - "title", "city"
+Chains an existing query object to the query object with or on different columns: title and city
 
 ~~~~javascript
-	// Assume your collection's name is "Activity"
+	// Assume your collection's name is Activity
 	var query1 = ClearBlade.Query({collectionName: "Activity"})
 	var query2 = ClearBlade.Query({collectionName: "Activity"})
 
 	query1.equalTo('title','Engineer')
 	query2.equalTo('city','Austin')
-	// If an entry has 'Engineer' in 'title' column
-	// or 'Austin' in the 'city' column
-	// they will be fetched with `finalQuery`
+	// If an entry has Engineer in the title column
+	// or Austin in the city column
+	// they will be fetched with finalQuery
 	var finalQuery = query1.or(query2)
 ~~~~
 
 ## Query.fetch(callback)
-Reqests an item or a set of items from the query. Requires that the Query object was initialized with a collection.
+Requests an item or a set of items from the query. Requires that the query object was initialized with a collection.
 
 ~~~~javascript
-	//@param {function} callback - Supplies processing for what to do with the data that is returned from the collection
+	//@param {function} callback: Supplies processing for what to do with the data that is returned from the collection.
    	var callback = function (err, data) {
    	    if (err) {
    	    	resp.error("fetch error : " + JSON.stringify(data));
@@ -1002,14 +1000,14 @@ Reqests an item or a set of items from the query. Requires that the Query object
 
 ## Query.update(changes, callback)
 
-Updates an existing item or set of items. Requires that a collection was set when the Query was initialized.
+Updates an existing item or set of items. Requires that a collection was set when the query was initialized.
 
 
 **Example:**
 ~~~~javascript
-	// @param {Object} changes - Object representing the attributes that you want changed
-	// @param {function} callback - Function that handles the response of the server
-    //This example assumes a collection of items that have the columns name and age.
+	// @param {Object} changes: Object representing the attributes that you want to be changed
+	// @param {function} callback: Function that handles the server's response
+    //This example assumes a collection with name and age columns.
     var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
     query.equalTo('name', 'John');
     var changes = {
@@ -1028,12 +1026,12 @@ Updates an existing item or set of items. Requires that a collection was set whe
 ~~~~
 
 ## Query.remove(callback)
-Removes an existing item or set of items.  Requires that a collection was set when the Query was initialized.
+Removes an existing item or set of items. Requires that a collection was set when the query was initialized.
 **Example:**
 ~~~~javascript
-	//@param {function} callback Function that handles the response from the server
+	//@param {function} callback Function that handles the server's response
     var query = ClearBlade.Query({collectionName: "<COLLECTION_NAME>"});
-    //This example contains the item with 'name' column entry is 'John'
+    //This example contains the item whose name value is John.
     query.equalTo('name', 'John');
     var callback = function (err, data) {
         if (err) {
@@ -1044,18 +1042,18 @@ Removes an existing item or set of items.  Requires that a collection was set wh
     };
 
     query.remove(callback);
-    //removes every item whose 'name' attribute is equal to 'John'
+    //Removes every item whose name attribute equals John.
 ~~~~
 
 ## Collection
 
 Class: ClearBlade.Collection(options)
 
-To instantiate a collection object you can either supply an object containing <COLLECTION_NAME>, <COLLECTION_ID> or a string for the collectionID. Here are the mutually exclusive values for the object:
+To instantiate a collection object, you can supply an object containing <COLLECTION_NAME>, <COLLECTION_ID>, or a string for the collectionID. Here are the object's mutually exclusive values:
 
-* **collectionName** (string) - the name of the collection you want to access
-* **collectionID** (string) - the ID of the collection you want to access
-* **collection** (string) - the ID of the collection you want to access
+* **collectionName** (string): The collection name you want to access
+* **collectionID** (string): The collection ID you want to access
+* **collection** (string): The collection ID you want to access
 
 ~~~~javascript
 	//With collectionName key and value:
@@ -1072,23 +1070,23 @@ To instantiate a collection object you can either supply an object containing <C
 
 ### jsonb
 
-Collections now support column type `jsonb`. This enables users to store json values in the database tables and query based on keys (for objects) or indexes (for arrays). 
+Collections now support column type `jsonb`. This enables users to store JSON values in the database tables and query based on keys (for objects) or indexes (for arrays). 
 
-_Note_: Postgres and sqlite have different styles to operate on json data. Postgres has json operators and functions whereas sqlite only has json functions. You will have to write different raw queries for postgres and sqlite and use the `ClearBlade.IsEdge()` function call to check if your code is running on an edge or thee platform.
-The [ClearBlade Query](#query) object only supports one json operator `->>`. This works across both postgres and sqlite. To use all other operators/functions, a raw query is required.
+_Note_: Postgres and SQLite have different styles to operate on JSON data. Postgres has JSON operators and functions whereas SQLite only has JSON functions. You must write different raw queries for Postgres and SQLite and use the `ClearBlade.IsEdge()` function call to check if your code is running on an edge or the Platform.
+The [ClearBlade Query](#query) object only supports one JSON operator `->>`. This works across Postgres and SQLite. To use all other operators/functions, a raw query is required.
 
-Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of sqlite json functions.
+Click __[HERE](https://www.sqlite.org/json1.html)__ to see a list of SQLite JSON functions.
 
-Click __[HERE](https://www.postgresql.org/docs/current/functions-json.html)__ to see a list of postgres json operators/functions.
+Click __[HERE](https://www.postgresql.org/docs/current/functions-json.html)__ to see a list of Postgres JSON operators/functions.
 
-The available methods for the Collection class and examples of how to use them are listed below:
+The available methods for the collection class and examples of how to use them are listed below.
 
 ## Collection.fetch(query, callback)
 
-Reqests an item or a set of items from the collection.
+Requests an item or a set of items from the collection.
 
 * @param {Query} _query Used to request a specific item or subset of items from the collection on the server. Optional.
-* @param {function} callback Supplies processing for what to do with the data that is returned from the collection
+* @param {function} callback Supplies processing for what to do with the data that is returned from the collection.
 
 Basic Example:
 
@@ -1125,12 +1123,12 @@ Example with Query:
 
 Creates a new item in the collection and returns the created item to the callback
 
-* @param {Object} newItem - An object that represents an item that you want to add to the collection
-* @param {function} callback - Supplies processing for what to do with the data that is returned from the collection
+* @param {Object} newItem: An object that represents an item that you want to add to the collection
+* @param {function} callback: Supplies processing for what to do with the data that is returned from the collection
 
 **Example:**
 ~~~javascript
-   	//This example assumes a collection of items that have the columns: name, height, and age.
+   	//This example assumes a collection with name, height, and age columns.
     var newPerson = {
         name: 'Jim',
         height: 70,
@@ -1145,22 +1143,22 @@ Creates a new item in the collection and returns the created item to the callbac
     };
     var col = ClearBlade.Collection( {collectionName: "<COLLECTION_NAME>" } );
     col.create(newPerson, callback);
-    //this inserts the the newPerson item into the collection that col represents
+    //This inserts the newPerson item into the collection that col represents
 ~~~
 
 ## Collection.update(_query, changes, callback)
 
 Updates an existing item or set of items
 
-   * @param {Query} _query Query object to denote which items or set of Items will be changed
-   * @param {Object} changes Object representing the attributes that you want changed
-   * @param {function} callback Function that handles the response of the server
+   * @param {Query} _query Query object to denote which items or set of items will be changed
+   * @param {Object} changes Object representing the attributes that you want to be changed
+   * @param {function} callback Function that handles the server's response
 
 
 **Example:**
 
 ~~~javascript
-    //This example assumes a collection of items that have the columns name and age.
+    //This example assumes a collection with name and age columns.
     var query = ClearBlade.Query();
     query.equalTo('name', 'John');
     var changes = {
@@ -1184,12 +1182,12 @@ Updates an existing item or set of items
 
 Removes an item or set of items from the specified collection
 
-* @param {Query} _query Query object that used to define what item or set of items to remove
-* @param {function} callback Function that handles the response from the server
+* @param {Query} _query Query object that defines what item or set of items to remove
+* @param {function} callback Function that handles the server's response
 
 **Example:**
 ~~~javascript
-    //This example assumes that you have a collection with the item whose 'name' attribute is 'John'
+    //This example assumes that you have a collection with the item whose name attribute is John.
     var query = ClearBlade.Query();
     query.equalTo('name', 'John');
     var callback = function (err, data) {
@@ -1202,14 +1200,14 @@ Removes an item or set of items from the specified collection
 
    	var col = ClearBlade.Collection({collectionName: "<COLLECTION_NAME>"});
     col.remove(query, callback);
-    //removes every item whose 'name' attribute is equal to 'John'
+    //removes every item whose name attribute equals John.
 ~~~
 ## Collection.addColumn(options, callback)
 
 Adds a column to a specified collection.
 
-* @param {object} options- Define the columns to be added.
-* @param {function} callback - Function that handles the response from the server
+* @param {object} options: Define the columns to be added.
+* @param {function} callback: Function that handles the server's response
 
 ~~~javascript
 	ClearBlade.init({ request: req });
@@ -1232,10 +1230,10 @@ Adds a column to a specified collection.
 
 Retrieves the count of items in a collection that match the supplied query
 
-* @param {Query} _query - Query object that used to define what item or set of items to remove. Optional
-* @param {function} callback - Function that handles the response from the server
+* @param {Query} _query: Query object that defines what item or set of items to remove. Optional
+* @param {function} callback: Function that handles the server's response
 
-**Basic Example:**
+**Basic example:**
 
 ~~~javascript
    var callback = function (err, data) {
@@ -1248,9 +1246,9 @@ Retrieves the count of items in a collection that match the supplied query
 
    	var col = ClearBlade.Collection({collectionName: "<COLLECTION_NAME>"});
     col.count(callback);
-    //this returns an object in the form of {count: 5}
+    //This returns an object in the form of {count: 5}
 ~~~
-**Example with Query:**
+**Example with query:**
 ~~~javascript
     var callback = function (err, data) {
         if (err) {
@@ -1264,7 +1262,7 @@ Retrieves the count of items in a collection that match the supplied query
    	var query = ClearBlade.Query();
    	query.equalTo("name", "John");
     col.count(query, callback);
-    //this returns an object in the form of {count: 2}
+    //This returns an object in the form of {count: 2}
 
 ~~~
 
@@ -1272,17 +1270,17 @@ Retrieves the count of items in a collection that match the supplied query
 
 Class: ClearBlade.Database();
 
-This class allows you to specify the query in raw SQL on platform and edge instead of using the existing ClearBlade query model. The function can be used for operations, such as `JOIN` and `SOME`, that are not supported by the ClearBlade Query Model.
+This class allows you to specify the query in raw SQL on the Platform and edge instead of using the existing ClearBlade query model. The function can be used for operations such as `JOIN` and `SOME` that are not supported by the ClearBlade query model.
 
-Note: using a raw query will not fire triggers or sync your changes.
+Note: A raw query will not fire triggers or sync your changes.
 
-Use the Database object without the options object for performing query and exec operations on collections.
+Use the database object without the options object for performing query and exec operations on collections.
 
 ~~~javascript
 		var db = ClearBlade.Database();
 ~~~
 
-Use the Database object with the external database options object for performing operations on external database connections.
+Use the database object with the external database options object to perform operations on external connections.
 
 ~~~javascript
 		 var db = ClearBlade.Database({externalDBName: "externalDB"});
@@ -1291,7 +1289,7 @@ Use the Database object with the external database options object for performing
 ## ClearBlade.Database.query(_query, [params], callback)
 
 This function returns query results to be parsed.
-params are optional.
+Params are optional.
 
 ~~~~javascript
 	var db = ClearBlade.Database();
@@ -1302,17 +1300,17 @@ params are optional.
         	resp.success(data);
         }
 	db.query("select sum(ingress) from traffic where entrance='Main_Entrance';", callback);
-	//'ingress' is a column in 'traffic' collection
+	//ingress is a traffic collection column
     };
 ~~~~
 
 ## ClearBlade.Database.exec(_query, [params], callback)
 
 This function does not return query results. 
-params are optional.
+Params are optional.
 
-* @param {Query} _query - Query object that used to define what operations are being used. 
-* @param {function} callback - Function that handles the response from the server
+* @param {Query} _query: Query object defining what operations are used
+* @param {function} callback: Function that handles the server's response
 
 ~~~~javascript
 	var db = ClearBlade.Database();
@@ -1329,7 +1327,7 @@ params are optional.
 ## ClearBlade.Database.transaction(statements, callback)
 Executes a SQL transaction with the given statements.
 If one of the statements throws an error, the entire transaction is rolled back.
-All statements are treated the same as "exec", no results will be returned.
+All statements are treated the same as exec, no results will be returned.
 
 You can make use of the ClearBlade.Database.statement(statement, args...) helper function to simplify the building of a transaction.
 
@@ -1346,14 +1344,14 @@ You can make use of the ClearBlade.Database.statement(statement, args...) helper
 
 This function takes a callback as the first argument and a variable number of string arguments after the callback.
 
-* @param {function} callback - Function that handles the response from the server
-* @param {...string} arguments - Arguments that are used in the external databases.
+* @param {function} callback: Function that handles the server's response
+* @param {...string} arguments: Arguments used in external databases.
 
-We define how the param `arguments` looks like for each database below.
+We define the param arguments for each database below.
 
 ### MongoDB 
 
-dbCommand: valid mongodb commands 
+dbCommand: Valid MongoDB commands 
 
 Example command forms:
 
@@ -1378,13 +1376,13 @@ __Collection methods that are supported__:
 * estimatedDocumentCount
 * aggregate
 
-__The following Cursor methods are supported:__
+__The following cursor methods are supported:__
 * sort
 * limit
 * skip
 * collation
 
-MongoDB CLI commands can be found here -  https://docs.mongodb.com/manual/reference/method/js-collection/
+MongoDB CLI commands can be found here: https://docs.mongodb.com/manual/reference/method/js-collection/
   
 ~~~~javascript
 
@@ -1422,7 +1420,7 @@ All SQL queries are supported
 
 
 ~~~~javascript
-// Another way to invoke the db.performOperation, this example is in continuation of the above example, just changing values for few of the variables.
+// Another way to invoke the db.performOperation. This example is in continuation of the above example, changing values for a few variables.
 var sqlQuery2 = "SELECT * from myTable where name=$1"
 	db.performOperation(callback, sqlQuery2, "Bob") // 3rd arg will be substitution for $1
 ~~~~
@@ -1435,7 +1433,7 @@ var sqlQuery2 = "SELECT * from myTable where name=$1"
   - data: example: "{\"docs\": [{\"name\": \"Bob\", \"age\": 100}]}"
   `data` is optional and is unavailable for `GET` operations.
 
-Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.html
+Please use the APIs listed here: https://docs.couchdb.org/en/stable/api/index.html
 
 ~~~~javascript
 	var db = ClearBlade.Database({externalDBName: "externalDB"});
@@ -1452,7 +1450,7 @@ Please use the APIs listed here - https://docs.couchdb.org/en/stable/api/index.h
 ~~~~
 
 ~~~~javascript
-// Another way to invoke the db.performOperation, this example is in continuation of the above example, just changing values for few of the variables.
+// Another way to invoke the db.performOperation. This example is in continuation of the above example, changing values for a few variables.
 	var httpMethod = "POST"
 	var uri = "/myDb/bulk_docs"
 	var data = {
@@ -1505,29 +1503,29 @@ function testInsert(req,resp) {
 
 ## ClearBlade.Database.performOperationAsync(callback, argument)
 
-This function is an asynchronous version of ```performOperation```. This function takes a callback as the first argument and a variable number of string arguments after the callback. This function does not return the results of the operation. It only returns ___"Success"___ if the operation succeeded or an error message if the operation failed.
+This function is an asynchronous version of ```performOperation```. This function takes a callback as the first argument and a variable number of string arguments after the callback. This function does not return the operation results. It only returns ___"Success"___ if the operation succeeded or an error message if the operation failed.
 
-* @param {function} callback - Function that handles the response from the server
-* @param {...string} arguments - Arguments that are used in the external databases. 
+* @param {function} callback: Function that handles the server's response.
+* @param {...string} arguments: Arguments used in external databases. 
 
 
 # Class: ClearBlade.Device(options)
 
-To instantiate a Device object all you need to do is call:
+To instantiate a device object, call:
 
 ~~~javascript
 
 	var dev = ClearBlade.Device();
 ~~~
 
-The available methods for the Device class and examples of how to use them are listed below:
+The available methods for the device class and examples of how to use them are listed below.
 
 ## Device.fetch(query, callback)
 
-Reqests a device or a set of devices from the devices collection.
+Requests a device or a set of devices from the devices collection.
 
-* @param {Query} _query Used to request a specific device or subset of devices from the devices collection on the server. Optional. If a query is not specified, __ALL__ devices will be returned.
-* @param {function} callback Supplies processing for what to do with the data that is returned from the collection
+* @param {Query} _query Used to request a specific device or subset of devices from the server's devices collection. Optional. If a query is not specified, __ALL__ devices will be returned.
+* @param {function} callback Supplies processing for what to do with the data that is returned from the collection.
 
 Basic Example:
 
@@ -1566,8 +1564,8 @@ Example with Query:
 
 Creates a new device in the devices collection.
 
-* @param {object} device A json object representing the device to be created. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns, and will be used to initialize the contents of the respective column.
-* @param {function} callback Supplies processing for what to do with any returned data when the invocation is completed
+* @param {object} device A JSON object representing the device to be created. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns. They will be used to initialize the contents of the respective column.
+* @param {function} callback Supplies processing for what to do with any returned data when the invocation is completed.
 
 Example:
 
@@ -1599,8 +1597,8 @@ Example:
 Updates a device or a set of devices from the devices collection.
 
 * @param {Query} query Used to request a specific device or subset of devices from the devices collection on the server. Optional.
-* @param {object} changes A json object representing the device columns to be updated. The attributes specified in the JSON object correspond to the columns in the Devices table, including any custom columns, and will be used to update the contents of the respective column.
-* @param {function} callback Supplies processing for what to do with any returned data when the invocation has been completed
+* @param {object} changes A JSON object representing the device columns to be updated. The attributes specified in the JSON object correspond to the columns in the devices table, including any custom columns. They will be used to update the contents of the respective column.
+* @param {function} callback Supplies processing for what to do with any returned data when the invocation has been completed.
 
 Example:
 
@@ -1626,8 +1624,8 @@ Example:
 
 Deletes a device or a set of devices from the devices collection.
 
-* @param {Query} _query Used to delete a specific device or subset of devices from the devices collection on the server. REQUIRED. If a query is not specified, an error will be returned, preventing the inadvertent situation where all devices are deleted.
-* @param {function} callback Supplies processing for what to do with the any returned data when the invocation is completed
+* @param {Query} _query Used to delete a specific device or subset of devices from the server's devices collection. Required. If a query is not specified, an error will be returned, preventing accidental deletion of all devices.
+* @param {function} callback Supplies processing for what to do with any returned data when the invocation is completed.
 
 Example:
 
@@ -1650,34 +1648,34 @@ Example:
 
 ## Messaging
 
-**Please note: we recommend using the [MQTT library](https://github.com/ClearBlade/native-libraries/blob/master/mqtt.md) instead of the Messaging methods.**
+**Please note: we recommend using the [MQTT library](https://github.com/ClearBlade/native-libraries/blob/master/mqtt.md) instead of the messaging methods.**
 
 Class: ClearBlade.Messaging()
 
-To instantiate a Messaging object all you need to do is call:
+To instantiate a messaging object, call:
 
 ~~~javascript
 
 	var msg = ClearBlade.Messaging();
 ~~~
 
-The available methods for the Messaging class and examples of how to use them are listed below:
+The available methods for the messaging class and examples of how to use them are listed below.
 
 ## Messaging.getMessageHistory(topic, start, count, callback)
 
 Retrieves the message history for a topic within the specified parameters.
 
-* @param {string} topic - String that signifies which topic to search
-* @param {number} start - Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
-* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
-* @param {function} callback - Function that handles the response from the server
+* @param {string} topic: String that signifies which topic to search
+* @param {number} start: Epoch timestamp in seconds that will retrieve 'count' number of messages after that timestamp
+* @param {number} count: Number that signifies how many messages to return; 0 returns all messages
+* @param {function} callback: Function that handles the server's response
 
 **Example:**
 
 ~~~javascript
 	var msg = ClearBlade.Messaging();
     var unixTimeMilli = new Date().getTime()
-    // Get messages from last 60 seconds
+    // Get messages from the last 60 seconds
     var timestampMinAgo = unixTimeMilli - 60;
 	msg.getMessageHistory("coolTopic", timestampMinAgo, 25, function(err, data) {
 		if(err) {
@@ -1690,21 +1688,21 @@ Retrieves the message history for a topic within the specified parameters.
 
 ## Messaging.subscribe(topic, callback)
 
-Subscribes to a MQTT message topic.
+Subscribes to an MQTT message topic.
 
-Prereq: The user's role should have permissions to subscribe to that topic. Verify on the `Roles` Page of `ClearBlade Console`.
+Prereq: The user's role should have permission to subscribe to that topic. Verify on the `Roles` page of `ClearBlade Console`.
 
 Callback subscribe:
 
 * @callback subscribeCallback
-* @param {boolean} err - Is true if there is an error.
-* @param {Object} data - the response from the MQTT broker.
+* @param {boolean} err: Is true if an error exists.
+* @param {Object} data: The response from the MQTT broker.
 
 
-Function Subscribe:
+Function subscribe:
 
-* @param {string} topic - String that signifies which topic to subscribe
-* @param {function} subscribeCallback - Function that handles the response from the mqtt broker
+* @param {string} topic: String that signifies which topic to subscribe
+* @param {function} subscribeCallback: Function that handles the response from the MQTT broker
 
 **Example:**
 
@@ -1722,20 +1720,20 @@ Function Subscribe:
 
 ## Messaging.waitForMessage(topics, callback)
 
-This method waits for message on the array of topics it is provided. Usually used within Stream Services.
+This method waits for a message on the topics array it is provided. Usually used within stream services.
 
 Callback waitForMessage:
 
  * @callback waitForMessageCallback
- * @param {boolean} err - Is true if there is an error
- * @param {string} msg - The message which gets published on the topic
- * @param {string} topic - It's one of the topics which waitForMessage was listening on
+ * @param {boolean} err: Is true if an error exists
+ * @param {string} msg: The message which gets published on the topic
+ * @param {string} topic: One of the topics that waitForMessage was listening on
 
 
 Function waitForMessage:
 
-* @param {[]string} topics - An array of topics to wait for messages on
-* @param {function} waitForMessageCallback - Function that handles the response from the server
+* @param {[]string} topics: An array of topics to wait for messages on
+* @param {function} waitForMessageCallback: Function that handles the server's response
 
 **Example:**
 
@@ -1765,12 +1763,12 @@ Function waitForMessage:
 
 Retrieves the message history for a topic within the specified parameters.
 
-* @param {string} topic - String that signifies which topic to search
-* @param {number} count - Number that signifies how many messages to return; 0 returns all messages
-* @param {int} last - Epoch timestamp in seconds that will retrieve 'count' number of messages before that timestamp
-* @param {int} start - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
-* @param {int} stop - Epoch timestamp in seconds that will retrieve 'count' number of  messages within timeframe
-* @param {function} callback - Function that handles the response from the server
+* @param {string} topic: String that signifies which topic to search
+* @param {number} count: Number that signifies how many messages to return; 0 returns all messages
+* @param {int} last: Epoch timestamp in seconds that will retrieve 'count' number of messages before that timestamp
+* @param {int} start: Epoch timestamp in seconds that will retrieve 'count' number of messages within the timeframe
+* @param {int} stop: Epoch timestamp in seconds that will retrieve 'count' number of messages within the timeframe
+* @param {function} callback: Function that handles the server's response
 
 **Example:**
 
@@ -1790,11 +1788,11 @@ Retrieves the message history for a topic within the specified parameters.
 
 Publishes to a topic.
 
-* @param {string} topic - Is the topic path of the message to be published. This will be sent to all listeners on the topic. No default.
-* @param {string} payload - The payload to be sent. Also no default.
+* @param {string} topic: The topic path of the message to be published. This will be sent to all listeners on the topic. No default.
+* @param {string} payload: The payload to be sent. Also no default.
 
 {{< warning title="Topic Restrictions" >}}
-A topic is comprised one or more topic levels (ex. 'factory/1/device/3' is a single topic with four topic levels) The '/' is a reserved character to separate topic levels, and thus, a topic level cannot contain '/' in its name. However, spaces and punctuation are allowed.
+A topic comprises one or more topic levels (ex., 'factory/1/device/3' is a single topic with four topic levels). The '/' is a reserved character to separate topic levels; thus, a topic level cannot contain '/' in its name. However, spaces and punctuation are allowed.
 {{< /note >}}
 **Example:**
 
@@ -1805,9 +1803,9 @@ A topic is comprised one or more topic levels (ex. 'factory/1/device/3' is a sin
 
 ## Message.getCurrentTopics(callback)
 
-Returns the current topics for a system
+Returns a system's current topics
 
-* @param {function} callback - Function that handles the response from the server
+* @param {function} callback: Function that handles the server's response
 
 **Example:**
 ~~~javascript
@@ -1826,16 +1824,16 @@ Returns the current topics for a system
 
 ## Message.getAndDeleteMessageHistory(topic, count, last, start, stop, callback)
 
- This call deletes all of the message history for mqtt topic 'topic'. It has 4 options that you can set when you delete the message history. 'count' is the number of messages you wish to delete. For count = 0, all messages for that topic are deleted. You can also use either the 'last' or the 'start and stop' options to widen you search. The 'last' options which is an epoch timestamp in seconds will retrieve and delete 'count' number of messages before that timestamp. The 'start and stop' options which are also an epoch timestamp will retrieve and delete 'count' number of messages within that timeframe. For each of these cases you can either set 'count' to zero or a non zero value depending on how many messages you wish to delete.
+ This call deletes the MQTT topic's message history. It has four options to set when you delete it. 'count' is the number of messages you wish to delete. For count = 0, all messages for that topic are deleted. You can also use the last or start and stop options to widen your search. The last option, an epoch timestamp in seconds, will retrieve and delete 'count' number of messages before that timestamp. The start and stop options, an epoch timestamp, will retrieve and delete the 'count' number of messages within that timeframe. For each case, you can set 'count' to zero or a non-zero value depending on how many messages you wish to delete.
 
- The return value is a list of js objects, one for each returned item in the message history.
+ The return value is a list of objects, one for each returned item in the message history.
 
- * @param {string} topic - String that signifies which topic to search
- * @param {number} count - Number that signifies how many messages to return and delete; 0 returns and deletes all messages
- * @param {int} last - Epoch timestamp in seconds that will retrieve and delete 'count' number of messages before that timestamp
- * @param {int} start - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
- * @param {int} stop - Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
- * @param {function} callback - Function that handles the response from the server
+ * @param {string} topic: String that signifies which topic to search
+ * @param {number} count: Number that signifies how many messages to return and delete; 0 returns and deletes all messages
+ * @param {int} last: Epoch timestamp in seconds that will retrieve and delete 'count' number of messages before that timestamp
+ * @param {int} start: Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
+ * @param {int} stop: Epoch timestamp in seconds that will retrieve and delete 'count' number of  messages within timeframe
+ * @param {function} callback: Function that handles the server's response
 
 **Example:**
 ~~~javascript
@@ -1849,7 +1847,7 @@ Returns the current topics for a system
     };
 
     var msg = ClearBlade.Messaging();
-    msg.getAndDeleteMessageHistory("TestTopic", 0, null, null, null, callback); // get and delete all messages for "TestTopic"
+    msg.getAndDeleteMessageHistory("TestTopic", 0, null, null, null, callback); // get and delete all messages for TestTopic.
 ~~~
 
 ## messaging.setTimeout(timeout, topic, data, callback)
@@ -1857,14 +1855,14 @@ Returns the current topics for a system
 This method publishes data to a topic after timing out.
 
 @callback cbSetTimeout
- * @param {boolean} err - Is true if there is an error
- * @param {string} msg - timerId if no error, error message otherwise
+ * @param {boolean} err: Is true if an error exists
+ * @param {string} msg: timerId if no error, error message otherwise
 
 function setTimeout:
- * @param {number} timeout - Timeout in miliseconds
- * @param {string} topic - String that signifies which topic to search
- * @param {string} data - Data to publish to the topic once it timeouts
- * @param {cbSetTimeout} callback - Function that handles the response from the server
+ * @param {number} timeout: Timeout in milliseconds
+ * @param {string} topic: String that signifies which topic to search
+ * @param {string} data: Data to publish to the topic once it timeouts
+ * @param {cbSetTimeout} callback: Function that handles the server's response
 
 
 
@@ -1890,9 +1888,9 @@ This method cancels the timeout message with the given timerId.
 
 @callback cancelCBTimeout:
 
- * @param {function} callback - Function that handles the response from the server
- * @param {boolean} err - Is true if there is an error
- * @param {string} timerId -  if there is no error, error message otherwise
+ * @param {function} callback: Function that handles the server's response
+ * @param {boolean} err: Is true if an error exists
+ * @param {string} timerId: If there is no error, error message otherwise
 
 **Example:**
 
@@ -1912,20 +1910,20 @@ This method cancels the timeout message with the given timerId.
 
 ## messaging.setInterval(timeout, topic, data, iterations, callback)
 
-This method publishes data to topic after timing out, repeats iterations.
+This method publishes data to a topic after timing out and repeats iterations.
 
 @callback cbSetInterval:
- * @param {boolean} err - Is true if there is an error
- * @param {string} msg - timerId if no error, error message otherwise
+ * @param {boolean} err: Is true if an error exists
+ * @param {string} msg: timerId if no error, error message otherwise
 
 
 function setInterval:
 
- * @param {number} timeout - Timeout in milliseconds
- * @param {string} topic - The topic to publish to, after every timeout
- * @param {string} data - Data to publish to the topic once it timeouts
- * @param {number} iterations - Number of times timeout is set
- * @param {function} callback - Function that handles the response from the server
+ * @param {number} timeout: Timeout in milliseconds
+ * @param {string} topic: The topic to publish to after every timeout
+ * @param {string} data: Data to publish to the topic once it timeouts
+ * @param {number} iterations: Number of times the timeout is set
+ * @param {function} callback: Function that handles the server's response
 
 **Example:**
 
@@ -1950,9 +1948,9 @@ This method cancels the interval message with the given intervalId.
 
 @callback cancelCBInterval:
 
- * @param {function} callback - Function that handles the response from the server
- * @param {boolean} err - Is true if there is an error
- * @param {string} intervalId -  if there is no error, error message otherwise
+ * @param {function} callback: Function that handles the server's response
+ * @param {boolean} err: Is true if an error exists
+ * @param {string} intervalId: If there is no error, error message otherwise
 
 **Example:**
 
@@ -1971,8 +1969,8 @@ This method cancels the interval message with the given intervalId.
 
 # Class: ClearBlade.Code()
 
-The code class is used to call other code services from within a service.
-To instantiate the code class just call:
+The code class calls other code services from within a service.
+To instantiate the code class call:
 
 ~~~javascript
 	var code = ClearBlade.Code();
@@ -1984,10 +1982,10 @@ Executes another code service.
 
 ~~~javascript
 /**
-* @param {string} name - String representing the name of the code service that should be executed.
-* @param {Object} params - Object that contains all the parameters that will be used for the code service. Optional.
-* @param {Boolean} loggingEnabled - Boolean that represents whether or not the code service should use logging
-* @param {callback} To handle response from code service
+* @param {string} name: String representing the code service name that should be executed.
+* @param {Object} params: Object containing all the parameters used for the code service. Optional.
+* @param {Boolean} loggingEnabled: Boolean that represents whether or not the code service should use logging.
+* @param {callback} Handles the code service's response.
 */
 
 function MyService(req, resp){
@@ -2022,12 +2020,11 @@ This class allows for interacting with user information.
 ## User.getUser(callback)
 Returns the user table row for the user that the service is running as.
 
-
 ## User.allUsers(query,callback)
-Accepts a ClearBlade.Query object and a callback. It will return all users that match on the query. (excepting attempting to match on the password field)
+Accepts a ClearBlade.Query object and a callback. It will return all users that match the query (except attempting to match the password field).
 
 ## User.setUsers(query,changes,callback)  
-operates on the users table in much the same way update works on a collection.
+Operates on the users table in the same way an update works on a collection.
 
 ```javascript
 
@@ -2051,11 +2048,10 @@ operates on the users table in much the same way update works on a collection.
 ```
 
 ## User.setUser(changes,callback)
-updates just the user the service is running as.
+Updates the user the service is running as.
 
 ## User.count(query,callback)  
-returns a count of users who have matched the query
-
+Returns a user count who have matched the query.
 
 ## Timer
 
@@ -2063,7 +2059,7 @@ Events: ClearBlade Timer
 
 
 ## ClearBlade.Timer.Create(name, options, callback)
-### Create a new Timer (runs a function at a set interval)
+### Create a new timer (runs a function at a set interval)
 ```javascript
 ClearBlade.Timer.Create("runValidatorEveryHour",
     {
@@ -2082,7 +2078,7 @@ ClearBlade.Timer.Create("runValidatorEveryHour",
 
 
 ## ClearBlade.Timer.Fetch(name, callback)
-### Fetch an existing Timer
+### Fetch an existing timer
 
 
 ## timer.Update(options, callback)
@@ -2125,7 +2121,7 @@ Events: ClearBlade Trigger
 
 
 ## ClearBlade.Trigger.Create(name, options, callback)
-### Create a new Trigger (runs a service after a defined action is detected)
+### Create a new trigger (runs a service after a defined action is detected)
 ```javascript
 ClearBlade.Trigger.Create("runTestAfterPublishOnTopicFoo", {
         "def_module":      "Messaging",
@@ -2140,7 +2136,7 @@ ClearBlade.Trigger.Create("runTestAfterPublishOnTopicFoo", {
 
 
 ## ClearBlade.Trigger.Fetch(name, callback)
-### Fetch an existing Trigger
+### Fetch an existing trigger
 
 
 ## trigger.Update(options, callback)
@@ -2181,7 +2177,7 @@ ClearBlade.Trigger.Fetch("unTestAfterPublishOnTopicFoo", function(err, trigger) 
 
 ### ClearBlade.isEdge()
 
-Returns true if code service is executing on an Edge. Otherwise, false
+Returns true if the code service is executing on an edge. Otherwise, false.
 
 ~~~javascript
 function myService(req, resp){
@@ -2195,7 +2191,7 @@ function myService(req, resp){
 
 ### ClearBlade.edgeId()
 
-Returns the name of Edge if running on an Edge, else returns empty string
+Returns the edge name if running on an edge, else returns an empty string.
 
 ~~~javascript
 function myService(req, resp){
@@ -2208,8 +2204,8 @@ function myService(req, resp){
 
 Class: ClearBlade.Roles()
 
-This class allows for interacting with roles settings and information.
-To instantiate the roles class just call:
+This class allows for interaction with roles, settings, and information.
+To instantiate the roles class call:
 
 ~~~javascript
 	var roles = ClearBlade.Roles();
@@ -2225,7 +2221,7 @@ This method creates a role.
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info from requested roleID or error string
+* @param {string} data: Returns role info from the requested roleID or error string
 
 ### Example
 
@@ -2244,14 +2240,14 @@ This method creates a role.
 
 This method updates a role's description. To update the permissions, check the permissions class.
 
-* @param {string} roleID - Required.
+* @param {string} roleID: Required.
 * @param {Object} changes
-* @param {string} changes.description - updated description for the role
+* @param {string} changes.description: Updated role description
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info from requested roleID or error string
+* @param {string} data: Returns role info from the requested roleID or error string
 
 ### Example
 
@@ -2272,12 +2268,12 @@ This method updates a role's description. To update the permissions, check the p
 
 This method deletes a role.
 
-* @param {string} roleID - The role's unique ID. Required.
+* @param {string} roleID: The role's unique ID. Required.
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info from requested roleID or error string
+* @param {string} data: Returns role info from the requested roleID or error string
 
 ### Example
 
@@ -2297,12 +2293,12 @@ This method deletes a role.
 
 This method gets role info with a query.
 
-* @param {Query} query - Query object that used to filter the roles. Query page size will be defaulted to 100 if size is not provided
+* @param {Query} query: Query object that filters the roles. Query page size will default to 100 if the size is not provided
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info from requested roleID or error string
+* @param {string} data: Returns role info from requested roleID or error string
 
 ### Example
 
@@ -2322,12 +2318,12 @@ This method gets role info with a query.
 ## roles.getById(roleID, callback)
 
 * This method gets role info with the role ID.
-* @param {string} roleID -  Required.
+* @param {string} roleID: Required.
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info from requested roleID or error string
+* @param {string} data: Returns role info from the requested roleID or error string
 
 ### Example
 
@@ -2353,7 +2349,7 @@ This method gets role info with the role name.
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns role info for requested roleName or error string
+* @param {string} data: Returns role info for the requested roleName or error string
 
 ### Example
 
@@ -2375,12 +2371,12 @@ This method gets role info with the role name.
 This method adds a role to a user.
 
 * @param {string} userID
-* @param {string} roleNameOrID - A role can be added to the user using a role name or ID
+* @param {string} roleNameOrID: A role can be added to the user using a role name or ID
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns a value for `user_role_id`
+* @param {string} data: Returns a value for `user_role_id`
 
 ### Example
 
@@ -2406,7 +2402,7 @@ This method gets role(s) for a user.
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns the IDs for role, user, and user_role
+* @param {string} data: Returns the IDs for role, user, and user_role
 
 ### Example
 
@@ -2428,12 +2424,12 @@ This method gets role(s) for a user.
 This method removes a role for a user.
 
 * @param {string} userID 
-* @param {string} roleNameOrID - A role can be removed from the user using a role name or ID
+* @param {string} roleNameOrID: A role can be removed from the user using a role name or ID
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns a success response
+* @param {string} data: Returns a success response
 
 ### Example
 
@@ -2455,12 +2451,12 @@ This method removes a role for a user.
 This method adds a role to a device.
 
 * @param {string} deviceName 
-* @param {string} roleNameOrID - A role can be added to the device using a role name or ID
+* @param {string} roleNameOrID: A role can be added to the device using a role name or ID
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns unique `device_role_id`
+* @param {string} data: Returns unique `device_role_id`
 
 ### Example
 
@@ -2486,7 +2482,7 @@ This method gets role(s) for a device.
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns the IDs for role, device, and device_role
+* @param {string} data: Returns the IDs for role, device, and device_role
 
 ### Example
 
@@ -2508,7 +2504,7 @@ This method gets role(s) for a device.
 This method removes a role for a device.
 
 * @param {string} deviceName 
-* @param {string} roleNameOrID - A role can be removed from the device using a role name or ID
+* @param {string} roleNameOrID: A role can be removed from the device using a role name or ID
 * @param {callback} callback
 
 * @callback callback
@@ -2542,7 +2538,7 @@ This method duplicates an existing role's meta and permissions.
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns a new roleID for the duplicate role
+* @param {string} data: Returns a new roleID for the duplicate role
 
 ### Example
 
@@ -2562,14 +2558,14 @@ This method duplicates an existing role's meta and permissions.
 
 Class: ClearBlade.Permissions()
 
-This class allows for interacting with permission settings and information.
-To instantiate the permissions class just call:
+This class allows for interaction with permission settings and information.
+To instantiate the permissions class call:
 
 ~~~javascript
 	var permissions = ClearBlade.Permissions();
 ~~~
 
-### Permission Values
+### Permission values
 
 |`resourceType`|`requestType`|
 |-----|------|
@@ -2594,23 +2590,23 @@ To instantiate the permissions class just call:
 
 Example for `requestType`:
 
-1 + 2 = 3 which is the READ and CREATE permissions. 15 is all permissions
+1 + 2 = 3, which is the READ and CREATE permissions. 15 is all permissions
 
 ## permissions.addPermissionToRole(roleID, info, callback)
 
 This method adds permissions to a role.
 
-* @param {string} roleID - The role's unique ID.
+* @param {string} roleID: The role's unique ID.
 * {Object} info
-* {int} info.requestType - permission types to be added. See above for possible values.
-* {string} info.resourceType - asset types that the permissions are added to. See above for possible values.
-* {string} info.resourceName - name of the asset to add permissions to
+* {int} info.requestType: Permission types to be added. See above for possible values.
+* {string} info.resourceType: Asset types that the permissions are added to. See above for possible values.
+* {string} info.resourceName: Asset name to add permissions to.
 * @param {string} oldRoleID 
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns permID
+* @param {string} data: Returns permID
 
 ### Example
 
@@ -2630,12 +2626,12 @@ This method adds permissions to a role.
 
 This method gets all permissions for a role.
 
-* @param {string} roleID -  Required.
+* @param {string} roleID: Required.
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data - Returns all permissions and info for the asset(s) with the roleID
+* @param {string} data: Returns all permissions and info for the asset(s) with the roleID
 
 ### Example
 
@@ -2656,13 +2652,13 @@ This method gets all permissions for a role.
 
 This method gets all permissions for a resource.
 
-* @param {string} resourceType - asset types that have the permissions. See above for possible values.
-* @param {string} resourceName - name of the asset have the permissions.
+* @param {string} resourceType: Asset types that have the permissions. See above for possible values.
+* @param {string} resourceName: The asset's name has the permissions.
 * @param {callback} callback
 
 * @callback callback
 * @param {boolean} err
-* @param {string} data- Returns all permission info and role ID for the asset(s) with the resource name
+* @param {string} data: Returns all permission info and role ID for the asset(s) with the resource name
 
 ### Example
 
@@ -2683,9 +2679,9 @@ This method gets all permissions for a resource.
 
 This method increases existing permissions for roles and resources.
 
-* @param {string} roleID - The role's unique ID 
-* @param {string} permID - The permission's ID
-* @param {int} requestType - permissions types to be added. See above for possible values.
+* @param {string} roleID: The role's unique ID 
+* @param {string} permID: The permission's ID
+* @param {int} requestType: Permissions types to be added. See above for possible values.
 * @param {callback} callback
 
 * @callback callback
@@ -2713,7 +2709,7 @@ This method decreases existing permissions for roles and resources.
 
 * @param {string} roleID 
 * @param {string} permID 
-* @param {int} requestType - permissions types to be added. See above for possible values.
+* @param {int} requestType: Permissions types to be added. See above for possible values.
 * @param {callback} callback
 
 * @callback callback
@@ -2765,8 +2761,8 @@ This method removes all the permissions for a role.
 
 This method removes all the permissions for a resource.
 
-* @param {string} resourceType - asset types that have the permissions. See above for possible values.
-* @param {string} resourceName - name of the asset have the permissions.
+* @param {string} resourceType: Asset types that have the permissions. See above for possible values.
+* @param {string} resourceName: The asset's name has the permissions.
 * @param {callback} callback
 
 * @callback callback
@@ -2793,9 +2789,9 @@ This method removes all the permissions for a resource.
 
 Class: ClearBlade.Lock()
 
-This class allows for interacting with cache locks. If the lock is being used across multiple services, they must all use the same lock name.
+This class allows for interaction with cache locks. If the lock is used across multiple services, they must all use the same name.
 
-To instantiate the permissions class just call:
+To instantiate the permissions class call:
 
 ~~~javascript
 	var myLock = ClearBlade.Lock(name,caller);
@@ -2836,7 +2832,7 @@ This method obtains a write lock on the entire cache.
 
 ## myLock.unlock()
 
-This method releases the current lock.
+This method releases the lock.
 
 ## myLock.rlock()
 
@@ -2844,14 +2840,14 @@ This method obtains a read lock for multiple users.
 
 ## myLock.runlock()
 
-This method obtains releases the current read lock.
+This method obtains releases the read lock.
 
 # Deployments
 
-This class is used for interacting with deployments. You can create, delete, update, read one, or
-read all deployments.
+This class is used for interacting with deployments. You can create, delete, update, or
+read deployments.
 
-To instantiate a Deployment object all you need to do is call:
+To instantiate a deployment object, call:
 
 ~~~ javascript
     var depl = ClearBlade.Deployment();
@@ -2861,12 +2857,12 @@ To instantiate a Deployment object all you need to do is call:
 
 Creates a new deployment
 
-* @param {string} name The name of the deployment.
-* @param {string} description Describes the purpose of the deployment.
-* @param {object} options Specifies the assets and edges in the deployment.
+* @param {string} name The deployment's name.
+* @param {string} description Describes the deployment's purpose.
+* @param {object} options Specifies the deployment's assets and edges.
 * @param {function} callback Supplies processing for what to do with any data supplied when the invocation completes.
 
-The options parameter is a json object that specifies the assets and edges in the deployment. The structure
+The options parameter is a JSON object specifying the deployment's assets and edges. The structure
 is as follows:
 
 ~~~ json
@@ -2897,12 +2893,12 @@ is as follows:
 ]
 ~~~
 
-If asset_id == "", then all assets of that type are synced as specified. If you
-want both sync_to_edge and sync_to_platform to be true, you can just specify,
+If asset_id == "", all assets of that type are synced as specified. If you
+want both sync_to_edge and sync_to_platform to be true, you can specify,
 "sync": true.
 
-The types of assets that can be deployed (asset_class) are specified ClearBlade
-documentation online in the "Asset" subheading in the "Deployment" section.
+The types of assets that can be deployed (asset_class) are specified in the ClearBlade
+documentation online in the Asset subheading in the Deployment section.
 
 Example:
 
@@ -2975,7 +2971,7 @@ The createDeployment() call returns the deployment object on success. For exampl
 
 Reads one deployment
 
-* @param {string} name The name of the deployment.
+* @param {string} name The deployment name.
 * @param {function} The processing to do with the returned deployment information.
 
 Example:
@@ -3000,8 +2996,8 @@ return value of createDeployment() above.
 
 Reads zero or more deployments based on the query parameter
 
-* @param {Query} query A query object used to filter the deployments that are passed to the callback.
-* @param {function} callback The function that processes the results of the query.
+* @param {Query} query A query object that filters the deployments that are passed to the callback.
+* @param {function} callback The function that processes the query results.
 
 Example:
 
@@ -3026,11 +3022,11 @@ structure as in Deployment.create() and Deployment.read().
 
 Updates the options (edges, assets) of a deployment.
 
-* @param {string} name The name of the deployment.
+* @param {string} name The deployment name.
 * @param {object} changes Specifies the changes (assets, edges) to the deployment.
 * @param {function} callback Processing to perform when the update completes.
 
-the "changes" parameter is an object. It contains optionally a new description, changed assets,
+The changes parameter is an object. It contains an optional new description, changed assets,
 and changed edges. It looks as follows:
 
 ~~~ json
@@ -3082,14 +3078,14 @@ and changed edges. It looks as follows:
 
 ~~~
 
-Deployment.update() returns the deployment with all of the changes applied. The
+Deployment.update() returns the deployment with all the changes applied. The
 structure of the return value is the same as in Deployment.create() above.
 
 ## Deployment.delete(name, callback) 
 
 Deletes a deployment.
 
-* @param {string} name The name of the deployment
+* @param {string} name The deployment name
 * @param {function} callback Processing to be performed when the deployment is deleted.
 
 ## Example:
@@ -3110,4 +3106,3 @@ Deletes a deployment.
 ~~~
 
 There is no return value other than if an error occurs.
-
