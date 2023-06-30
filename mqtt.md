@@ -1,4 +1,4 @@
-This library allows for the execution of async ClearBlade messaging functions by providing an MQTT client that will work asynchronously. You can connect to the ClearBlade's Internal Broker for the same system where the code resides, or to an external broker (e.g. ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.).
+This library allows for the execution of async ClearBlade messaging functions by providing an asynchronous MQTT client. You can connect to ClearBlade's Internal Broker for the same system where the code resides or an external broker (e.g., ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.)
 ## MQTT.Message(payload)
 
 The message represents an MQTT message.
@@ -40,7 +40,7 @@ If no options are specified, the client connects to the ClearBlade broker.
 
 Example
 
-The code block below is to connect to an external clearblade broker.
+The code block below is to connect to an external ClearBlade broker.
 
 ~~~javascript
 var options = {
@@ -54,7 +54,7 @@ var client = new MQTT.Client(options);
 
 ## Client.subscribe(topic, onMessage)
 
-This function subscribes to a topic in the broker and registers a callback function which is called when a message on that topic is received.
+This function subscribes to a topic in the broker. It registers a callback function when a message on that topic is received.
 
 * @param {string} topic
 * @param {function(topic: string, message: Message)} onMessage
@@ -76,7 +76,7 @@ function myStreamService(req, resp){
 
 ## Client.publish(topic, payload, qos, retain)
 
-This function allows publish to send a MQTT message to the broker.
+This function allows publish to send an MQTT message to the broker.
 
 * publish sends an MQTT message to the broker.
 * @param {string} topic
