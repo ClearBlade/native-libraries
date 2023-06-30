@@ -3,32 +3,32 @@ The `init` function is not required.
 
 __Reference__
 1. [Query](#query)
-1. [Collections](#collections)
-1. [Databases](#databases)
-1. [File Management](#file-management)
-1. [Locks](#locks)
-1. [Users](#users)
-1. [Devices](#devices)
-1. [Auth](#auth)
-1. [Roles/Perms](#rolesperms)
-1. [Caches](#caches)
-1. [Triggers](#triggers)
-1. [Timers](#timers)
-1. [Edges](#edges)
-1. [Adapters](#adapters)
-1. [Collection Custom Sync](#collection-custom-sync)
-1. [Secret](#secret)
-1. [Preloader](#preloader)
-1. [GoogleCloudLogger](#google-cloud-logger)
-2. [Data Usage](#data-usage)
-1. [GoogleCloudMonitoring](#google-cloud-monitoring)
+2. [Collections](#collections)
+3. [Databases](#databases)
+4. [File management](#file-management)
+5. [Locks](#locks)
+6. [Users](#users)
+7. [Devices](#devices)
+8. [Auth](#auth)
+9. [Roles/Perms](#rolesperms)
+10. [Caches](#caches)
+11. [Triggers](#triggers)
+12. [Timers](#timers)
+13. [Edges](#edges)
+14. [Adapters](#adapters)
+15. [Collection custom sync](#collection-custom-sync)
+16. [Secret](#secret)
+17. [Preloader](#preloader)
+18. [GoogleCloudLogger](#google-cloud-logger)
+19. [Data usage](#data-usage)
+20. [GoogleCloudMonitoring](#google-cloud-monitoring)
 
 __Examples__
 1. [Collections](#collection-examples)
-1. [Databases](#database-examples)
-1. [File Management](#file-management-examples)
-1. [Adapter Examples](#adapter-examples)
-1. [Preloader Example](#preloader-example)
+2. [Databases](#database-examples)
+3. [File management](#file-management-examples)
+4. [Adapter examples](#adapter-examples)
+5. [Preloader example](#preloader-example)
 
 # Reference
 
@@ -47,7 +47,7 @@ ClearBladeAsync.Query()
  * Modifies a query in place, ANDing the given filter.
  * @param {string} column
  * @param {*} value
- * @returns {Query} with filter applied
+ * @returns {Query} with the filter applied
  */
 Query.equalTo(column, value)
 Query.greaterThan(column, value)
@@ -59,15 +59,15 @@ Query.matches(column, value)
 
 /**
  * Specifies limits on the query return size.
- * @param {number} pageSize - the max number of rows to return
- * @param {number} pageNum - number of pages to offset return data (1 = first page)
+ * @param {number} pageSize: The max number of rows to return
+ * @param {number} pageNum: The number of pages to offset return data (1 = first page)
  * @returns {Query} with limits applied
  */
 Query.setPage(pageSize, pageNum)
 
 /**
  * Specifies how the returned data should be sorted.
- * @param {string} column - the name of the column which should used to sort
+ * @param {string} column: The column name which should be used to sort
  * @returns {Query} with sorting applied
  */
 Query.ascending(column)
@@ -75,13 +75,13 @@ Query.descending(column)
 
 /**
  * Limits the data returned to only include the given columns.
- * @param {string[]} columns - list of column names
+ * @param {string[]} columns: The list of column names
  * @returns {Query} with filter applied
  */
 Query.columns(columns)
 
 /**
- * Sets a query string to be used in certain mongodb operations.
+ * Sets a query string to be used in certain MongoDB operations.
  * @param {string} query
  * @returns {Query} with query applied
  */
@@ -102,7 +102,7 @@ Query.or(query)
 ~~~javascript
 /**
  * Creates a new ClearBlade collection.
- * Promise resolves with object containing the new collection's metadata.
+ * Promise resolves with an object containing the new collection's metadata.
  * @param {string} name
  * @returns {Promise<{name: string, id: string}>}
  */
@@ -117,8 +117,8 @@ ClearBladeAsync.Collection(nameOrID)
 
 /**
  * @typedef {Object} fetchResponse
- * @property {Object[]} DATA - requested collection rows
- * @property {number} TOTAL - number of objects in the DATA field
+ * @property {Object[]} DATA: Requested collection rows
+ * @property {number} TOTAL: The number of objects in the DATA field
  * @property {number} CURRENTPAGE
  * @property {string} NEXTPAGEURL
  * @property {string} PREVPAGEURL
@@ -152,7 +152,7 @@ Collection.update(query, changes)
 /**
  * If the given item does not exist in the collection, it will be inserted.
  * If the item does exist, it will be updated.
- * Existence is determined by the conflictColumn, which must either be a primary key or have a unique index on it.
+ * Existence is determined by the conflictColumn, which must be a primary key or have a unique index.
  * Promise resolves with the updated rows.
  * @param {Object} item
  * @param {string} conflictColumn
@@ -178,7 +178,7 @@ Collection.count(query)
 
 /**
  * Gets all column metadata for the collection.
- * Promise resolves with list of column metadata.
+ * Promise resolves with the list of column metadata.
  * @returns {Promise<{ColumnName: string, ColumnType: string, PK: boolean}[]>}
  */
 Collection.columns()
@@ -213,7 +213,7 @@ Collection.createIndex(columnName)
 /**
  * Creates a unique index on the given column.
  * A unique index provides the same speed benefit as a regular index,
- * and enforces each entry in the indexed column is unique.
+ * and enforces each entry if the indexed column is unique.
  * Promise resolves empty.
  * @param {string} columnName
  * @returns {Promise<>}
@@ -234,31 +234,31 @@ Collection.deleteCollection()
 
 ~~~javascript
 /**
- * Represents a Database.
- * If options specifies externalDBName, database represents external database.
- * If options empty, database represents the ClearBlade system's database.
+ * Represents a database.
+ * If options specify externalDBName, the database represents the external database.
+ * If options are empty, the database represents the ClearBlade system's database.
  * @param {{externalDBName: string}} options
  * @returns {Database}
  */
 ClearBladeAsync.Database(options)
 
 /**
- * Performs a sql query on ClearBlade collections.
+ * Performs a SQL query on ClearBlade collections.
  * Promise resolves with the requested database rows.
- * Note: using a raw query will not fire triggers or sync your changes.
+ * Note: A raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
- * @param {...*} [params] optional parameters for query
+ * @param {...*} [params] the query's optional parameters
  * @returns {Promise<Object[]>}
  */
 Database.query(rawQuery, params)
 
 /**
- * Executes a sql operation on ClearBlade collections.
- * Promise resolves with the count of rows effected.
+ * Executes a SQL operation on ClearBlade collections.
+ * Promise resolves with the count of rows affected.
  * No database rows are returned with this function.
- * Note: using a raw query will not fire triggers or sync your changes.
+ * Note: A raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
- * @param {...*} [params] optional parameters for query
+ * @param {...*} [params] the query's optional parameters
  * @returns {Promise<{count: number}>}
  */
 Database.exec(rawQuery, params)
@@ -267,21 +267,21 @@ Database.exec(rawQuery, params)
  * Performs a raw operation on an external database.
  * Promise resolves with the database operation's result.
  * @param {string} operation
- * @param {...*} [args] optional arguments to operation
+ * @param {...*} [args] optional arguments to the operation
  * @returns {Promise<*>}
  */
 Database.performOperation(operation, args)
 
 /**
  * @typedef {Object} Statement
- * @prop {string} statement - a SQL statement
- * @prop {[]any} args - parameters for the statement
+ * @prop {string} statement: A SQL statement
+ * @prop {[]any} args: The statement's parameters
  */
 
 /**
  * Helper function to group statements with their queries for transactions.
- * @param {string} statement - a SQL statement
- * @param {...*} [args] - parameters for the SQL statement
+ * @param {string} statement: A SQL statement
+ * @param {...*} [args]: The statement's parameters
  * @returns {Statement}
  */
 Database.statement(statement[, args])
@@ -289,7 +289,7 @@ Database.statement(statement[, args])
 /**
  * Executes a SQL transaction on a ClearBlade collection with the given statements.
  * If one of the statements throws an error, the entire transaction is rolled back.
- * All statements are treated the same as "exec", no results will be returned.
+ * All statements are treated the same as exec. No results will be returned.
  * Promise resolves empty on success.
  * @param {[]Statement} statements
  * @returns {Promise<>}
@@ -297,15 +297,15 @@ Database.statement(statement[, args])
 Database.transaction(statements)
 ~~~
 
-## File Management
+## File management
 
-Note: all file paths are relative to bucket set root, except on an edge where you can use full paths.
+Note: All file paths are relative to the bucket set root, except on an edge where you can use full paths.
 
 [Examples](#file-management-examples)
 
 ~~~javascript
 /**
- * Represents a sync'd filesystem.
+ * Represents a synced filesystem.
  *
  * @param {string} deployment_name or bucket set name
  *
@@ -314,9 +314,9 @@ Note: all file paths are relative to bucket set root, except on an edge where yo
 ClearBladeAsync.FS(deployment_name)
 
 /**
- * Recursively reads the contents of a directory.
+ * Recursively reads a directory's contents.
  * The promise is resolved with an array of file names in 
- * that directory and all directories below that directory.
+ * that directory and all directories below it.
  *
  * @param {string} path
  *
@@ -327,10 +327,10 @@ FS.readDir(path)
 /**
  * Reads the entire contents of a file.
  * The promise is resolved with the file contents.
- * If encoding is not specified, contents will be a UInt8Array.
- * If encoding is specified, contents will be a string.
+ * If encoding is not specified, the contents will be a Uint8Array.
+ * If encoding is specified, the contents will be a string.
  *
- * @param {string} path - The relative (full if on edge) path with filename with extension.
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  * @param {string} [encoding]
  *
  * @returns {Promise<string|UInt8Array>}
@@ -338,10 +338,10 @@ FS.readDir(path)
 FS.readFile(path[, encoding])
 
 /**
- * Writes the given data to a file, replacing the file if it already exists.
+ * Writes the given data to a file, replacing it if it already exists.
  * The promise is resolved empty.
  *
- * @param {string} path - The relative (full if on edge) path with filename with extension.
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  * @param {string|Uint8Array} data
  *
  * @returns {Promise<>}
@@ -352,8 +352,8 @@ FS.writeFile(path, data)
  * Renames (mv's) oldPath to newPath.
  * The promise is resolved empty.
  *
- * @param {string} oldPath - The relative (full if on edge) path with filename with extension.
- * @param {string} newPath - The relative (full if on edge) path with filename with extension.
+ * @param {string} oldPath: The relative (full if on edge) path with a filename with an extension.
+ * @param {string} newPath: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {Promise<>}
  */
@@ -363,8 +363,8 @@ FS.renameFile(oldPath, newPath)
  * Copies srcPath to dstPath, overwriting dstPath if it already exists.
  * The promise is resolved empty.
  *
- * @param {string} srcPath - The relative (full if on edge) path with filename with extension.
- * @param {string} dstPath - The relative (full if on edge) path with filename with extension.
+ * @param {string} srcPath: The relative (full if on edge) path with a filename with an extension.
+ * @param {string} dstPath: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {Promise<>}
  */
@@ -374,7 +374,7 @@ FS.copyFile(srcPath, dstPath)
  * Deletes the file at the specified path.
  * The promise is resolved empty.
  *
- * @param {string} path - The relative (full if on edge) path with filename with extension.
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {Promise<>}
  */
@@ -384,17 +384,17 @@ FS.deleteFile(path)
  * @typedef {Object} FileStats
  * Represents file metadata.
  *
- * @property {number} size - file size in bytes
- * @property {string} permissions - ex: "-rwxrwxrwx"
+ * @property {number} size: The file size in bytes
+ * @property {string} permissions: Ex: "-rwxrwxrwx"
  *
  */
 
 /**
- * Syncs path (on he platform) to the specified edge's inbox
+ * Syncs path (on the platform) to the specified edge's inbox
  * The promise is resolved empty.
  *
- * @param {string} path - The relative path (in platform bucket set) with filename with extension.
- * @param {string} edge - The name of the edge to sync with. path will end up in that edge's inbox
+ * @param {string} path: The relative path (in platform bucket set) with a filename with an extension.
+ * @param {string} edge: The edge's name to sync with. The path will end up in that edge's inbox
  *
  * @returns {Promise<>}
  */
@@ -403,18 +403,18 @@ FS.syncFileToEdge(path, edge)
 /**
  * Retrieves metadata for the given file path.
  *
- * @param {string} path - The relative (full if on edge) path with filename with extension.
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {Promise<FileStats>}
  */
 FS.stat(path)
 
 /**
- * Represents a file on the filesystem.
+ * Represents a filesystem's file.
  * Useful if you're doing multiple operations on a single file.
  *
  * @param {string} deployment_name or bucket set name
- * @param {string} path - The relative (full if on edge) path with filename with extension.
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {File}
  */
@@ -428,9 +428,8 @@ ClearBladeAsync.File(deployment_name, path)
 File.stat()
 
 /**
- * Reads the entire contents of the file.
- * The promise is resolved with the file contents.
- * If encoding is not specified, contents will be a UInt8Array.
+ * Reads the file's entire contents (where the promise is resolved).
+ * If encoding is not specified, contents will be a Uint8Array.
  * If encoding is specified, contents will be a string.
  *
  * @param {string} [encoding]
@@ -453,7 +452,7 @@ File.write(data)
  * Renames (mv's) file to newPath.
  * The promise is resolved empty.
  *
- * @param {string} newPath - The relative (full if on edge) path with filename with extension
+ * @param {string} newPath: The relative (full if on edge) path with a filename with an extension
  *
  * @returns {Promise<>}
  */
@@ -463,7 +462,7 @@ File.rename(newPath)
  * Copies file to dstPath, overwriting dstPath if it already exists.
  * The promise is resolved empty.
  *
- * @param {string} dstPath - The relative (full if on edge) path with filename with extension
+ * @param {string} dstPath: The relative (full if on edge) path with a filename with an extension
  *
  * @returns {Promise<>}
  */
@@ -536,8 +535,8 @@ ClearBladeAsync.Users()
 /**
  * Creates a new user in the user table.
  * Promise will resolve with the user table row of the new user.
- * @param {UserInfo} info - initial data describing the new user.
- * @returns {Promise<string>} - the user_id for the newly created user
+ * @param {UserInfo} info: The initial data describing the new user.
+ * @returns {Promise<string>}: The user_id for the newly created user
  */
 Users.create(info)
 
@@ -598,7 +597,7 @@ ClearBladeAsync.Devices()
 /**
  * Creates a new device in the device table.
  * Promise will resolve with the device table row of the new device.
- * @param {DeviceInfo} info - initial data describing the new device.
+ * @param {DeviceInfo} info: The initial data describing the new device.
  * @returns {Promise<Object>}
  */
 Devices.create(info)
@@ -629,22 +628,22 @@ Devices.update(query, changes)
 Devices.delete(query)
 
 /**
- * Gets information about the devices currently connected to the platform via MQTT.
- * Promise will resolve with the connected devices information.
+ * Gets information about the devices connected to the platform via MQTT.
+ * Promise will resolve with the connected device's information.
  * @returns {Promise<Object>}
  */
 Devices.connectedDevices()
 
 /**
- * Gets information about a single device currently connected to the platform via MQTT.
- * Promise will resolve with the connected device information.
+ * Gets information about a single device connected to the platform via MQTT.
+ * Promise will resolve with the connected device's information.
  * @param {string} deviceName
  * @returns {Promise<Object>}
  */
 Devices.deviceConnections(deviceName)
 
 /**
- * Gets the number of devices currently connected to the platform via MQTT.
+ * Gets the number of devices connected to the platform via MQTT.
  * Promise will resolve with the number of connected devices.
  * @returns {Promise<Object>}
  */
@@ -664,7 +663,7 @@ ClearBladeAsync.Auth()
  * @typedef {Object} AuthResponse
  * @property {string} auth_token
  * @property {string} refresh_token
- * @property {number} expiry - time auth_token expires, given in unix seconds
+ * @property {number} expiry: The time auth_token expires, given in Unix seconds
  */
 
 /**
@@ -692,7 +691,7 @@ Auth.authUser(email, password)
 Auth.reauth(refreshToken)
 
 /**
- * Adds a new user session, without requiring the user's credentials.
+ * Adds a new user session without requiring the user's credentials.
  * This function may only be called as a developer.
  * @returns {Promise<AuthResponse>}
  */
@@ -718,8 +717,8 @@ ClearBladeAsync.Roles()
  * Creates a new role.
  * Promise resolves with the new role's ID.
  * @param {Object} info
- * @param {string} info.name - new role's name
- * @param {string} [info.description] - new role's optional description
+ * @param {string} info.name: The new role's name
+ * @param {string} [info.description]: The new role's optional description
  * @returns {Promise<string>}
  */
 Roles.create(info)
@@ -756,7 +755,7 @@ Roles.update(query, changes)
 Roles.delete(query)
 
 /**
- * Finds roles currently granted to given device or user.
+ * Finds roles granted to a given device or user.
  * Promise resolves with a list of role IDs.
  * @param {string} deviceNameOrUserID
  * @returns {Promise<string[]>}
@@ -773,21 +772,21 @@ ClearBladeAsync.Role(roleID)
  * Creates a new role, then copies all permissions from the parent role.
  * Promise resolves with the newly created role's ID.
  * @param {Object} info
- * @param {string} info.name - new role's name
- * @param {string} [info.description] - new role's optional description
+ * @param {string} info.name: The new role's name
+ * @param {string} [info.description]: The new role's optional description
  * @returns {Promise<string>}
  */
 Role.duplicate(info)
 
 /**
  * @typedef {Object} Permission
- * @prop {string} type - resource type
- * @prop {string} [name] - resource name
- * @prop {number} level - permission level
+ * @prop {string} type: Resource type
+ * @prop {string} [name]: Resource name
+ * @prop {number} level: Permission level
  */
 
 /**
- * Lists permissions in role.
+ * Lists permissions in the role.
  * @returns {Promise<Permission[]>}
  */
 Role.permissions()
@@ -889,8 +888,8 @@ ClearBladeAsync.Cache(name)
 Cache.set(key, value)
 
 /**
- * Sets a value in the cache, if it does not already exist.
- * Promise resolves with true if it set the value, false if it already existed.
+ * Sets a value in the cache if it does not already exist.
+ * Promise resolves with true if it sets the value, false if it already exists.
  * @param {string} key
  * @param {*} value
  * @returns {Promise<boolean>}
@@ -907,7 +906,7 @@ Cache.get(key)
 
 /**
  * Retrieves all key/value pairs from the cache.
- * Promise resolves with object containing all cache values.
+ * Promise resolves with the object containing all cache values.
  * @returns {Promise<Object>}
  */
 Cache.getAll()
@@ -928,7 +927,7 @@ Cache.delete(key)
 Cache.flush()
 
 /**
- * Lists the keys which currently contain values in the cache.
+ * Lists the keys which contain values in the cache.
  * Pattern may contain '?' as a single-character wildcard,
  * or '*' as a multi-character wildcard.
  * Promise resolves with a list of keys matching the given pattern.
@@ -950,16 +949,16 @@ ClearBladeAsync.Triggers()
 /**
  * @typedef {Object} TriggerInfo
  * @property {strign} name
- * @property {string} service_name - which service to run when trigger fires
- * @property {string} def_module - see following table
- * @property {string} def_name - see following table
- * @property {Object} key_value_pairs - see following table
+ * @property {string} service_name: Which service to run when the trigger fires
+ * @property {string} def_module: See the following table
+ * @property {string} def_name: See the following table
+ * @property {Object} key_value_pairs: See the following table
  */
 
 /**
  * Creates a new trigger in your system.
  * Promise will resolve with the trigger data of the new trigger.
- * @param {TriggerInfo} info - initial data describing the new trigger.
+ * @param {TriggerInfo} info: Initial data describing the new trigger.
  * @returns {Promise<Object>}
  */
 Triggers.create(info)
@@ -1040,18 +1039,18 @@ ClearBladeAsync.Timers()
  * @typedef {Object} TimerInfo
  * @property {string} name
  * @property {string} description
- * @property {string} service_name - which service to run when timer fires
- * @property {string} start_time - RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
- * @property {number} repeats - how many times the timer should fire (-1 for infinite)
- * @property {number} frequency - how often the timer should fire, in seconds
- * @property {string} [user_id] - which user to run the service as, defaults to caller
- * @property {number} [user_type] - user type of user_id (1=dev, 2=user, 3=device)
+ * @property {string} service_name: Which service to run when the timer fires
+ * @property {string} start_time: RFC3339 "YYYY-MM-DD HH:MM:SS" or "now"
+ * @property {number} repeats: How many times the timer should fire (-1 for infinite)
+ * @property {number} frequency: How often the timer should fire in seconds
+ * @property {string} [user_id]: Which user to run the service as, defaults to caller
+ * @property {number} [user_type]: User type of user_id (1=dev, 2=user, 3=device)
  */
 
 /**
  * Creates a new timer in the timer table.
  * Promise will resolve with the timer table row of the new timer.
- * @param {TimerInfo} info - initial data describing the new timer.
+ * @param {TimerInfo} info: Initial data describing the new timer.
  * @returns {Promise<Object>}
  */
 Timers.create(info)
@@ -1100,7 +1099,7 @@ ClearBladeAsync.Edges()
 /**
  * Creates a new edge in the edge table.
  * Promise will resolve with the edge table row of the new edge.
- * @param {EdgeInfo} info - initial data describing the new edge.
+ * @param {EdgeInfo} info: Initial data describing the new edge.
  * @returns {Promise<Object>}
  */
 Edges.create(info)
@@ -1288,9 +1287,9 @@ Adapter.deleteFile(filename)
 
 /**
  * @typedef {object} AdapterControlResponse
- * @property {string} err - will contain an error if the control command fails
- * @property {string} command - the shell command which got executed
- * @property {string} output - the combined stdout and stderr output resulting from executing the shell command
+ * @property {string} err: Will contain an error if the control command fails
+ * @property {string} command: The shell command which got executed
+ * @property {string} output: The combined stdout and stderr output resulting from executing the shell command
  */
 
 /**
@@ -1298,7 +1297,7 @@ Adapter.deleteFile(filename)
  * Valid commands are: "start", "stop", "restart", "status", "undeploy", "logs".
  * The edges param is an array of edge names.
  * If run on the edge, the edges param may only include the current edge's name.
- * Promise will resolve with an object whose keys are edge names and values are AdapterControlResponses.
+ * Promise will resolve with an object whose keys are edge names and whose values are AdapterControlResponses.
  * @param {string} command
  * @param {string[]} edges
  * @returns {Promise<object>}
@@ -1306,30 +1305,30 @@ Adapter.deleteFile(filename)
 Adapter.control(command, edges)
 ~~~
 
-## Collection Custom Sync
+## Collection custom sync
 
 ~~~javascript
 /**
  * Initializes the custom sync object
- * @property {string}  CustomSync.Platform - destination type
- * @property {string}  CustomSync.AllEdges - destination type
- * @property {string}  CustomSync.Now - interval type
+ * @property {string}  CustomSync.Platform: Destination type
+ * @property {string}  CustomSync.AllEdges: Destination type
+ * @property {string}  CustomSync.Now: Interval type
  * @returns {CustomSync}
  */
 ClearBladeAsync.CustomSync()
 
 /**
  * Sends data to the destination at the specified interval
- * @param {string} collectionName - collection name of the data you are trying to sync
- * @param {Object} data - the actual item or items created/updated/deleted
- * @param {string} destination - can be CustomSync.Platform if on the edge or CustomSync.AllEdges if on the platform or an individual edge name if on the platform
- * @param {string} [interval=now] - optional but can be CustomSync.Now or be actual interval string values like “60s”, “10m”, “1h”, “5d”. Only seconds, minutes, hours and days are supported. If interval is not specified, CustomSync.Now is the default.
+ * @param {string} collectionName: Collection name of the data you are trying to sync
+ * @param {Object} data: The actual item or items created/updated/deleted
+ * @param {string} destination: Can be CustomSync.Platform if on the edge or CustomSync.AllEdges or an individual edge name if on the platform
+ * @param {string} [interval=now]: Optional but can be CustomSync.Now or be actual interval string values like “60s”, “10m”, “1h”, “5d”. Only seconds, minutes, hours, and days are supported. If the interval is not specified, CustomSync.Now is the default.
  * @returns {Promise<>}
  */
 CustomSync.sync(collectionName, data, destination, interval)
 ~~~
-The data sent using the `sync` function is available to capture on the receiving end by subscribing to the custom sync topic `$custom_sync/receive`. 
-> Note 1: An important thing to note is that your code service name needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
+The data sent using the `sync` function can be captured on the receiving end by subscribing to the custom sync topic `$custom_sync/receive`. 
+> Note 1: Your code service name needs to have the prefix `ClearBladeCustomSync_` to be able to subscribe to the custom sync topic.  
 > Note 2: Triggers for collection item create/update/delete are disabled for a service name with the `ClearBladeCustomSync_` prefix to avoid an infinite sync loop. 
 
 ## Secret
@@ -1342,16 +1341,16 @@ The data sent using the `sync` function is available to capture on the receiving
 ClearBladeAsync.Secret()
 
 /**
- * Encrypts secret and stores in the database
- * @param {string} name - name of the secret
- * @param {*} data - secret data
+ * Encrypts the secret and stores it in the database
+ * @param {string} name: The secret's name
+ * @param {*} data: Secret data
  * @returns {Promise<>}
  */
 Secret.create(name, data)
 
 /**
- * Retrieves encrypted secret from the database, decrypts it and returns plaintext
- * @param {string} name - name of the secret
+ * Retrieves encrypted secret from the database, decrypts it, and returns plaintext
+ * @param {string} name: The secret's name
  * @returns {Promise<*>}
  */
 Secret.read(name)
@@ -1366,15 +1365,15 @@ Secret.readWithQuery(query)
 
 /**
  * Encrypts secret and updates existing secret in the database
- * @param {string} name - name of the secret
- * @param {*} data - secret data
+ * @param {string} name: The secret's name
+ * @param {*} data: Secret data
  * @returns {Promise<>}
  */
 Secret.update(name, data)
 
 /**
  * Deletes secret from the database
- * @param {string} name - name of the secret
+ * @param {string} name: The secret's name
  * @returns {Promise<>}
  */
 Secret.delete(name)
@@ -1388,18 +1387,18 @@ Secret.deleteWithQuery(query)
 ~~~
 
 ## Preloader
-The Preloader object enables a stream service to listen and respond to HTTP requests like a regular micro service. The advantage of this is the reduced overhead of spawning and tearing down a micro service when called repeatedly. 
+The Preloader object enables a stream service to listen and respond to HTTP requests like a regular microservice. The advantage of this is the reduced overhead of spawning and tearing down a microservice when called repeatedly. 
 
 ~~~javascript
 /**
- * Initializes the Preloader object
+ * Initializes the preloader object
  * @returns {Preloader}
  */
 ClearBladeAsync.Preloader()
 
 /**
  * Preloader starts listening for HTTP requests
- * @param {function} onRequest - function to handle HTTP request
+ * @param {function} onRequest: Function to handle HTTP request
  * @returns {Promise<>}
  */
 Preloader.listen(onRequest)
@@ -1416,19 +1415,19 @@ Preloader.listen(onRequest)
 
 /**
  * @typedef {object} AdminAuditLogInfo
- * @property {string} service_name - the name of the api service performing the operation
- * @property {string} method_name - the name of the operation
- * @property {string} requester_email - the email of the dev or user who requested the operation
- * @property {string} permission_name - the permission name that this operation requires
- * @property {string} device_name - the device's name
- * @property {string} device_num_id - the device's num_id
- * @property {object} request - any request data you want to log
- * @property {object} [response] - any response data you want to log
+ * @property {string} service_name: The name of the API service performing the operation
+ * @property {string} method_name: The name of the operation
+ * @property {string} requester_email: The email of the dev or user who requested the operation
+ * @property {string} permission_name: The permission name that this operation requires
+ * @property {string} device_name: The device's name
+ * @property {string} device_num_id: The device's num_id
+ * @property {object} request: Any request data you want to log
+ * @property {object} [response]: Any response data you want to log
  */
 
 /**
- * Sends an admin audit log to Google Cloud Logging, if it's set up.
- * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
+ * Sends an admin audit log to Google Cloud Logging if it's set up.
+ * The caller is responsible for sanitizing the data sent to the logger, which will be forwarded verbatim. 
  * @param{AdminAuditLogInfo} info
  * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
  * @returns {Promise<>}
@@ -1437,16 +1436,16 @@ GoogleCloudLogger.adminAuditLog(info[, project])
 
 /**
  * @typedef {object} DeviceEventLogInfo
- * @property {string} device_name - the name of the device performing the event
- * @property {string} event_type - the name of the event
- * @property {boolean} success - if the event succeeded or not
- * @property {object} payload - any event data you want to log
+ * @property {string} device_name: The device's name performing the event
+ * @property {string} event_type: The event's name
+ * @property {boolean} success: If the event succeeded or not
+ * @property {object} payload: Any event data you want to log
  */
 
 /**
- * Sends a device event log to Google Cloud Logging, if it's set up.
- * The caller is responsible for sanitizing the data sent to the logger, as it will be forwarded verbatim. 
- * The "resourceName" field of the payload will be auto-populated if not provided.
+ * Sends a device event log to Google Cloud Logging if it's set up.
+ * The caller is responsible for sanitizing the data sent to the logger, which will be forwarded verbatim. 
+ * The payload's resourceName field will be auto-populated if not provided.
  * @param{DeviceEventLogInfo} info
  * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
  * @returns {Promise<>}
@@ -1454,7 +1453,7 @@ GoogleCloudLogger.adminAuditLog(info[, project])
 GoogleCloudLogger.deviceEventLog(info[, project])
 ~~~
 
-## Data Usage
+## Data usage
 
 ~~~javascript
 /**
@@ -1477,26 +1476,26 @@ DataUsage.reportHTTPDataUsage(systemKey, size)
 ~~~javascript
 /**
  * Initializes the GoogleCloudMonitoring object
- * @property {string}  GoogleCloudMonitoring.Protocol.MQTT - protocol type
- * @property {string}  GoogleCloudMonitoring.Protocol.HTTP - protocol type
- * @property {string}  GoogleCloudMonitoring.Direction.INGRESS - network data direction
- * @property {string}  GoogleCloudMonitoring.Direction.EGRESS - network data direction
- * @property {string}  GoogleCloudMonitoring.OperationType.EVENT - operation type event
- * @property {string}  GoogleCloudMonitoring.OperationType.STATE - operation type state
- * @property {string}  GoogleCloudMonitoring.OperationType.HEARTBEAT - operation type heartbeat
- * @property {string}  GoogleCloudMonitoring.OperationType.SUBSCRIBE - operation type subscribe
- * @property {string}  GoogleCloudMonitoring.OperationType.UNSUBSCRIBE - operation type unsubscribe
- * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_SENT - operation type config_sent
- * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_ACK - operation type config_ack
- * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_SENT - operation type command_sent
- * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_ACK - operation type command_ack
- * @property {string}  GoogleCloudMonitoring.OperationType.CONNECTION_OPEN - operation type connection_open
- * @property {string}  GoogleCloudMonitoring.OperationType.DISCONNECT - operation type disconnect
- * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_INTERNAL - error type telemetry_publish_internal
- * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_USER - error type telemetry_publish_user
- * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_INTERNAL - error type set_state_internal
- * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_USER - error type set_state_user
- * @property {string}  GoogleCloudMonitoring.ErrorType.INCOMING_BUFFER_FULL - error type incoming_buffer_full
+ * @property {string}  GoogleCloudMonitoring.Protocol.MQTT: Protocol type
+ * @property {string}  GoogleCloudMonitoring.Protocol.HTTP: Protocol type
+ * @property {string}  GoogleCloudMonitoring.Direction.INGRESS: Network data direction
+ * @property {string}  GoogleCloudMonitoring.Direction.EGRESS: Network data direction
+ * @property {string}  GoogleCloudMonitoring.OperationType.EVENT: Operation type event
+ * @property {string}  GoogleCloudMonitoring.OperationType.STATE: Operation type state
+ * @property {string}  GoogleCloudMonitoring.OperationType.HEARTBEAT: Operation type heartbeat
+ * @property {string}  GoogleCloudMonitoring.OperationType.SUBSCRIBE: Operation type subscribe
+ * @property {string}  GoogleCloudMonitoring.OperationType.UNSUBSCRIBE: Operation type unsubscribe
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_SENT: Operation type config_sent
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONFIG_ACK: Operation type config_ack
+ * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_SENT: Operation type command_sent
+ * @property {string}  GoogleCloudMonitoring.OperationType.COMMAND_ACK: Operation type command_ack
+ * @property {string}  GoogleCloudMonitoring.OperationType.CONNECTION_OPEN: Operation type connection_open
+ * @property {string}  GoogleCloudMonitoring.OperationType.DISCONNECT: Operation type disconnect
+ * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_INTERNAL: Error type telemetry_publish_internal
+ * @property {string}  GoogleCloudMonitoring.ErrorType.TELEMETRY_PUBLISH_USER: Error type telemetry_publish_user
+ * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_INTERNAL: Error type set_state_internal
+ * @property {string}  GoogleCloudMonitoring.ErrorType.SET_STATE_USER: Error type set_state_user
+ * @property {string}  GoogleCloudMonitoring.ErrorType.INCOMING_BUFFER_FULL: Error type incoming_buffer_full
  * @returns {GoogleCloudMonitoring}
  */
  ClearBladeAsync.GoogleCloudMonitoring()
@@ -1549,24 +1548,24 @@ GoogleCloudMonitoring.reportSentBytesCountMetric(bytesCount)
 
 # Examples
 
-## Collection Examples
+## Collection examples
 
 ~~~javascript
 var assetsCollection = ClearBladeAsync.Collection('assets');
 
 /**
- * @typedef {Object} AssetRow - a row in the assets collection
- * @property {string} asset_id - a unique identifier for each asset
- * @property {string} asset_type - can be "thermometer" or "barometer"
- * @property {number} reading - the current temperature or pressure value
- * @property {string} last_updated - timestamp when the asset last sent an update
- * @property {boolean} stale - indicates the asset hasn't sent an update in over a week
+ * @typedef {Object} AssetRow: A row in the assets collection
+ * @property {string} asset_id: Each asset's unique identifier
+ * @property {string} asset_type: Can be "thermometer" or "barometer"
+ * @property {number} reading: The temperature or pressure value
+ * @property {string} last_updated: Timestamp when the asset last sent an update
+ * @property {boolean} stale: Indicates the asset hasn't sent an update in over a week
  */
 
 /**
  * updateStaleAssets uses a query to find all rows in the assets collection
- * whose "last_updated" value is more than a week old, then updates those rows
- * setting their "stale" value to true.
+ * whose last_updated value is more than a week old, then updates those rows
+ * setting their stale value to true.
  * @return {Promise<AssetRow[]>} all stale assets
  */
 function updateStaleAssets() {
@@ -1577,7 +1576,7 @@ function updateStaleAssets() {
 
 /**
  * updateStaleAssetsV2 is the same as updateStaleAssets, but it uses
- * a query with multiple conditions to only update assets whose "stale" value
+ * a query with multiple conditions to only update assets whose stale value
  * is not already true.
  * @return {Promise<AssetRow[]>} the assets which became stale in the past week
  */
@@ -1590,8 +1589,8 @@ function updateStaleAssetsV2() {
 }
 
 /**
- * reportDangerousTemperatures uses an "or" query to find all thermometers
- * whose current reading is below freezing or above boiling.
+ * reportDangerousTemperatures uses an or query to find all thermometers
+ * whose reading is below freezing or above boiling.
  * @return {Promise<AssetRow[]>} thermometer assets with dangerous temperatures
  */
 function reportDangerousTemperatures() {
@@ -1614,10 +1613,10 @@ function reportDangerousTemperatures() {
  * processAssetMessage decodes a message sent by an asset,
  * and inserts it into the assets collection.
  * If the asset already exists in the collection, we update it.
- * @param  {Object} message - an MQTT message from an asset
- * @param  {string} message.id - the asset's unique identifier
- * @param  {string} message.type - the asset's type
- * @param  {number} message.reading - the asset's current sensor reading
+ * @param  {Object} message: An MQTT message from an asset
+ * @param  {string} message.id: The asset's unique identifier
+ * @param  {string} message.type: The asset's type
+ * @param  {number} message.reading: The asset's sensor reading
  * @return {Promise<AssetRow[]>} the new or updated asset row
  */
 function processAssetMessage(message) {
@@ -1632,7 +1631,7 @@ function processAssetMessage(message) {
 }
 ~~~
 
-## Database Examples
+## Database examples
 
 ~~~javascript
 var db = ClearBladeAsync.Database();
@@ -1641,12 +1640,12 @@ var bigQuery = ClearBladeAsync.Database({externalDBName: 'ClearBladeBigQuery'});
 
 /**
  * @typedef {Object} AssetCounts
- * @property {number} thermometer - number of thermometers in the assets collection
- * @property {number} barometer - number of barometers in the assets collection
+ * @property {number} thermometer: The number of thermometers in the assets collection
+ * @property {number} barometer: The number of barometers in the assets collection
  */
 
 /**
- * countAssetsByType runs a raw sql query against the assets collection
+ * countAssetsByType runs a raw SQL query against the assets collection
  * to count the number of each asset_type.
  * @return {AssetCounts} counts per asset type
  */
@@ -1661,8 +1660,8 @@ function countAssetsByType() {
 }
 
 /**
- * findNewDevices runs a raw sql query against the device table
- * to find all devices created in the past 7 days whose type is in the allowedDeviceTypes list.
+ * findNewDevices runs a raw SQL query against the device table
+ * to find all devices created in the past seven days whose type is in the allowedDeviceTypes list.
  * @param {[]string} allowedDeviceTypes
  * @returns {Promise<[]{name: string, type: string, state: string, created_date: number}>}
  */
@@ -1676,7 +1675,7 @@ function countAssetsByType() {
 
 /**
  * insertAssetHistory performs a raw MongoDB operation to insert a message into the assetHistory collection.
- * @param  {Object} message - an MQTT message from an asset
+ * @param  {Object} message: An MQTT message from an asset
  * @return {Promise<>}
  */
 function insertAssetHistory(message) {
@@ -1686,7 +1685,7 @@ function insertAssetHistory(message) {
 
 /**
  * addHistoryToBigQuery inserts an MQTT message into a BigQuery table.
- * @param  {Object} message - an MQTT message from an asset
+ * @param  {Object} message: An asset's MQTT message
  * @return {Promise<>}
  */
 function addHistoryToBigQuery(message) {
@@ -1699,7 +1698,7 @@ function addHistoryToBigQuery(message) {
 }
 
 /**
- * updateUserEmail updates a user's email, and records the action in the audit table.
+ * updateUserEmail updates a user's email and records the action in the audit table.
  * @param {uuid} user_id
  * @param {string} new_email
  * @return {Promise<>}
@@ -1712,12 +1711,12 @@ function updateUserEmail(user_id, new_email) {
 }
 ~~~
 
-## File Management Examples
+## File management examples
 
 ~~~javascript
 /**
  * sendAdapterLogsToPlatform copies a log file from an edge's filesystem into the edge's outbox.
- * This file will be sync'd to the platform.
+ * This file will be synced to the platform.
  * @return {Promise<>}
  */
 function sendAdapterLogsToPlatform() {
@@ -1727,7 +1726,7 @@ function sendAdapterLogsToPlatform() {
 
 /**
  * checkAdapterLogsForErrors reads a log file from the platform's inbox,
- * and returns the lines from those logs that contain the string "ERROR".
+ * and returns the lines from those logs containing the "ERROR" string.
  * @return {Promise<string[]>} the error logs
  */
 function checkAdapterLogsForErrors() {
@@ -1741,7 +1740,7 @@ function checkAdapterLogsForErrors() {
 }
 ~~~
 
-## Adapter Examples
+## Adapter examples
 
 ~~~javascript
 var systemWatcherAdapter = ClearBladeAsync.Adapter('systemWatcher');
@@ -1777,7 +1776,7 @@ function periodicStatusFetcher(currentEdgeName) {
 }
 ~~~
 
-## Preloader Example
+## Preloader example
 
 ~~~javascript
 function myStreamService(req, resp) {
@@ -1791,4 +1790,4 @@ function myStreamService(req, resp) {
   });
 }
 ~~~
-Note that the onRequest function receives a new request and a new response object. The methods on the new response object don't exit the service, they send the response back via HTTP. Whereas, the original response object if called will exit the service. 
+The onRequest function receives a new request and response object. The methods on the new response object don't exit the service; they send the response back via HTTP. Whereas the original response object, if called, will exit the service.
