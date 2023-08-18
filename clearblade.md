@@ -16,6 +16,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 12. __[Permissions](#permissions)__
 13. __[Lock](#lock)__
 14. __[Deployments](#deployments)__
+15. __[Child_process API](#child_process api)__
 
 # Overview
 
@@ -3106,3 +3107,70 @@ Deletes a deployment.
 ~~~
 
 There is no return value other than if an error occurs.
+
+# Child_process API
+
+Looking at the Platform code, there is child_process.exec and child_process.execSync.
+exec needs a callback passed to it since it is asynchronous.
+execSync is synchronous. 
+
+Signatures are:
+exec(command, options, callback)
+execSync(command, options)
+
+Options is an object that contains uid and gid attributes.
+
+var child_process = (function () {
+    function responseHelper(resp, callback) {
+        if (typeof resp === 'object' && resp !== null && resp.error) {
+            if (typeof callback === 'function') {
+                callback(true, resp.error);
+                return;
+            } else {
+                throw new Error(resp.error);
+            }
+        }
+        if (typeof callback === 'function') {
+            callback(false, resp);
+        } else {
+            return resp;
+        }
+    }
+
+    function exec(command) {
+        if (typeof arguments[0] !== 'string')
+            throw new Error('exec requires first argument (command) to be string');
+        var options = {}, callback = arguments[2];
+        switch (typeof arguments[1]) {
+            case 'undefined':
+                break;
+            case 'object':
+                options = arguments[1];
+                break;
+            case 'function':
+                callback = arguments[1];
+                break;
+            default:
+                throw new Error('exec argument 2 must be either object or function, not ' + typeof arguments[1]);
+        }
+        return responseHelper(clearBladeChildProcess(command, options, "exec"), callback);
+    }
+
+    function execSync(command, options) {
+        if (typeof command !== 'string')
+            throw new TypeError('execSync requires a string as its first argument: command');
+        if (typeof options !== 'undefined' && typeof options !== 'object')
+            throw new TypeError('execSync requires an object as its second argument: options');
+        // need to distinguish uid/gid = 0 from the zero value in the options struct
+        if (typeof options.uid !== 'undefined') options.has_uid = true;
+        if (typeof options.gid !== 'undefined') options.has_gid = true;
+
+        var resp = clearBladeChildProcess(command, options, "execSync");
+        if (typeof resp === 'object') throw Object.assign(new Error(), resp);
+        return resp;
+    }
+
+    return Object.freeze({
+        execSync: execSync,
+    })
+})()
