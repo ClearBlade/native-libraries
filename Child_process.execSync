@@ -1,0 +1,20 @@
+The child_process.execSync global function allows developers to execute shell functions using the system shell (/bin/sh) within a code service. The function is available to all code services executing on an Edge but not to ones running on the Platform.
+
+The child_process.execSync function is synchronous. Signatures are execSync(command, options). Options is an object that contains uid and gid attributes.
+
+@typedef {Object} ExecOptions
+@Property {string} uid: The user identity to be assumed by the child process
+@Property {string} gid: The group identity to be assumed by the child process
+
+Executes a shell command using /bin/sh.
+@param {string} command: The shell command to execute. Required
+@param {ExecOptions} [options]. Optional 
+@returns {string}
+
+child_process.execSync(command, options)
+Example:
+
+var cmdResp = child_process.execSync("whoami", {uid: 0, gid: 0});
+log(cmdResp);
+Response:
+root
