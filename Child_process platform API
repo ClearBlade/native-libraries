@@ -1,9 +1,0 @@
-## child_process.exec
-
-This needs a callback passed to it since it is asynchronous. Signatures are exec(command, options, callback).
-
-## child_process.execSync
-
-This is synchronous. Signatures are execSync(command, options). 
-
-Note: Options is an object that contains uid and gid attributes.
