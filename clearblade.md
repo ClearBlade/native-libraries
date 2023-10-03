@@ -835,7 +835,7 @@ Additionally, the <COLLECTION_ID> can be used.
 		var query = ClearBlade.Query("<COLLECTION_ID>");
 ~~~
 
-3) Supply nothing (this only applies when using the methods on the ClearBlade.Collection or ClearBlade.User classes to make requests against data).
+2) Supply nothing (this only applies when using the methods on the ClearBlade.Collection or ClearBlade.User classes to make requests against data).
 ~~~javascript
 		var query = ClearBlade.Query();
 ~~~
