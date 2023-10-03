@@ -816,8 +816,6 @@ Queries allow retrieving and updating data in collections based on criteria. The
 The query will return 100 results by default unless specified by Query.setPage.
 {{< /note >}}
 
-Dive into the query concept: [Query: Learn More](/1-platform_concepts/data/query/)
-
 To instantiate a query object, you have three options:
 
 >- collectionName (string): The collection name you want to access
