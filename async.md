@@ -28,7 +28,7 @@ __Examples__
 2. [Databases](#database-examples)
 3. [File management](#file-management-examples)
 4. [Adapter examples](#adapter-examples)
-5. [Preloader example](#preloader-example)
+5. [Preloader examples](#preloader-examples)
 
 # Reference
 
@@ -1776,7 +1776,7 @@ function periodicStatusFetcher(currentEdgeName) {
 }
 ~~~
 
-## Preloader example
+## Preloader examples
 
 ~~~javascript
 function myStreamService(req, resp) {
@@ -1790,4 +1790,20 @@ function myStreamService(req, resp) {
   });
 }
 ~~~
+
+~~~javascript
+function myStreamService(req, resp) {
+  var preloader = ClearBladeAsync.Preloader();
+  var onRequest = function(newReq, newResp) {
+    // dosomething
+    newResp.status(200);
+    newResp.send("Yay!");
+    return;
+  };
+  preloader.listen(onRequest).catch(function(e) {
+    resp.error(e);
+  });
+}
+~~~
+
 The onRequest function receives a new request and response object. The methods on the new response object don't exit the service; they send the response back via HTTP. Whereas the original response object, if called, will exit the service.
