@@ -996,6 +996,7 @@ Valid trigger definitions:
 |Asset|AssetCreated|assetClass|
 |Asset|AssetDeleted|assetClass, assetID|
 |Asset|AssetUpdated|assetClass, assetID|
+|Code|StreamServiceExited|serviceName|
 |Data|CollectionCreated||
 |Data|CollectionDeleted|collectionId, collectionName|
 |Data|CollectionUpdated|collectionId, collectionName|
@@ -1006,6 +1007,7 @@ Valid trigger definitions:
 |Device|DeviceCreated||
 |Device|DeviceDeleted|deviceName|
 |Device|DeviceUpdated|deviceName|
+|Device|DeviceAuth|deviceName, is_error, error|
 |File|FileCreated|filePath|
 |File|FileDeleted|filePath|
 |File|FileUpdated|filePath|
@@ -1016,6 +1018,7 @@ Valid trigger definitions:
 |Messaging|Publish|topic|
 |Messaging|Subscribe|topic|
 |Messaging|Unsubscribe|topic|
+|Messaging|TopicPatternMatch||
 |StartConnectDisconnect|EdgeConnectedOnPlatform|edgeName|
 |StartConnectDisconnect|EdgeDisconnectedOnPlatform|edgeName|
 |StartConnectDisconnect|EdgeStarted||
@@ -1025,6 +1028,9 @@ Valid trigger definitions:
 |User|UserCreated||
 |User|UserDeleted|userId|
 |User|UserUpdated|userId|
+|User|UserAuth|email, is_error, error|
+|UserRoles|UserRoleAdded|userID, roleID|
+|UserRoles|UserRoleRemoved|userID, roleID|
 
 ## Timers
 
