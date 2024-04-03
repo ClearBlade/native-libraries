@@ -2,7 +2,7 @@
 
 ClearBlade services include limited Node.js functionality. This document contains a list of the implemented classes, methods, and events. 
 
-Like in a node, you can use `require("moduleName")` to include the specified module. However, you cannot use require to include other code files or libraries. 
+Like in Node.js, you can use `require("moduleName")` to include the specified module. However, you cannot use require to include other code files or libraries. 
 
 See detailed documentation of the following at [the official node docs](https://nodejs.org/dist/latest-v16.x/docs/api/).
 
