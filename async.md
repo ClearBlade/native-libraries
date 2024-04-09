@@ -307,11 +307,11 @@ Note: All file paths are relative to the bucket set root, except on an edge wher
 /**
  * Represents a synced filesystem.
  *
- * @param {string} deployment_name or bucket set name
+ * @param {string} bucket set name
  *
  * @returns {FS}
  */
-ClearBladeAsync.FS(deployment_name)
+ClearBladeAsync.FS(bucket_set_name)
 
 /**
  * Recursively reads a directory's contents.
@@ -413,12 +413,12 @@ FS.stat(path)
  * Represents a filesystem's file.
  * Useful if you're doing multiple operations on a single file.
  *
- * @param {string} deployment_name or bucket set name
+ * @param {string} bucket set name
  * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  *
  * @returns {File}
  */
-ClearBladeAsync.File(deployment_name, path)
+ClearBladeAsync.File(bucket_set_name, path)
 
 /**
  * Retrieves metadata for the file.
