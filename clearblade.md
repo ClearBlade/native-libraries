@@ -16,6 +16,7 @@ The ClearBlade library provides all the methods necessary for interacting with t
 12. __[Permissions](#permissions)__
 13. __[Lock](#lock)__
 14. __[Deployments](#deployments)__
+15. __[Code](#code)__
 
 # Overview
 
@@ -3104,3 +3105,30 @@ Deletes a deployment.
 ~~~
 
 There is no return value other than if an error occurs.
+
+
+## Code
+
+## ClearBlade.Code.getAllServices(callback)
+Retrieves a list of code service names in your system.
+
+```javascript
+ClearBlade.Code().getAllServices(function(isError, response) {
+    if (isError) resp.error(response);
+    else {
+        resp.success("all code services in my system: " + JSON.stringify(response))
+    }
+})
+```
+
+### ClearBlade.Code.execute(name, params, loggingEnabled, callback)
+Executes the specified code service.
+
+```javascript
+ClearBlade.Code().execute("myService", {some_param: 123}, true, function(isError, response) {
+    if (isError) resp.error(response);
+    else {
+        resp.success("response from service myService: " + JSON.stringify(response))
+    }
+})
+```

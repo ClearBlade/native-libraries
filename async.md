@@ -22,6 +22,7 @@ __Reference__
 18. [GoogleCloudLogger](#google-cloud-logger)
 19. [Data usage](#data-usage)
 20. [GoogleCloudMonitoring](#google-cloud-monitoring)
+21. [Code](#code)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -1550,6 +1551,30 @@ GoogleCloudMonitoring.reportReceivedBytesCountMetric(bytesCount)
  * @returns {Promise<>}
  */
 GoogleCloudMonitoring.reportSentBytesCountMetric(bytesCount)
+~~~
+
+## Code
+
+~~~javascript
+/**
+ * Represents the code services in your system.
+ * @returns {Code}
+ */
+ClearBladeAsync.Code()
+
+/**
+ * Returns a list of code service names in your system.
+ * @returns {string[]}
+ */
+Code.getAllServices()
+
+/**
+ * Executes the specified code service.
+ * @param {string} name - the name of the code service to execute
+ * @param {Object} params - parameters passed to the service in req.params
+ * @param {boolean} loggingEnabled - override to enable logging for this execution instance
+ */
+Code.execute(name, params, loggingEnabled)
 ~~~
 
 # Examples
