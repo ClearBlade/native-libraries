@@ -673,10 +673,10 @@ ClearBladeAsync.DevicePublicKeys()
 
 /**
  * Returns all the public keys for a device
- * @param {string} deviceKey
+ * @param {string} deviceName
  * @returns {Promise<DevicePublicKeyData[]>}
  */
-DevicePublicKeys.read(deviceKey)
+DevicePublicKeys.read(deviceName)
 
 /**
  * @typedef {Object} KeyInfo
@@ -688,11 +688,11 @@ DevicePublicKeys.read(deviceKey)
 
 /**
  * Creates a new public key for the given device
- * @param {string} deviceKey
+ * @param {string} deviceName 
  * @param {KeyInfo} keyInfo
  * @returns {Promise<DevicePublicKeyData>} The newly created key
  */
-DevicePublicKeys.create(deviceKey, keyInfo)
+DevicePublicKeys.create(deviceName, keyInfo)
 
 /**
  * Updates the key with the given id.
@@ -712,11 +712,11 @@ DevicePublicKeys.delete(query)
 
 /**
  * Atomically deletes all public keys for the given device and replaces them with the provided keys.
- * @param {string} deviceKey
+ * @param {string} deviceName
  * @param {KeyInfo[]} newKeys 
  * @returns {Promise<void>} 
  */
-DevicePublicKeys.replace(deviceKey, newKeys)
+DevicePublicKeys.replace(deviceName, newKeys)
 ~~~
 
 ## Auth
