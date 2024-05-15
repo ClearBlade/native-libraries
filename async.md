@@ -9,20 +9,21 @@ __Reference__
 5. [Locks](#locks)
 6. [Users](#users)
 7. [Devices](#devices)
-8. [Auth](#auth)
-9. [Roles/Perms](#rolesperms)
-10. [Caches](#caches)
-11. [Triggers](#triggers)
-12. [Timers](#timers)
-13. [Edges](#edges)
-14. [Adapters](#adapters)
-15. [Collection custom sync](#collection-custom-sync)
-16. [Secret](#secret)
-17. [Preloader](#preloader)
-18. [GoogleCloudLogger](#google-cloud-logger)
-19. [Data usage](#data-usage)
-20. [GoogleCloudMonitoring](#google-cloud-monitoring)
-21. [Code](#code)
+8. [Device Public Keys](#device-public-keys)
+9. [Auth](#auth)
+10. [Roles/Perms](#rolesperms)
+11. [Caches](#caches)
+12. [Triggers](#triggers)
+13. [Timers](#timers)
+14. [Edges](#edges)
+15. [Adapters](#adapters)
+16. [Collection custom sync](#collection-custom-sync)
+17. [Secret](#secret)
+18. [Preloader](#preloader)
+19. [GoogleCloudLogger](#google-cloud-logger)
+20. [Data usage](#data-usage)
+21. [GoogleCloudMonitoring](#google-cloud-monitoring)
+22. [Code](#code)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -649,6 +650,73 @@ Devices.deviceConnections(deviceName)
  * @returns {Promise<Object>}
  */
 Devices.connectedDeviceCount()
+~~~
+
+## Device Public Keys
+
+~~~javascript
+/**
+ * Represents the device public keys table.
+ * @returns {DevicePublicKeys}
+ */
+ClearBladeAsync.DevicePublicKeys()
+
+/**
+ * @typedef {Object} DevicePublicKeyData Represents a public key for a device
+ * @property {string} id Unique identifier for key
+ * @property {string} device_key Unique identifier for associated device
+ * @property {string} public_key Public key
+ * @property {number} key_format Numeric representation of format: 0 (RS256), 1 (ES256), 2(RS256_X509), 3(ES256_X509), 4(HS256)
+ * @property {number} date_added Unix timestamp
+ * @property {number} expiration_time Unix timestamp
+ */
+
+/**
+ * Returns all the public keys for a device
+ * @param {string} deviceName
+ * @returns {Promise<DevicePublicKeyData[]>}
+ */
+DevicePublicKeys.read(deviceName)
+
+/**
+ * @typedef {Object} KeyInfo
+ * @property {string} public_key Key as string
+ * @property {number} key_format Numeric representation of format: 0 (RS256), 1 (ES256), 2(RS256_X509), 3(ES256_X509), 4(HS256)
+ * @property {string} expiration_time Timestamp of key expiration in RFC3339Nano format (Eg. "2006-01-02T15:04:05.999999999Z07:00")
+ * @property {bool} allow_expired Whether to allow adding key if already expired
+ */
+
+/**
+ * Creates a new public key for the given device
+ * @param {string} deviceName 
+ * @param {KeyInfo} keyInfo
+ * @returns {Promise<DevicePublicKeyData>} The newly created key
+ */
+DevicePublicKeys.create(deviceName, keyInfo)
+
+/**
+ * Updates the key with the given id.
+ * @param {string} keyId
+ * @param {KeyInfo} changes 
+ * @returns {Promise<DevicePublicKeyData[]>} The updated key. Array is empty if no key with keyId exists.
+ */
+DevicePublicKeys.update(keyId, changes)
+
+/**
+ * Deletes all keys that match the query.
+ * @param {Query} query
+ * @returns {Promise<void>} 
+ */
+DevicePublicKeys.delete(query)
+
+
+/**
+ * Atomically deletes all public keys for the given device and replaces them with the provided keys.
+ * @param {string} deviceName
+ * @param {KeyInfo[]} newKeys 
+ * @returns {Promise<void>} 
+ */
+DevicePublicKeys.replace(deviceName, newKeys)
 ~~~
 
 ## Auth
