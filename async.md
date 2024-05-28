@@ -543,10 +543,27 @@ ClearBladeAsync.Users()
 Users.create(info)
 
 /**
+ * @typedef {Object} User
+ * @property {string} user_id
+ * @property {string} email
+ * @property {string} creation_date Timestamp in RFC3339 format
+ * @property {bool} cb_service_account Whether or not this is a service account
+ * @property {number} cb_ttl_override Overrides the TTL of access tokens for this account. -1 for infinite
+ * @property {string} cb_token Access token
+ * @property {boolean} email_validated
+ * @property {string} phone
+ * @property {boolean} phone_validated
+ * @property {string} two_factor_method "email", "sms", or both ("email_sms"). Empty if two factor is not enabled.
+ * @property {boolean} two_factor_enabled
+ * @property {bool} oidc_enabled Indicates if OpenID Connect is enabled for third party logins
+ * @property {email_lower_case}
+ */
+
+/**
  * Fetches rows from the user table.
  * Promise will resolve with the user table rows matching the provided query.
  * @param {Query} query
- * @returns {Promise<Object[]>}
+ * @returns {Promise<User[]>}
  */
 Users.read(query)
 
@@ -574,6 +591,26 @@ Users.delete(query)
  * @returns {Promise<{count: number}>}
  */
 Users.count(query)
+
+/**
+ * @typedef {Object} Connection
+ * @property {string} client_id
+ * @property {string} time_connected Time when connection was opened in RFC3339
+ */
+
+/**
+ * @typedef {Object} UserWithConnections
+ * @extends User
+ * @property {Connection[]} connections
+ * @property {number} creation_date unix timestamp
+ */
+
+/**
+ * Returns user info along with a list of active connections made by the user
+ * @param {string} emailOrId The user's email or id
+ * @returns {Promise<UserWithConnections>}
+ */
+Users.userConnections(emailOrId)
 ~~~
 
 ## Devices
