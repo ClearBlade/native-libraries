@@ -45,7 +45,8 @@ The code block below is to connect to an external ClearBlade broker.
 ~~~javascript
 var options = {
   address: 'platform.clearblade.com',
-  port: 1883,
+  port: 1884,
+  use_tls: true,
   username: "<CB_TOKEN>",
   password: "<SYSTEM_KEY>",
 }
