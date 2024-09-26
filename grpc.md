@@ -3,7 +3,7 @@ The ClearBlade gRPC library compiles proto files at runtime and provides a gRPC 
 Streaming methods are not supported.
 
 __Reference__
-1. [loadFromBucket](#Loading-From-Bucket)
+1. [Loading from a Bucket](#Loading-From-a-Bucket)
 2. [Metadata](#metadata)
 
 __Examples__
@@ -12,7 +12,7 @@ __Examples__
 
 # Reference
 
-## Loading From Bucket
+## Loading From a Bucket
 
 ~~~javascript
     /**
