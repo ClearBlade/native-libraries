@@ -16,7 +16,7 @@ Differences between ClearBlade fetch and browser fetch:
  * @property {string} method - HTTP method (GET, POST, PUT, etc)
  * @property {string|Uint8Array} body - body data for POST/PUT calls
  * @property {Object|Map|Array} headers - custom headers to include with request
- * @property {AbortSignal} signal - abort signal to cancel fetch operation
+ * @property {AbortSignal} [signal] - abort signal to cancel fetch operation
  */
  
 /**
@@ -168,7 +168,7 @@ function postTextData(bodyData) {
  * @return {Promise<string>} Raw response
  */
 function fetchWithTimeout(bodyData) {
-    const url = "https://httpstat.us/200?sleep=2000";
+    const url = "https://httpstat.us/200?sleep=5000";
     const signal = AbortSignal.timeout(3000);
     return fetch(url, { signal })
         .then(function (response) {
