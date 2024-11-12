@@ -16,6 +16,7 @@ Differences between ClearBlade fetch and browser fetch:
  * @property {string} method - HTTP method (GET, POST, PUT, etc)
  * @property {string|Uint8Array} body - body data for POST/PUT calls
  * @property {Object|Map|Array} headers - custom headers to include with request
+ * @property {AbortSignal} signal - abort signal to cancel fetch operation
  */
  
 /**
@@ -68,6 +69,44 @@ Headers.get(key)
  * @returns {boolean}
  */
 Headers.has(key)
+
+/**
+ * @typedef {Object} AbortSignal
+ * @property {boolean} aborted - Whether or not the signal has been aborted
+ * @property {string|undefined} reason - The reason for the abort. Undefined if not aborted.
+ */
+
+/**
+ * If the signal has been aborted, throws an error with the abort reason
+ */
+AbortSignal.throwIfAborted()
+
+/**
+ * Returns an instance of an already aborted signal.
+ * @static
+ * @returns {AbortSignal}
+ */
+AbortSignal.abort()
+
+/**
+ * Returns an instance of a signal that will abort after a specified timeout.
+ * @static
+ * @param {number} timeoutMs The amout of time, in milliseconds, to wait until aborting.
+ * @returns {AbortSignal}
+ */
+AbortSignal.timeout(timeoutMs)
+
+
+/**
+ * @typedef {Object} AbortController
+ * @property {AbortSignal} signal - The underlying abort signal
+ */
+
+/**
+ * Sends the abort on the underlying abort signal
+ * @param {string} [reason] Optional reason for abort. Defaults to "AbortError".
+ */
+AbortController.abort(reason)
 ~~~
 
 ## Examples
@@ -122,5 +161,19 @@ function postTextData(bodyData) {
             if(!response.ok) throw new Error(response.statusText + ": "+response.text());
             return response.json();
         })
+}
+
+/**
+ * fetchWithTimeout sends a GET request with a timeout signal
+ * @return {Promise<string>} Raw response
+ */
+function fetchWithTimeout(bodyData) {
+    const url = "https://httpstat.us/200?sleep=2000";
+    const signal = AbortSignal.timeout(3000);
+    return fetch(url, { signal })
+        .then(function (response) {
+            if(!response.ok) throw new Error(response.statusText + ": "+response.text());
+            return response.text();
+        });
 }
 ~~~
