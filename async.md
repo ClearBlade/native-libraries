@@ -536,6 +536,7 @@ ClearBladeAsync.Users()
 
 /**
  * @typedef {Omit<UserInfo, 'email_validated'|'phone_validated'|'email_lower_case'|'user_id'|'creation_date'|'cb_token'>} NewUserInfo
+ */
 
 /**
  * Creates a new user in the user table.
