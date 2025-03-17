@@ -535,9 +535,12 @@ ClearBladeAsync.Users()
  */
 
 /**
+ * @typedef {Omit<UserInfo, 'email_validated'|'phone_validated'|'email_lower_case'|'user_id'|'creation_date'|'cb_token'>} NewUserInfo
+
+/**
  * Creates a new user in the user table.
  * Promise will resolve with the user table row of the new user.
- * @param {UserInfo} info: The initial data describing the new user.
+ * @param {NewUserInfo} info: The initial data describing the new user.
  * @returns {Promise<string>}: The user_id for the newly created user
  */
 Users.create(info)
