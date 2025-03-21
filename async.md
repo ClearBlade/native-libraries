@@ -535,9 +535,13 @@ ClearBladeAsync.Users()
  */
 
 /**
+ * @typedef {Omit<UserInfo, 'email_validated'|'phone_validated'|'email_lower_case'|'user_id'|'creation_date'|'cb_token'>} NewUserInfo
+ */
+
+/**
  * Creates a new user in the user table.
  * Promise will resolve with the user table row of the new user.
- * @param {UserInfo} info: The initial data describing the new user.
+ * @param {NewUserInfo} info: The initial data describing the new user.
  * @returns {Promise<string>}: The user_id for the newly created user
  */
 Users.create(info)
@@ -549,7 +553,6 @@ Users.create(info)
  * @property {string} creation_date Timestamp in RFC3339 format
  * @property {bool} cb_service_account Whether or not this is a service account
  * @property {number} cb_ttl_override Overrides the TTL of access tokens for this account. -1 for infinite
- * @property {string} cb_token Access token
  * @property {boolean} email_validated
  * @property {string} phone
  * @property {boolean} phone_validated
@@ -557,6 +560,7 @@ Users.create(info)
  * @property {boolean} two_factor_enabled
  * @property {bool} oidc_enabled Indicates if OpenID Connect is enabled for third party logins
  * @property {email_lower_case}
+ * @property {string} [cb_token] Access token. Only present if the code service is run as a developer.
  */
 
 /**
