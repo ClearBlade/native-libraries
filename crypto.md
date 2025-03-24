@@ -224,8 +224,6 @@ Generates a X509 Certificate with the given body and public key, signed by the g
 		)
 	}).then(function(cert) {
         // TODO: Do something with your cert
-	}).then(function(pem) {
-		resp.success(pem);
 	})
 
     /**
