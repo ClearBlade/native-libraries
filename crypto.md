@@ -96,3 +96,192 @@ Returns a string.
     }
     var token = crypto.create_jwt(claims, "ES256", privateKey);
 ~~~
+
+
+## crypto.importKey(format, keyData)
+Imports a key from a given format.
+
+* @param {string} format: The format of the key data. Currently "PEM" is the only supported format.
+* @param {string} keyData: The key data.
+* @returns {Promise<CryptoKey>} The key
+
+**Example:**
+~~~javascript
+    crypto.importKey("PEM", "-----BEGIN EC PRIVATE KEY-----\nREDACTED obviously but put your real key here or this won't work\n-----END EC PRIVATE KEY-----").then(function (key) {
+        // Do something with the key
+    })
+~~~
+
+## crypto.generateKey(algorithm)
+Generates a keypair using the supplied algorithm parameters.
+
+* @param {KeyAlgorithmParams} algorithm: The keygen algorithm parameters. Supports EcKeyGenParams and RsaHashedKeyGenParams. See example.
+* @returns {Promise<CryptoKeyPair>} The public private keypair.
+
+**Example:**
+~~~javascript
+    /**
+     * Subset of EcKeyGenParams
+     * https://developer.mozilla.org/en-US/docs/Web/API/EcKeyGenParams
+     * 
+     * @typedef {Object} EcKeyGenParams
+     * @property {"ECDH" | "ECDSA"} name
+     * @property {"P-256" | "P-384" | "P-521"} namedCurve
+     */
+    crypto.generateKey({
+        name: "ECDSA",
+        namedCurve: "P-521"
+    }).then(function (keypair) {
+        // Do something with the keypair
+    })
+
+    /**
+     * Subset of RsaHashedKeyGenParams
+     * https://developer.mozilla.org/en-US/docs/Web/API/RsaHashedKeyGenParams
+     * 
+     * @typedef {Object} RsaHashedKeyGenParams
+     * @property {"RSA"} name
+     * @property {number} modulusLength
+     */
+    crypto.generateKey({
+        name: "RSA",
+        modulusLength: 4096
+    }).then(function (keypair) {
+        // Do something with the keypair
+    })
+~~~
+
+## crypto.exportKey
+Exports a key to the specified format
+
+* @param {"PEM"} format
+* @param {CryptoKey} The key to export
+* @returns {Promise<string>}
+
+**Example:**
+~~~javascript
+    crypto.generateKey({
+        name: "RSA",
+        moduleLength: 2048,
+    }).then(function (keypair) {
+        crypto.exportKey("PEM", keypair.publicKey).then(console.log)
+        crypto.exportKey("PEM", keypair.privateKey).then(console.log)
+    })
+~~~
+
+
+
+## crypto.generateX509Certificate(publicKey, authorityPrivateKey, authorityCertificate, body)
+Generates a X509 Certificate with the given body and public key, signed by the given authority.
+
+* @param {CryptoKey} publicKey The public key that will be signed
+* @param {CryptoKey} authorityPrivateKey The private key used to sign the certificate
+* @param {CryptoKey} authorityCertificate The certificate authority used to derive the new body. If set to null, the certificate is self-signed.
+* @param {certificateBody} body The new certificate contents
+* @returns {Promise<CryptoKey>} The signed certificate
+
+**Example:**
+~~~javascript
+    /**
+     * Fields that are allowed to be set when creating an x509 certificate.
+     * @typedef {Object} certificateBody
+     * @property {pkixName} [subject]
+     * @property {number} [startDateUnix] The start date of the certificate in unix seconds
+     * @property {number} [expiryDateUnix] The expiry date of the certificate in unix seconds
+     */
+
+    /**
+     * Copied directly into pkix.Name when generating the certificate on the backend.
+     * https://pkg.go.dev/crypto/x509/pkix#Name
+     * 
+     * @typedef {Object} pkixName
+     * @property {string[]} Country
+     * @property {string[]} Organization
+     * @property {string[]} OrganizationalUnit
+     * @property {string} Locality
+     * @property {string[]} Province
+     * @property {string[]} StreetAddress
+     * @property {string[]} PostalCode
+     * @property {string} SerialNumber
+     * @property {string} CommonName
+     */
+
+    /**
+     * Creates a self signed certificate
+     */
+    crypto.generateKey({
+		name: "RSA",
+		modulusLength: 4096,
+	}).then(function(keypair) {
+		return crypto.generateX509Certificate(
+			keypair.publicKey,
+			keypair.privateKey,
+			null,
+			{ subject: { CommonName: "MY NAME" } }
+		)
+	}).then(function(cert) {
+        // TODO: Do something with your cert
+	}).then(function(pem) {
+		resp.success(pem);
+	})
+
+    /**
+     * Creates a certificate from some keypair and logs it out
+     */
+    var authorityPrivate = "YOUR PRIVATE KEY"
+    var authorityCert = "YOUR CERT"
+
+    crypto.importKey("PEM", authorityPrivate).then(function(caPrivateKey) {
+        crypto.importKey("PEM", authorityCert).then(function(caCert) {
+            crypto.generateKey({
+                name: "RSA",
+                modulusLength: 4096,
+            }).then(function(myKeypair) {
+                crypto.generateX509Certificate(
+                    myKeypair.publicKey,
+                    caPrivateKey,
+                    caCert,
+                    { subject: { CommonName: "DEVICE NAME" } }
+                ).then(function (cert) {
+                    // Log out the cert and its private key
+                    crypto.exportKey("PEM", cert).then(console.log)
+                    crypto.exportKey("PEM", myKepair.privateKey).then(console.log)
+                })
+            })
+        })
+    })
+
+~~~
+
+## crypto.PlatformMtlsCertificate
+Special constant that represents the platform's root CA certificate for MQTT mtls.
+Can be used to create certificates to authenticate with the broker.
+If there is not certificate on the platform for mTLS, using this will throw an error.
+
+## crypto.PlatformMtlsPrivateKey
+Special constant that represents the platform's root CA private key for MQTT mTLS. 
+Can be used to create certificates to authenticate with the broker.
+If the PEM file for mTLS on the platform does not contain a PRIVATE KEY block, using this will throw an error. 
+
+**Example:**
+~~~javascript
+    /**
+     * Generate a certificate that can be used for mTLS.
+     */
+    crypto.generateKey({
+		name: "RSA",
+		modulusLength: 4096,
+	}).then(function(keypair) {
+		return crypto.generateX509Certificate(
+			keypair.publicKey,
+			crypto.PlatformMtlsPrivateKey,
+			crypto.PlatformMtlsCertificate,
+
+            // CommonName must be the name of the device that will use this cert.
+			{ subject: { CommonName: "DEVICE NAME" } }
+		)
+	}).then(function(cert) {
+        // Log the cert
+		crypto.exportKey("PEM", cert).then(console.log);
+    })
+~~~
