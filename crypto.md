@@ -160,6 +160,9 @@ Exports a key to the specified format
 
 **Example:**
 ~~~javascript
+    /**
+     * Creates a keypair and exports the public/private keys
+     */
     crypto.generateKey({
         name: "RSA",
         moduleLength: 2048,
