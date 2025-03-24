@@ -103,7 +103,7 @@ Imports a key from a given format.
 
 * @param {string} format: The format of the key data. Currently "PEM" is the only supported format.
 * @param {string} keyData: The key data.
-* @returns {`Promise<CryptoKey>`} The key
+* @returns {Promise\<CryptoKey>} The key
 
 **Example:**
 ~~~javascript
@@ -116,7 +116,7 @@ Imports a key from a given format.
 Generates a keypair using the supplied algorithm parameters.
 
 * @param {KeyAlgorithmParams} algorithm: The keygen algorithm parameters. Supports EcKeyGenParams and RsaHashedKeyGenParams. See example.
-* @returns {`Promise<CryptoKeyPair>`} The public private keypair.
+* @returns {Promise\<CryptoKeyPair>} The public private keypair.
 
 **Example:**
 ~~~javascript
@@ -156,7 +156,7 @@ Exports a key to the specified format
 
 * @param {"PEM"} format
 * @param {CryptoKey} The key to export
-* @returns {`Promise<string>`}
+* @returns {Promise\<string>}
 
 **Example:**
 ~~~javascript
@@ -178,7 +178,7 @@ Generates a X509 Certificate with the given body and public key, signed by the g
 * @param {CryptoKey} authorityPrivateKey The private key used to sign the certificate
 * @param {CryptoKey} authorityCertificate The certificate authority used to derive the new body. If set to null, the certificate is self-signed.
 * @param {certificateBody} body The new certificate contents
-* @returns {`Promise<CryptoKey>`} The signed certificate
+* @returns {Promise\<CryptoKey>} The signed certificate
 
 **Example:**
 ~~~javascript
