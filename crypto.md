@@ -9,14 +9,14 @@ The crypto module can encapsulate secure credentials.
 * crypto.hmac()
 
 
-## crypto.createHash(hashName)		
+## crypto.createHash(hashName)        
 
 Creates and returns a hash object, which can be used to generate hash digests.
 Supported hash types for "sha1","md5","sha256","sha512".
-	
+    
 **Example:**
 ~~~javascript
-	var sha1 = crypto.createHash("sha1");	
+    var sha1 = crypto.createHash("sha1");    
 ~~~
 
 ## crypto.update(data)
@@ -24,19 +24,19 @@ Updates the hash content with the given data.
 
 **Example:**
 ~~~javascript
-	var sha1 = crypto.createHash("sha1");
-	sha1.update("Hello World");
+    var sha1 = crypto.createHash("sha1");
+    sha1.update("Hello World");
 ~~~
 
 ## crypto.digest(encodingType)
-	
+    
 Calculates the digest of all of the passed data to be hashed. The encoding can be "binary","base64", or "hex".
 
 **Example:**
 ~~~javascript
-	var sha1 = crypto.createHash("sha1");
-	sha1.update("Hello World");
-	var hash = sha1.digest("hex");
+    var sha1 = crypto.createHash("sha1");
+    sha1.update("Hello World");
+    var hash = sha1.digest("hex");
 ~~~
 
 ## crypto.encode(encodingType, data)
@@ -47,7 +47,7 @@ Data may be a string or Uint8Array.
 
 **Example:**
 ~~~javascript
-	var encData = crypto.encode("base64", "myData");
+    var encData = crypto.encode("base64", "myData");
 ~~~
 
 ## crypto.decode(decodingType, encodedData)
@@ -59,8 +59,8 @@ Returns a Uint8Array.
 
 **Example:**
 ~~~javascript
-	var encodedData = "aGVsbG8=";
-	var decData = crypto.decode("base64", encodedData);
+    var encodedData = "aGVsbG8=";
+    var decData = crypto.decode("base64", encodedData);
 ~~~
 
 ## crypto.hmac(data, key, hashType)
@@ -213,18 +213,18 @@ Generates a X509 Certificate with the given body and public key, signed by the g
      * Creates a self signed certificate
      */
     crypto.generateKey({
-		name: "RSA",
-		modulusLength: 4096,
-	}).then(function(keypair) {
-		return crypto.generateX509Certificate(
-			keypair.publicKey,
-			keypair.privateKey,
-			null,
-			{ subject: { CommonName: "MY NAME" } }
-		)
-	}).then(function(cert) {
+        name: "RSA",
+        modulusLength: 4096,
+    }).then(function(keypair) {
+        return crypto.generateX509Certificate(
+            keypair.publicKey,
+            keypair.privateKey,
+            null,
+            { subject: { CommonName: "MY NAME" } }
+        )
+    }).then(function(cert) {
         // TODO: Do something with your cert
-	})
+    })
 
     /**
      * Creates a certificate from some keypair and logs it out
@@ -270,21 +270,21 @@ If the PEM file for mTLS on the platform does not contain a PRIVATE KEY block, u
      * Generate a certificate that can be used for mTLS.
      */
     crypto.generateKey({
-		name: "RSA",
-		modulusLength: 4096,
-	}).then(function(keypair) {
-    	const currentTimeSeconds = Math.floor(Date.now() / 1000)
+        name: "RSA",
+        modulusLength: 4096,
+    }).then(function(keypair) {
+        const currentTimeSeconds = Math.floor(Date.now() / 1000)
         const thirtyDaysFromNow = currentTimeSeconds + 30 * 24 * 60 * 60
-		return crypto.generateX509Certificate(
-			keypair.publicKey,
-			crypto.PlatformMtlsPrivateKey,
-			crypto.PlatformMtlsCertificate,
+        return crypto.generateX509Certificate(
+            keypair.publicKey,
+            crypto.PlatformMtlsPrivateKey,
+            crypto.PlatformMtlsCertificate,
 
             // CommonName must be the name of the device that will use this cert.
-			{ subject: { CommonName: "DEVICE NAME" }, startDateUnix: currentTimeSeconds, expiryDateUnix: thirtyDaysFromNow }
-		)
-	}).then(function(cert) {
+            { subject: { CommonName: "DEVICE NAME" }, startDateUnix: currentTimeSeconds, expiryDateUnix: thirtyDaysFromNow }
+        )
+    }).then(function(cert) {
         // Log the cert
-		crypto.exportKey("PEM", cert).then(console.log);
+        crypto.exportKey("PEM", cert).then(console.log);
     })
 ~~~
