@@ -189,8 +189,8 @@ Generates a X509 Certificate with the given body and public key, signed by the g
      * Fields that are allowed to be set when creating an x509 certificate.
      * @typedef {Object} certificateBody
      * @property {pkixName} [subject]
-     * @property {number} [startDateUnix] The start date of the certificate in unix seconds
-     * @property {number} [expiryDateUnix] The expiry date of the certificate in unix seconds
+     * @property {number} [startDateUnix] The start date of the certificate in unix seconds. If not provided, defaults to the current time.
+     * @property {number} [expiryDateUnix] The expiry date of the certificate in unix seconds. If not provided, defaults to 1 month from now.
      */
 
     /**
@@ -257,7 +257,7 @@ Generates a X509 Certificate with the given body and public key, signed by the g
 ## crypto.PlatformMtlsCertificate
 Special constant that represents the platform's root CA certificate for MQTT mtls.
 Can be used to create certificates to authenticate with the broker.
-If there is not certificate on the platform for mTLS, using this will throw an error.
+If there is no certificate on the platform for mTLS, using this will throw an error.
 
 ## crypto.PlatformMtlsPrivateKey
 Special constant that represents the platform's root CA private key for MQTT mTLS. 
@@ -273,13 +273,15 @@ If the PEM file for mTLS on the platform does not contain a PRIVATE KEY block, u
 		name: "RSA",
 		modulusLength: 4096,
 	}).then(function(keypair) {
+    	const currentTimeSeconds = Math.floor(Date.now() / 1000)
+        const thirtyDaysFromNow = currentTimeSeconds + 30 * 24 * 60 * 60
 		return crypto.generateX509Certificate(
 			keypair.publicKey,
 			crypto.PlatformMtlsPrivateKey,
 			crypto.PlatformMtlsCertificate,
 
             // CommonName must be the name of the device that will use this cert.
-			{ subject: { CommonName: "DEVICE NAME" } }
+			{ subject: { CommonName: "DEVICE NAME" }, startDateUnix: currentTimeSeconds, expiryDateUnix: thirtyDaysFromNow }
 		)
 	}).then(function(cert) {
         // Log the cert
