@@ -223,7 +223,7 @@ Generates a X509 Certificate with the given body and public key, signed by the g
             { subject: { CommonName: "MY NAME" } }
         )
     }).then(function(cert) {
-        // TODO: Do something with your cert
+        // Do something with your cert
     })
 
     /**
