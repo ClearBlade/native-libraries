@@ -246,7 +246,7 @@ Generates a X509 Certificate with the given body and public key, signed by the g
                 ).then(function (cert) {
                     // Log out the cert and its private key
                     crypto.exportKey("PEM", cert).then(console.log)
-                    crypto.exportKey("PEM", myKepair.privateKey).then(console.log)
+                    crypto.exportKey("PEM", myKeypair.privateKey).then(console.log)
                 })
             })
         })
