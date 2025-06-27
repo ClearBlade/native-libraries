@@ -1513,11 +1513,17 @@ The Preloader object enables a stream service to listen and respond to HTTP requ
 ClearBladeAsync.Preloader()
 
 /**
+ * @typedef {Object} PreloaderArgs
+ * @prop {number} timeout The maximum duration, in seconds, that each request can execute before timing out. If not set, the PreloaderRequestTimeoutSeconds from the platform configuration is used.
+ */
+
+/**
  * Preloader starts listening for HTTP requests
  * @param {function} onRequest: Function to handle HTTP request
+ * @param {PreloaderArgs} [args]: Optional arguments to preloader
  * @returns {Promise<>}
  */
-Preloader.listen(onRequest)
+Preloader.listen(onRequest, args)
 ~~~
 
 ## Google Cloud Logger
