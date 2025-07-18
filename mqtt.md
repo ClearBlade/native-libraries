@@ -10,11 +10,13 @@ The message represents an MQTT message.
 * @property {number} qos
 * @property {boolean} retain
 * @property {boolean} duplicate
+* @property {Record<string, string>} user_properties
 
 Example
 
 ~~~javascript
 var msg = new MQTT.Message("my message")
+msg.user_properties["property_name"] = "property_value"
 ~~~
 
 ## MQTT.Client(options)
