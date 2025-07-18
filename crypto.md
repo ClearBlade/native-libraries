@@ -42,7 +42,7 @@ Calculates the digest of all of the passed data to be hashed. The encoding can b
 ## crypto.encode(encodingType, data)
 
 Encodes data depending on the encoding type. 
-Encoding types supported are 'base64' and 'hex'.
+Encoding types supported are 'base64', 'hex' and 'gzip'.
 Data may be a string or Uint8Array.
 
 **Example:**
@@ -53,9 +53,9 @@ Data may be a string or Uint8Array.
 ## crypto.decode(decodingType, encodedData)
 
 Decodes data depending on the encoding type.
-Decoding types supported are 'base64' and 'hex'.
+Decoding types supported are 'base64', 'hex' and 'gzip'.
 Encoded data may be a string or Uint8Array.
-Returns a Uint8Array.
+Returns a Uint8Array or string.
 
 **Example:**
 ~~~javascript
