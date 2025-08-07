@@ -239,8 +239,8 @@ Collection.deleteCollection()
 /**
  * @typedef {Object} ContinuousAggregateOptions
  * @prop {string} view_name: The name of the continuous aggregate
- * @prop {TimescaleInterval} start_offset: The offset from the current date to begin aggregating data (Ex. "12 hours")
- * @prop {TimescaleInterval} end_offset: The offset from the current date to stop aggregating data (Ex. "7 days")
+ * @prop {TimescaleInterval} start_offset: The offset from the current date to begin aggregating data (Ex. "1 month")
+ * @prop {TimescaleInterval} end_offset: The offset from the current date to stop aggregating data (Ex. "12 hours")
  * @prop {TimescaleInterval} schedule_interval: The interval at which to recompute the continuous aggregate (Ex. "1 hour")
  * @prop {bool} with_no_data: If set to true, the aggregate will be created without initially calculating the aggregate value
  */
