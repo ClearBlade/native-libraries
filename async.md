@@ -230,12 +230,19 @@ Collection.createUniqueIndex(columnName)
 Collection.deleteCollection()
 
 /**
+ * @typedef {string} TimescaleInterval
+ * Must be of one of the following forms:
+ *     - "1 second", "1 hour", "1 day", "1 month", "1 year"
+ *     - "X seconds", "X hours", "X days", "X months", "X years" where X > 1
+ * /
+
+/**
  * @typedef {Object} ContinuousAggregateOptions
  * @prop {string} view_name: The name of the continuous aggregate
- * @prop {string} start_offset: The offset from the current date to begin aggregating data
- * @prop {string} end_offset: The offset from the current date to stop aggregating data
- * @prop {string} schedule_interval: The interval at which to recompute the continuous aggregate
- * @prop {string} with_no_data: If set to true, the aggregate will be created without initially calculating the aggregate value
+ * @prop {TimescaleInterval} start_offset: The offset from the current date to begin aggregating data (Ex. "12 hours")
+ * @prop {TimescaleInterval} end_offset: The offset from the current date to stop aggregating data (Ex. "7 days")
+ * @prop {TimescaleInterval} schedule_interval: The interval at which to recompute the continuous aggregate (Ex. "1 hour")
+ * @prop {bool} with_no_data: If set to true, the aggregate will be created without initially calculating the aggregate value
  */
 
 /**
