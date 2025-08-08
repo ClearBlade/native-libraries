@@ -228,6 +228,53 @@ Collection.createUniqueIndex(columnName)
  * @returns {Promise<>}
  */
 Collection.deleteCollection()
+
+/**
+ * @typedef {string} TimescaleInterval
+ * Must be of one of the following forms:
+ *     - "1 second", "1 hour", "1 day", "1 month", "1 year"
+ *     - "X seconds", "X hours", "X days", "X months", "X years" where X > 1
+ * /
+
+/**
+ * @typedef {Object} ContinuousAggregateOptions
+ * @prop {string} view_name: The name of the continuous aggregate
+ * @prop {TimescaleInterval} start_offset: The offset from the current date to begin aggregating data (Ex. "1 month")
+ * @prop {TimescaleInterval} end_offset: The offset from the current date to stop aggregating data (Ex. "12 hours")
+ * @prop {TimescaleInterval} schedule_interval: The interval at which to recompute the continuous aggregate (Ex. "1 hour")
+ * @prop {bool} with_no_data: If set to true, the aggregate will be created without initially calculating the aggregate value
+ */
+
+/**
+ * Creates a new continuous aggregate on the collection.
+ * @param {string} query SQL query to aggregate
+ * @param {ContinuousAggregateOptions} options
+ * @return {Promise<void>}
+ */
+Collection.createContinuousAggregate(query, options)
+
+/**
+ * Performs a query against a continuous aggregate.
+ * @param {string} aggregateName
+ * @param {Query} query Query object
+ * @return {Promise<Array<Record<string, any>>>}
+ */
+Collection.fetchAggregate(aggregateName, query)
+
+/**
+ * Executes a raw query against a continuous aggregate.
+ * @param {string} aggregateName
+ * @param {string} query Raw SQL query
+ * @return {Promise<Array<Record<string, any>>>} The result of the query
+ */
+Collection.fetchAggregateRaw(aggregateName, query)
+
+/**
+ * Deletes the continuous aggregate
+ * @param {string} aggregateName
+ * @return {Promise<void>}
+ */
+Collection.dropContinuousAggregate(aggregateName)
 ~~~
 
 ## Databases
