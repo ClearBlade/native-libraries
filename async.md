@@ -1992,7 +1992,7 @@ function updateUserEmail(user_id, new_email) {
 }
 ~~~
 
-## Bucket set examples
+## Bucket sets examples
 
 ~~~javascript
 /**
