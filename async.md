@@ -30,9 +30,8 @@ __Examples__
 1. [Collections](#collection-examples)
 2. [Databases](#database-examples)
 3. [Bucket Sets](#bucket-sets-examples)
-4. [File Stores](#file-store-examples)
-5. [Adapter examples](#adapter-examples)
-6. [Preloader example](#preloader-example)
+4. [Adapter examples](#adapter-examples)
+5. [Preloader example](#preloader-example)
 
 # Reference
 
@@ -2021,6 +2020,7 @@ function checkAdapterLogsForErrors() {
         })
 }
 ~~~
+
 
 ## Adapter examples
 
