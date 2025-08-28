@@ -594,7 +594,7 @@ FileStore.prototype.copy(srcPath, dstPath)
 /**
  * @typedef {Object} FileMeta
  * @property {string} full_path Full path of the file within the file store.
- * @property {number} size_bytes Number of bytes stored in entry.
+ * @property {number} size_bytes Size of the item in bytes.
  * @property {string} permissions The unix permissions string for the file. May be empty if the file store type doesn't support permissions.
  * @property {number} updated_at Unix timestamp of last updated time.
  * @property {boolean} is_dir True if the entry is a directory.
