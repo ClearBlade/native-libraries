@@ -529,9 +529,6 @@ File.delete()
 
 ## File Stores
 
-
-[Examples](#file-store-examples)
-
 ~~~javascript
 /**
  * Represents a file store.
@@ -540,7 +537,7 @@ File.delete()
  *
  * @returns {FileStore}
  */
-ClearBladeAsync.FileStore(file_store_name)
+ClearBladeAsync.FileStore(name)
 
 /**
  * Reads a the file at the given path or throws an error if the file does not exist.
@@ -581,7 +578,7 @@ FileStore.move(srcPath, dstPath)
  * @param {string} dstPath
  * @returns {Promise<void>}
  */
-FileStore.prototype.copy(srcPath, dstPath)
+FileStore.copy(srcPath, dstPath)
 
 /**
  * @typedef {Object} FileStoreListOptions
