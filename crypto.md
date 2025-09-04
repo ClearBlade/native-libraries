@@ -66,7 +66,7 @@ Returns a Uint8Array or string.
 ## crypto.hmac(data, key, hashType)
 
 Returns the supplied data's HMAC signature. 
-The only hash type supported is "sha256".
+The supported hash types are "sha1" or "sha256".
 Data and keys are strings or Uint8Arrays.
 Returns a Uint8Array.
 
