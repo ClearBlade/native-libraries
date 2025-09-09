@@ -5,30 +5,31 @@ __Reference__
 1. [Query](#query)
 2. [Collections](#collections)
 3. [Databases](#databases)
-4. [File management](#file-management)
-5. [Locks](#locks)
-6. [Users](#users)
-7. [Devices](#devices)
-8. [Device Public Keys](#device-public-keys)
-9. [Auth](#auth)
-10. [Roles/Perms](#rolesperms)
-11. [Caches](#caches)
-12. [Triggers](#triggers)
-13. [Timers](#timers)
-14. [Edges](#edges)
-15. [Adapters](#adapters)
-16. [Collection custom sync](#collection-custom-sync)
-17. [Secret](#secret)
-18. [Preloader](#preloader)
-19. [GoogleCloudLogger](#google-cloud-logger)
-20. [Data usage](#data-usage)
-21. [GoogleCloudMonitoring](#google-cloud-monitoring)
-22. [Code](#code)
+4. [Bucket Sets](#bucket-sets)
+5. [File Stores](#file-stores)
+6. [Locks](#locks)
+7. [Users](#users)
+8. [Devices](#devices)
+9. [Device Public Keys](#device-public-keys)
+10. [Auth](#auth)
+11. [Roles/Perms](#rolesperms)
+12. [Caches](#caches)
+13. [Triggers](#triggers)
+14. [Timers](#timers)
+15. [Edges](#edges)
+16. [Adapters](#adapters)
+17. [Collection custom sync](#collection-custom-sync)
+18. [Secret](#secret)
+19. [Preloader](#preloader)
+20. [GoogleCloudLogger](#google-cloud-logger)
+21. [Data usage](#data-usage)
+22. [GoogleCloudMonitoring](#google-cloud-monitoring)
+23. [Code](#code)
 
 __Examples__
 1. [Collections](#collection-examples)
 2. [Databases](#database-examples)
-3. [File management](#file-management-examples)
+3. [Bucket Sets](#bucket-sets-examples)
 4. [Adapter examples](#adapter-examples)
 5. [Preloader example](#preloader-example)
 
@@ -346,11 +347,11 @@ Database.statement(statement[, args])
 Database.transaction(statements)
 ~~~
 
-## File management
+## Bucket Sets
 
 Note: All file paths are relative to the bucket set root, except on an edge where you can use full paths.
 
-[Examples](#file-management-examples)
+[Examples](#bucket-sets-examples)
 
 ~~~javascript
 /**
@@ -524,6 +525,90 @@ File.copy(dstPath)
  * @returns {Promise<>}
  */
 File.delete()
+~~~
+
+## File Stores
+
+~~~javascript
+/**
+ * Represents a file store.
+ *
+ * @param {string} name file store name
+ *
+ * @returns {FileStore}
+ */
+ClearBladeAsync.FileStore(name)
+
+/**
+ * Reads a the file at the given path or throws an error if the file does not exist.
+ * @param {string} path 
+ * @returns {Promise<Uint8Array>} The file contents
+ */
+FileStore.read(path)
+
+/**
+ * Writes to a file. If the file already exists, it will be overwritten. 
+ * If the file or any parent directories do not exist, they will be created.
+ * @param {string} path
+ * @param {string | Uint8Array} data 
+ * @returns {Promise<void>}
+ */
+FileStore.write(path, data)
+
+/**
+ * Deletes the file at the path. 
+ * @param {string} path
+ * @returns {Promise<void>}
+ */
+FileStore.delete(path)
+
+/**
+ * Moves a file. If the destination file already exists, it will be overwritten.
+ * If the destination path or any parent directories do not exist, they will be created.
+ * @param {string} srcPath
+ * @param {string} dstPath
+ * @returns {Promise<void>}
+ */
+FileStore.move(srcPath, dstPath)
+
+/**
+ * Copies a file. If the destination file already exists, it will be overwritten.
+ * If the destination path or any parent directories do not exist, they will be created.
+ * @param {string} srcPath
+ * @param {string} dstPath
+ * @returns {Promise<void>}
+ */
+FileStore.copy(srcPath, dstPath)
+
+/**
+ * @typedef {Object} FileStoreListOptions
+ * @property {string} [prefix] The directory to list from
+ * @property {string} [continuation_token] The continuation token returned from a previous call to list
+ * @property {number} [limit] The maximum number of items to return. Defaults to 100.
+ * @property {number} [depth] The maximum file tree depth to traverse when listing. Defaults to 1. Set to -1 for no limit.
+ */
+
+/**
+ * @typedef {Object} FileMeta
+ * @property {string} full_path Full path of the file within the file store.
+ * @property {number} size_bytes Size of the item in bytes.
+ * @property {string} permissions The unix permissions string for the file. May be empty if the file store type doesn't support permissions.
+ * @property {number} updated_at Unix timestamp of last updated time.
+ * @property {boolean} is_dir True if the entry is a directory.
+ */
+
+/**
+ * @typedef {Object} FileStoreListResult
+ * @property {FileMeta[]} files List of files
+ * @property {string} [continuation_token] If the limit is hit when listing, a continuation token is returned. This should be used in future requests to continue listing. If there are no more items to list, it will be an empty string.
+ */
+
+/**
+ * Lists the contents of a directory.
+ * @param {FileStoreListOptions} [options]
+ * @returns {Promise<FileStoreListResult>}
+ */
+FileStore.list(options)
 ~~~
 
 ## Locks
@@ -1904,7 +1989,7 @@ function updateUserEmail(user_id, new_email) {
 }
 ~~~
 
-## File management examples
+## Bucket sets examples
 
 ~~~javascript
 /**
@@ -1932,6 +2017,7 @@ function checkAdapterLogsForErrors() {
         })
 }
 ~~~
+
 
 ## Adapter examples
 
