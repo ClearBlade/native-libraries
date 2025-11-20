@@ -10,6 +10,7 @@ The message represents an MQTT message.
 * @property {number} qos
 * @property {boolean} retain
 * @property {boolean} duplicate
+* @property {string} topic The topic that the message was published on
 * @property {Record<string, string>} user_properties
 
 Example
@@ -59,7 +60,7 @@ var client = new MQTT.Client(options);
 
 This function subscribes to a topic in the broker. It registers a callback function when a message on that topic is received.
 
-* @param {string} topic
+* @param {string|string[]} topic The topic or array of topics to subscribe to
 * @param {function(topic: string, message: Message)} onMessage
 * @returns {Promise}
 
@@ -82,7 +83,7 @@ function myStreamService(req, resp){
 This function allows publish to send an MQTT message to the broker.
 
 * publish sends an MQTT message to the broker.
-* @param {string} topic
+* @param {string} topic The topic to publish to. If the payload is of type `Message`, this takes precedence over `payload.topic`.
 * @param {string|Message|Uint8Array} payload
 * @param {number} [qos]
 * @param {boolean} [retain]
