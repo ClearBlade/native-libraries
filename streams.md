@@ -12,6 +12,8 @@ This document will cover some examples and tips for using streams in code servic
 ### Pipe To
 Code services which aim to pipe data from a source to a sink may realize large performance benefits by using the [pipeTo](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/pipeTo) function. When a `ReadableStream` is piped directly to a `WritableStream`, the data never needs to be pushed into the JavaScript environment, leading to decreased memory usage and faster execution times. 
 
+If piping to `resp.writable`, the response header and status may be set. This must be done before the first chunk is written to `resp.writable`.
+
 ```js
 async function FetchStream(req, resp) {
   const fetchResponse = await fetch("https://google.com")
