@@ -305,7 +305,7 @@ ClearBladeAsync.Database(options)
  * Note: A raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
  * @param {...*} [params] the query's optional parameters
- * @returns {Promise<Object[]>}
+ * @returns {Promise<QueryResult>}
  */
 Database.query(rawQuery, params)
 
