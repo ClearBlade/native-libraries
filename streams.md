@@ -17,6 +17,7 @@ If piping to `resp.writable`, the response header and status may be set. This mu
 ```js
 async function FetchStream(req, resp) {
   const fetchResponse = await fetch("https://google.com")
+  resp.status(418)
   fetchResponse.stream().pipeTo(resp.writable)
 }
 ```
