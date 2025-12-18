@@ -112,7 +112,6 @@ function myCodeService(req, resp){
 
 This function returns a stream that can be used to write and publish a MQTT message
 
-* publish sends an MQTT message to the broker.
 * @param {string} topic The topic to publish to.
 * @param {number} [qos]
 * @param {boolean} [retain]
