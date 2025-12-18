@@ -51,6 +51,12 @@ Response.text()
 Response.json()
 
 /**
+ * Returns a data stream from the response.
+ * @returns {ReadableStream} 
+ */
+Response.stream()
+
+/**
  * @typedef {Object} Headers
  * @property {Object} headers - header map in format map[string][]string
  */

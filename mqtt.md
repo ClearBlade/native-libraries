@@ -107,3 +107,13 @@ function myCodeService(req, resp){
         });
 }
   ~~~
+
+## Client.createPublishStream(topic, qos, retain, user_properties)
+
+This function returns a stream that can be used to write and publish a MQTT message
+
+* @param {string} topic The topic to publish to.
+* @param {number} [qos]
+* @param {boolean} [retain]
+* @param {Record<string, string>} [user_properties] MQTT 5 user properties
+* @returns {WritableStream} Writes the contents of the MQTT payload. When closed, the message is published.
