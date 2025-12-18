@@ -51,7 +51,7 @@ Response.text()
 Response.json()
 
 /**
- * Returns a data stream to the response.
+ * Returns a data stream from the response.
  * @returns {ReadableStream} 
  */
 Response.stream()
