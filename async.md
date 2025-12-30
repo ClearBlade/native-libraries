@@ -292,13 +292,20 @@ Collection.dropContinuousAggregate(aggregateName)
  */
 ClearBladeAsync.Database(options)
 
+
+/**
+ * @typedef{Object[]} QueryResult
+ * The results of a database query. Can be directly indexed or call `stream` to access the data as a `ReadableStream`
+ * @property {() => ReadableStream} stream
+ */
+
 /**
  * Performs a SQL query on ClearBlade collections.
  * Promise resolves with the requested database rows.
  * Note: A raw query will not fire triggers or sync your changes.
  * @param {string} rawQuery
  * @param {...*} [params] the query's optional parameters
- * @returns {Promise<Object[]>}
+ * @returns {Promise<QueryResult>}
  */
 Database.query(rawQuery, params)
 
@@ -388,6 +395,13 @@ FS.readDir(path)
 FS.readFile(path[, encoding])
 
 /**
+ * Creates a read stream for the given path. If the file does not exist, an error is thrown when the stream is read.
+ * @param {string} path 
+ * @returns {ReadableStream}
+ */
+FS.createReadStream(path)
+
+/**
  * Writes the given data to a file, replacing it if it already exists.
  * The promise is resolved empty.
  *
@@ -397,6 +411,16 @@ FS.readFile(path[, encoding])
  * @returns {Promise<>}
  */
 FS.writeFile(path, data)
+
+/**
+ * Creates a writable stream for the file, replacing the contents if it already exists.
+ * 
+ * @param {string} path: The relative (full if on edge) path with a filename with an extension.
+ * 
+ * @returns {WritableStream}
+ */
+FS.createWriteStream(path)
+
 
 /**
  * Renames (mv's) oldPath to newPath.
@@ -489,6 +513,12 @@ File.stat()
 File.read([encoding])
 
 /**
+ * Creates a read stream for the file. If the file does not exist, an error is thrown when the stream is read.
+ * @returns {ReadableStream}
+ */
+FS.createReadStream()
+
+/**
  * Writes the given data to the file, replacing the contents if it already exists.
  * The promise is resolved empty.
  *
@@ -497,6 +527,14 @@ File.read([encoding])
  * @returns {Promise<>}
  */
 File.write(data)
+
+/**
+ * Creates a writable stream for the file, replacing the contents if it already exists.
+ * 
+ * @returns {WritableStream}
+ */
+File.createWriteStream()
+
 
 /**
  * Renames (mv's) file to newPath.
@@ -547,6 +585,13 @@ ClearBladeAsync.FileStore(name)
 FileStore.read(path)
 
 /**
+ * Creates a read stream for the given path. If the file does not exist, an error is thrown when the stream is read.
+ * @param {string} path 
+ * @returns {ReadableStream}
+ */
+FileStore.createReadStream(path)
+
+/**
  * Writes to a file. If the file already exists, it will be overwritten. 
  * If the file or any parent directories do not exist, they will be created.
  * @param {string} path
@@ -554,6 +599,13 @@ FileStore.read(path)
  * @returns {Promise<void>}
  */
 FileStore.write(path, data)
+
+/**
+ * Creates a writable stream for the file, replacing the contents if it already exists.
+ * @param {string} path: The path to the file
+ * @returns {WritableStream}
+ */
+FS.createWriteStream(path)
 
 /**
  * Deletes the file at the path. 
