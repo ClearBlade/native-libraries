@@ -125,6 +125,7 @@ ClearBladeAsync.Collection(nameOrID)
  * @property {number} CURRENTPAGE
  * @property {string} NEXTPAGEURL
  * @property {string} PREVPAGEURL
+ * @property {() => ReadableStream} stream Returns the results as a ReadableStream
  */
 
 /**
@@ -255,10 +256,16 @@ Collection.deleteCollection()
 Collection.createContinuousAggregate(query, options)
 
 /**
+ * @typedef {Array<Record<string, any>>} AggregateResult
+ * The results of a database query. Can be directly indexed or call `stream` to access the data as a `ReadableStream`
+ * @property {() => ReadableStream} stream
+ */
+
+/**
  * Performs a query against a continuous aggregate.
  * @param {string} aggregateName
  * @param {Query} query Query object
- * @return {Promise<Array<Record<string, any>>>}
+ * @return {Promise<AggregateResult>}
  */
 Collection.fetchAggregate(aggregateName, query)
 
@@ -294,7 +301,7 @@ ClearBladeAsync.Database(options)
 
 
 /**
- * @typedef{Object[]} QueryResult
+ * @typedef {Object[]} QueryResult
  * The results of a database query. Can be directly indexed or call `stream` to access the data as a `ReadableStream`
  * @property {() => ReadableStream} stream
  */
