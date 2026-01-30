@@ -88,6 +88,56 @@ This example assumes that it is running in a system with a bucket set named `pro
     });
 ~~~
 
+## Protobuf Encode / Decode Examples
+These examples assume that the code is running in a system with a bucket set named `protofiles` containing the following `person.proto` in the `sandbox` box:
+
+```
+syntax = "proto2";
+
+message Address {
+    optional string street = 1;
+    optional string city = 2;
+}
+
+message Person {
+    optional string name = 1;
+    optional int32 age = 2;
+    optional Address address = 3;
+}
+```
+
+~~~javascript
+    // Protobuf encode
+    const def = grpc.loadDefinitionFromBucket("protofiles", "sandbox", "person.proto");
+    const personMsg = def.messages.Person;
+    const personObj = {
+        name: "John Doe",
+        age: 30,
+        address: {
+            street: "123 Main St",
+            city: "Springfield"
+    }};
+    personMsg.encode(person).then(function(encoded) {
+        resp.success("encodedPerson:", Array.from(encoded))
+    });
+~~~
+
+The response is ```encodedPerson: [10,8,74,111,104,110,32,68,111,101,16,30,26,26,10,11,49,50,51,32,77,97,105,110,32,83,116,18,11,83,112,114,105,110,103,102,105,101,108,100]```
+
+
+~~~javascript
+    // Protobuf decode
+    const def = grpc.loadDefinitionFromBucket("protofiles", "sandbox", "person.proto");
+    const personMsg = def.messages.Person;
+    const encodedPerson = [16,30,26,26,10,11,49,50,51,32,77,97,105,110,32,83,116,18,11,83,112,114,105,110,103,102,105,101,108,100,10,8,74,111,104,110,32,68,111,101];
+    personMsg.decode(new Uint8Array(encodedPerson)).then(function(personObj) {
+        resp.success(personObj)
+    });
+~~~
+
+The response is ```{"name": "John Doe", "age": 30, "address": { "city": "Springfield", "street": "123 Main St"}}```
+
+
 ## Metadata Example
 This example shows how the metadata object can be used with a request
 
