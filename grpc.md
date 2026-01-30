@@ -117,8 +117,8 @@ message Person {
             street: "123 Main St",
             city: "Springfield"
     }};
-    personMsg.encode(person).then(function(encoded) {
-        resp.success("encodedPerson:", Array.from(encoded))
+    personMsg.encode(person).then(function(encodedPerson) {
+        resp.success("encodedPerson:", Array.from(encodedPerson))
     });
 ~~~
 
