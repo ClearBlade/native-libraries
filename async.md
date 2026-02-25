@@ -273,9 +273,10 @@ Collection.fetchAggregate(aggregateName, query)
  * Executes a raw query against a continuous aggregate.
  * @param {string} aggregateName
  * @param {string} query Raw SQL query
+ * @param {...*} [params] the query's optional parameters
  * @return {Promise<Array<Record<string, any>>>} The result of the query
  */
-Collection.fetchAggregateRaw(aggregateName, query)
+Collection.fetchAggregateRaw(aggregateName, query, params)
 
 /**
  * Deletes the continuous aggregate
