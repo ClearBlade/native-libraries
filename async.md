@@ -145,6 +145,15 @@ Collection.fetch(query)
 Collection.create(newItem)
 
 /**
+ * Creates rows in the collection using a more performant bulk insert method. Beneficial when inserting large amounts of rows at once.
+ * Promise resolves with void.
+ * @param {string[]} columns
+ * @param {any[][]} items
+ * @returns {Promise<void>}
+ */
+Collection.bulkCreate(columns, items)
+
+/**
  * Updates rows in the collection.
  * Promise resolves with the updated rows.
  * @param {Query} [query]
@@ -1968,6 +1977,15 @@ function processAssetMessage(message) {
     return assetsCollection.upsert(asset, 'asset_id');
 }
 ~~~
+
+### Bulk create example
+```
+ClearBladeAsync.Collection('test').bulkCreate(['item_id', 'test'], [[newUUID(), 'one'], [newUUID(), 'two']]).then(function() {
+  
+}).catch(function() {
+
+})
+```
 
 ## Database examples
 
