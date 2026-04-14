@@ -25,6 +25,8 @@ __Reference__
 21. [Data usage](#data-usage)
 22. [GoogleCloudMonitoring](#google-cloud-monitoring)
 23. [Code](#code)
+24. [Broker](#broker)
+25. [Message History](#message-history)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -293,6 +295,32 @@ Collection.fetchAggregateRaw(aggregateName, query, params)
  * @return {Promise<void>}
  */
 Collection.dropContinuousAggregate(aggregateName)
+
+/**
+ * Drops chunks from a timeseries (hypertable) collection.
+ * Promise resolves empty.
+ * @param {string} olderThan: An interval string (Ex. "7 days") or timestamp. Chunks with data older than this are dropped.
+ * @param {string} [newerThan]: An interval string or timestamp. If provided, only drops chunks newer than this bound.
+ * @returns {Promise<>}
+ */
+Collection.dropChunks(olderThan, newerThan)
+
+/**
+ * Renames the collection.
+ * Promise resolves empty.
+ * @param {string} newName
+ * @returns {Promise<>}
+ */
+Collection.renameCollection(newName)
+
+/**
+ * Renames a column in the collection.
+ * Promise resolves empty.
+ * @param {string} oldName
+ * @param {string} newName
+ * @returns {Promise<>}
+ */
+Collection.renameColumn(oldName, newName)
 ~~~
 
 ## Databases
@@ -816,6 +844,26 @@ Users.count(query)
  * @returns {Promise<UserWithConnections>}
  */
 Users.userConnections(emailOrId)
+
+/**
+ * Gets information about the users connected to the platform via MQTT.
+ * Promise resolves with a map from user email to a list of that user's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Users.connectedUsers()
+
+/**
+ * @typedef {Object} UserCounts
+ * @property {number} total_users The number of rows in the user table
+ * @property {number} total_user_connections The total number of active MQTT connections held by users
+ * @property {number} unique_user_connections The number of distinct users with at least one active MQTT connection
+ */
+
+/**
+ * Gets the number of users connected to the platform via MQTT.
+ * @returns {Promise<UserCounts>}
+ */
+Users.connectedUserCount()
 ~~~
 
 ## Devices
@@ -1151,6 +1199,13 @@ Role.applyTo(deviceNameOrUserID)
  * @returns {Promise<>}
  */
 Role.stripFrom(deviceNameOrUserID)
+
+/**
+ * Removes the role from every device and user it is applied to.
+ * Promise resolves empty.
+ * @returns {Promise<>}
+ */
+Role.stripFromAll()
 
 /**
  * Finds all users with the given role.
@@ -1891,6 +1946,117 @@ Code.getAllServices()
  * @param {boolean} loggingEnabled - override to enable logging for this execution instance
  */
 Code.execute(name, params, loggingEnabled)
+~~~
+
+## Broker
+
+~~~javascript
+/**
+ * Represents the system's MQTT broker.
+ * @returns {Broker}
+ */
+ClearBladeAsync.Broker()
+
+/**
+ * @typedef {Object} Connection
+ * @property {string} client_id
+ * @property {string} time_connected Time when the connection was opened in RFC3339
+ */
+
+/**
+ * @typedef {Object} DeviceCounts
+ * @property {number} total_devices The number of rows in the device table
+ * @property {number} total_device_connections The total number of active MQTT connections held by devices
+ * @property {number} unique_device_connections The number of distinct devices with at least one active MQTT connection
+ */
+
+/**
+ * @typedef {Object} UserCounts
+ * @property {number} total_users The number of rows in the user table
+ * @property {number} total_user_connections The total number of active MQTT connections held by users
+ * @property {number} unique_user_connections The number of distinct users with at least one active MQTT connection
+ */
+
+/**
+ * Gets information about the devices connected to the platform via MQTT.
+ * Promise resolves with a map from device name to a list of that device's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Broker.connectedDevices()
+
+/**
+ * Gets information about a single device connected to the platform via MQTT.
+ * Promise resolves with the device's metadata, with an added "connections" property listing each active connection.
+ * @param {string} deviceName
+ * @returns {Promise<Object>}
+ */
+Broker.deviceConnections(deviceName)
+
+/**
+ * Gets the number of devices connected to the platform via MQTT.
+ * @returns {Promise<DeviceCounts>}
+ */
+Broker.connectedDeviceCount()
+
+/**
+ * Gets information about the users connected to the platform via MQTT.
+ * Promise resolves with a map from user email to a list of that user's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Broker.connectedUsers()
+
+/**
+ * Gets information about a single user connected to the platform via MQTT.
+ * Promise resolves with the user's metadata, with an added "connections" property listing each active connection.
+ * @param {string} emailOrId The user's email or id
+ * @returns {Promise<Object>}
+ */
+Broker.userConnections(emailOrId)
+
+/**
+ * Gets the number of users connected to the platform via MQTT.
+ * @returns {Promise<UserCounts>}
+ */
+Broker.connectedUserCount()
+
+/**
+ * Disconnects the MQTT client with the given client id. Only callable by a developer.
+ * Promise resolves empty.
+ * @param {string} clientID
+ * @returns {Promise<>}
+ */
+Broker.killClientByID(clientID)
+
+/**
+ * @typedef {Object} KillClientByDeviceNameResult
+ * @property {number} killed_clients The number of MQTT connections that were closed
+ * @property {string} errors A string describing any errors encountered. Empty if no errors occurred.
+ */
+
+/**
+ * Disconnects every MQTT client currently connected as the given device. Only callable by a developer.
+ * @param {string} deviceName
+ * @returns {Promise<KillClientByDeviceNameResult>}
+ */
+Broker.killClientByDeviceName(deviceName)
+~~~
+
+## Message History
+
+~~~javascript
+/**
+ * Represents the message history table.
+ * @returns {MessageHistory}
+ */
+ClearBladeAsync.MessageHistory()
+
+/**
+ * Reads rows from the message history table.
+ * Promise resolves with the rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+MessageHistory.read(query)
 ~~~
 
 # Examples
