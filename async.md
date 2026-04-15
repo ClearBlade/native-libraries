@@ -25,6 +25,8 @@ __Reference__
 21. [Data usage](#data-usage)
 22. [GoogleCloudMonitoring](#google-cloud-monitoring)
 23. [Code](#code)
+24. [Broker](#broker)
+25. [Message History](#message-history)
 
 __Examples__
 1. [Collections](#collection-examples)
@@ -177,7 +179,7 @@ Collection.upsert(item, conflictColumn)
  * Deletes rows from the collection.
  * Promise resolves empty.
  * @param {Query} [query]
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.remove(query)
 
@@ -200,7 +202,7 @@ Collection.columns()
  * Adds a column to the collection.
  * Promise resolves empty.
  * @param {{name: string, type: string}} columnMeta
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.addColumn(columnMeta)
 
@@ -208,7 +210,7 @@ Collection.addColumn(columnMeta)
  * Removes a column from the collection.
  * Promise resolves empty.
  * @param {string} columnName
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.dropColumn(columnName)
 
@@ -219,7 +221,7 @@ Collection.dropColumn(columnName)
  * By default, the item_id columns of all collections are indexed.
  * Promise resolves empty.
  * @param {string} columnName
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.createIndex(columnName)
 
@@ -229,14 +231,14 @@ Collection.createIndex(columnName)
  * and enforces each entry if the indexed column is unique.
  * Promise resolves empty.
  * @param {string} columnName
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.createUniqueIndex(columnName)
 
 /**
  * Deletes the collection and all data.
  * Promise resolves empty.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Collection.deleteCollection()
 
@@ -293,6 +295,32 @@ Collection.fetchAggregateRaw(aggregateName, query, params)
  * @return {Promise<void>}
  */
 Collection.dropContinuousAggregate(aggregateName)
+
+/**
+ * Drops chunks from a timeseries (hypertable) collection.
+ * Promise resolves empty.
+ * @param {string} olderThan: An interval string (Ex. "7 days") or timestamp. Chunks with data older than this are dropped.
+ * @param {string} [newerThan]: An interval string or timestamp. If provided, only drops chunks newer than this bound.
+ * @returns {Promise<void>}
+ */
+Collection.dropChunks(olderThan, newerThan)
+
+/**
+ * Renames the collection.
+ * Promise resolves empty.
+ * @param {string} newName
+ * @returns {Promise<void>}
+ */
+Collection.renameCollection(newName)
+
+/**
+ * Renames a column in the collection.
+ * Promise resolves empty.
+ * @param {string} oldName
+ * @param {string} newName
+ * @returns {Promise<void>}
+ */
+Collection.renameColumn(oldName, newName)
 ~~~
 
 ## Databases
@@ -366,7 +394,7 @@ Database.statement(statement[, args])
  * All statements are treated the same as exec. No results will be returned.
  * Promise resolves empty on success.
  * @param {[]Statement} statements
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Database.transaction(statements)
 ~~~
@@ -425,7 +453,7 @@ FS.createReadStream(path)
  * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  * @param {string|Uint8Array} data
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 FS.writeFile(path, data)
 
@@ -446,7 +474,7 @@ FS.createWriteStream(path)
  * @param {string} oldPath: The relative (full if on edge) path with a filename with an extension.
  * @param {string} newPath: The relative (full if on edge) path with a filename with an extension.
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 FS.renameFile(oldPath, newPath)
 
@@ -457,7 +485,7 @@ FS.renameFile(oldPath, newPath)
  * @param {string} srcPath: The relative (full if on edge) path with a filename with an extension.
  * @param {string} dstPath: The relative (full if on edge) path with a filename with an extension.
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 FS.copyFile(srcPath, dstPath)
 
@@ -467,7 +495,7 @@ FS.copyFile(srcPath, dstPath)
  *
  * @param {string} path: The relative (full if on edge) path with a filename with an extension.
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 FS.deleteFile(path)
 
@@ -487,7 +515,7 @@ FS.deleteFile(path)
  * @param {string} path: The relative path (in platform bucket set) with a filename with an extension.
  * @param {string} edge: The edge's name to sync with. The path will end up in that edge's inbox
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 FS.syncFileToEdge(path, edge)
 
@@ -541,7 +569,7 @@ FS.createReadStream()
  *
  * @param {string|Uint8Array} data
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 File.write(data)
 
@@ -559,7 +587,7 @@ File.createWriteStream()
  *
  * @param {string} newPath: The relative (full if on edge) path with a filename with an extension
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 File.rename(newPath)
 
@@ -569,7 +597,7 @@ File.rename(newPath)
  *
  * @param {string} dstPath: The relative (full if on edge) path with a filename with an extension
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 File.copy(dstPath)
 
@@ -577,7 +605,7 @@ File.copy(dstPath)
  * Deletes the file.
  * The promise is resolved empty.
  *
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 File.delete()
 ~~~
@@ -694,28 +722,28 @@ ClearBladeAsync.Lock(name, caller)
 /**
  * Obtains an exclusive lock.
  * Promise will resolve when the lock has been granted.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Lock.lock()
 
 /**
  * Releases an exclusive lock.
  * Promise will resolve when the lock has been released.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Lock.unlock()
 
 /**
  * Obtains a shared lock for read access.
  * Promise will resolve when the lock has been granted.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Lock.rlock()
 
 /**
  * Releases a shared lock.
  * Promise will resolve when the lock has been released.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Lock.runlock()
 ~~~
@@ -777,7 +805,7 @@ Users.read(query)
  * Promise will resolve empty.
  * @param {Query} query
  * @param {Object} changes
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Users.update(query, changes)
 
@@ -785,7 +813,7 @@ Users.update(query, changes)
  * Deletes rows from the user table.
  * Promise will resolve empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Users.delete(query)
 
@@ -816,6 +844,26 @@ Users.count(query)
  * @returns {Promise<UserWithConnections>}
  */
 Users.userConnections(emailOrId)
+
+/**
+ * Gets information about the users connected to the platform via MQTT.
+ * Promise resolves with a map from user email to a list of that user's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Users.connectedUsers()
+
+/**
+ * @typedef {Object} UserCounts
+ * @property {number} total_users The number of rows in the user table
+ * @property {number} total_user_connections The total number of active MQTT connections held by users
+ * @property {number} unique_user_connections The number of distinct users with at least one active MQTT connection
+ */
+
+/**
+ * Gets the number of users connected to the platform via MQTT.
+ * @returns {Promise<UserCounts>}
+ */
+Users.connectedUserCount()
 ~~~
 
 ## Devices
@@ -859,7 +907,7 @@ Devices.read(query)
  * Promise will resolve empty.
  * @param {Query} query
  * @param {Object} changes
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Devices.update(query, changes)
 
@@ -867,7 +915,7 @@ Devices.update(query, changes)
  * Deletes rows from the device table.
  * Promise will resolve empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Devices.delete(query)
 
@@ -1053,7 +1101,7 @@ Roles.read(query)
  * Updates roles in the roles table.
  * @param {Query} query
  * @param {Object} changes
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Roles.update(query, changes)
 
@@ -1061,7 +1109,7 @@ Roles.update(query, changes)
  * Deletes roles from the roles table.
  * Promise resolves empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Roles.delete(query)
 
@@ -1107,7 +1155,7 @@ Role.permissions()
  * Resources not included in the perms object remain unchanged.
  * Promise resolves empty.
  * @param {Permission|Permission[]} perms
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.setPermissions(perms)
 
@@ -1116,7 +1164,7 @@ Role.setPermissions(perms)
  * Resources not included in the perms object remain unchanged.
  * Promise resolves empty.
  * @param {Permission|Permission[]} perms
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.increasePermissions(perms)
 
@@ -1125,14 +1173,14 @@ Role.increasePermissions(perms)
  * Resources not included in the perms object remain unchanged.
  * Promise resolves empty.
  * @param {Permission|Permission[]} perms
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.decreasePermissions(perms)
 
 /**
  * Removes all permissions from the role.
  * Promise resolves empty.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.removeAllPermissions()
 
@@ -1140,7 +1188,7 @@ Role.removeAllPermissions()
  * Applies the role to the given device or user.
  * Promise resolves empty.
  * @param {string} deviceNameOrUserID
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.applyTo(deviceNameOrUserID)
 
@@ -1148,9 +1196,16 @@ Role.applyTo(deviceNameOrUserID)
  * Removes the role from the given device or user.
  * Promise resolves empty.
  * @param {string} deviceNameOrUserID
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Role.stripFrom(deviceNameOrUserID)
+
+/**
+ * Removes the role from every device and user it is applied to.
+ * Promise resolves empty.
+ * @returns {Promise<void>}
+ */
+Role.stripFromAll()
 
 /**
  * Finds all users with the given role.
@@ -1194,7 +1249,7 @@ ClearBladeAsync.Cache(name)
  * Promise resolves empty.
  * @param {string} key
  * @param {*} value
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Cache.set(key, value)
 
@@ -1226,14 +1281,14 @@ Cache.getAll()
  * Removes a value from the cache.
  * Promise resolves empty.
  * @param {string} key
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Cache.delete(key)
 
 /**
  * Removes all values from the cache.
  * Promise resolves empty.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Cache.flush()
 
@@ -1295,7 +1350,7 @@ Triggers.update(query, changes)
  * Deletes triggers from your system.
  * Promise will resolve empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Triggers.delete(query)
 ~~~
@@ -1393,7 +1448,7 @@ Timers.update(query, changes)
  * Deletes rows from the timer table.
  * Promise will resolve empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Timers.delete(query)
 ~~~
@@ -1442,7 +1497,7 @@ Edges.update(query, changes)
  * Deletes rows from the edge table.
  * Promise will resolve empty.
  * @param {Query} query
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Edges.delete(query)
 ~~~
@@ -1513,7 +1568,7 @@ Adapters.update(name, changes)
  * Deletes an adapter.
  * Promise will resolve empty.
  * @param {string} name
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Adapters.delete(name)
 
@@ -1541,7 +1596,7 @@ Adapter.update(changes)
 /**
  * Deletes the given adapter.
  * Promise will resolve empty.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Adapter.delete()
 
@@ -1559,7 +1614,7 @@ Adapter.delete()
  * Creates a file attached to the given adapter.
  * Promise will resolve empty.
  * @param {AdapterFileMeta} options
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Adapter.createFile(options)
 
@@ -1598,7 +1653,7 @@ Adapter.updateFile(filename, changes[, encoding])
  * Deletes a file attached to the given adapter.
  * Promise will resolve empty.
  * @param {string} filename
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Adapter.deleteFile(filename)
 
@@ -1640,7 +1695,7 @@ ClearBladeAsync.CustomSync()
  * @param {Object} data: The actual item or items created/updated/deleted
  * @param {string} destination: Can be CustomSync.Platform if on the edge or CustomSync.AllEdges or an individual edge name if on the platform
  * @param {string} [interval=now]: Optional but can be CustomSync.Now or be actual interval string values like “60s”, “10m”, “1h”, “5d”. Only seconds, minutes, hours, and days are supported. If the interval is not specified, CustomSync.Now is the default.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 CustomSync.sync(collectionName, data, destination, interval)
 ~~~
@@ -1661,7 +1716,7 @@ ClearBladeAsync.Secret()
  * Encrypts the secret and stores it in the database
  * @param {string} name: The secret's name
  * @param {*} data: Secret data
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Secret.create(name, data)
 
@@ -1684,21 +1739,21 @@ Secret.readWithQuery(query)
  * Encrypts secret and updates existing secret in the database
  * @param {string} name: The secret's name
  * @param {*} data: Secret data
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Secret.update(name, data)
 
 /**
  * Deletes secret from the database
  * @param {string} name: The secret's name
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Secret.delete(name)
 
 /**
  * Deletes secret(s) from the database
  * @param {Query} query object
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Secret.deleteWithQuery(query)
 ~~~
@@ -1722,7 +1777,7 @@ ClearBladeAsync.Preloader()
  * Preloader starts listening for HTTP requests
  * @param {function} onRequest: Function to handle HTTP request
  * @param {PreloaderArgs} [args]: Optional arguments to preloader
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 Preloader.listen(onRequest, args)
 ~~~
@@ -1753,7 +1808,7 @@ Preloader.listen(onRequest, args)
  * The caller is responsible for sanitizing the data sent to the logger, which will be forwarded verbatim. 
  * @param{AdminAuditLogInfo} info
  * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudLogger.adminAuditLog(info[, project])
 
@@ -1771,7 +1826,7 @@ GoogleCloudLogger.adminAuditLog(info[, project])
  * The payload's resourceName field will be auto-populated if not provided.
  * @param{DeviceEventLogInfo} info
  * @param{string} [project] if multiple cloud loggers are set up for a system, this param will choose where to send the log.
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudLogger.deviceEventLog(info[, project])
 ~~~
@@ -1789,7 +1844,7 @@ GoogleCloudLogger.deviceEventLog(info[, project])
  * Reports the HTTP data size to the platform
  * @param {string} systemKey
  * @param {integer} size
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 DataUsage.reportHTTPDataUsage(systemKey, size)
 ~~~
@@ -1826,7 +1881,7 @@ DataUsage.reportHTTPDataUsage(systemKey, size)
 /**
  * Reports the active devices metric.
  * @param{Protocol} protocol
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportActiveDevicesMetric(protocol)
 
@@ -1835,7 +1890,7 @@ GoogleCloudMonitoring.reportActiveDevicesMetric(protocol)
  * @param{Protocol} protocol
  * @param{Direction} direction
  * @param{integer} bytescount
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportBillingBytesCountMetric(protocol, direction, bytescount)
 
@@ -1843,28 +1898,28 @@ GoogleCloudMonitoring.reportBillingBytesCountMetric(protocol, direction, bytesco
  * Reports the error count metric.
  * @param{Protocol} protocol
  * @param{ErrorType} errorType
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportErrorCountMetric(protocol, errorType)
 
 /**
  * Reports the operation count metric.
  * @param{OperationType} operationType
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportOperationCountMetric(operationType)
 
 /**
  * Reports the received bytes count metric.
  * @param{integer} bytescount
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportReceivedBytesCountMetric(bytesCount)
 
 /**
  * Reports the sent bytes count metric.
  * @param{integer} bytescount
- * @returns {Promise<>}
+ * @returns {Promise<void>}
  */
 GoogleCloudMonitoring.reportSentBytesCountMetric(bytesCount)
 ~~~
@@ -1891,6 +1946,117 @@ Code.getAllServices()
  * @param {boolean} loggingEnabled - override to enable logging for this execution instance
  */
 Code.execute(name, params, loggingEnabled)
+~~~
+
+## Broker
+
+~~~javascript
+/**
+ * Represents the system's MQTT broker.
+ * @returns {Broker}
+ */
+ClearBladeAsync.Broker()
+
+/**
+ * @typedef {Object} Connection
+ * @property {string} client_id
+ * @property {string} time_connected Time when the connection was opened in RFC3339
+ */
+
+/**
+ * @typedef {Object} DeviceCounts
+ * @property {number} total_devices The number of rows in the device table
+ * @property {number} total_device_connections The total number of active MQTT connections held by devices
+ * @property {number} unique_device_connections The number of distinct devices with at least one active MQTT connection
+ */
+
+/**
+ * @typedef {Object} UserCounts
+ * @property {number} total_users The number of rows in the user table
+ * @property {number} total_user_connections The total number of active MQTT connections held by users
+ * @property {number} unique_user_connections The number of distinct users with at least one active MQTT connection
+ */
+
+/**
+ * Gets information about the devices connected to the platform via MQTT.
+ * Promise resolves with a map from device name to a list of that device's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Broker.connectedDevices()
+
+/**
+ * Gets information about a single device connected to the platform via MQTT.
+ * Promise resolves with the device's metadata, with an added "connections" property listing each active connection.
+ * @param {string} deviceName
+ * @returns {Promise<Object>}
+ */
+Broker.deviceConnections(deviceName)
+
+/**
+ * Gets the number of devices connected to the platform via MQTT.
+ * @returns {Promise<DeviceCounts>}
+ */
+Broker.connectedDeviceCount()
+
+/**
+ * Gets information about the users connected to the platform via MQTT.
+ * Promise resolves with a map from user email to a list of that user's active connections.
+ * @returns {Promise<Object<string, Connection[]>>}
+ */
+Broker.connectedUsers()
+
+/**
+ * Gets information about a single user connected to the platform via MQTT.
+ * Promise resolves with the user's metadata, with an added "connections" property listing each active connection.
+ * @param {string} emailOrId The user's email or id
+ * @returns {Promise<Object>}
+ */
+Broker.userConnections(emailOrId)
+
+/**
+ * Gets the number of users connected to the platform via MQTT.
+ * @returns {Promise<UserCounts>}
+ */
+Broker.connectedUserCount()
+
+/**
+ * Disconnects the MQTT client with the given client id. Only callable by a developer.
+ * Promise resolves empty.
+ * @param {string} clientID
+ * @returns {Promise<void>}
+ */
+Broker.killClientByID(clientID)
+
+/**
+ * @typedef {Object} KillClientByDeviceNameResult
+ * @property {number} killed_clients The number of MQTT connections that were closed
+ * @property {string} errors A string describing any errors encountered. Empty if no errors occurred.
+ */
+
+/**
+ * Disconnects every MQTT client currently connected as the given device. Only callable by a developer.
+ * @param {string} deviceName
+ * @returns {Promise<KillClientByDeviceNameResult>}
+ */
+Broker.killClientByDeviceName(deviceName)
+~~~
+
+## Message History
+
+~~~javascript
+/**
+ * Represents the message history table.
+ * @returns {MessageHistory}
+ */
+ClearBladeAsync.MessageHistory()
+
+/**
+ * Reads rows from the message history table.
+ * Promise resolves with the rows matching the provided query.
+ * @param {Query} query
+ * @returns {Promise<Object[]>}
+ */
+MessageHistory.read(query)
 ~~~
 
 # Examples
@@ -2032,7 +2198,7 @@ function countAssetsByType() {
 /**
  * insertAssetHistory performs a raw MongoDB operation to insert a message into the assetHistory collection.
  * @param  {Object} message: An MQTT message from an asset
- * @return {Promise<>}
+ * @return {Promise<void>}
  */
 function insertAssetHistory(message) {
     var mongoInsertQuery = 'db.assetHistory.insert('+JSON.stringify(message)+')';
@@ -2042,7 +2208,7 @@ function insertAssetHistory(message) {
 /**
  * addHistoryToBigQuery inserts an MQTT message into a BigQuery table.
  * @param  {Object} message: An asset's MQTT message
- * @return {Promise<>}
+ * @return {Promise<void>}
  */
 function addHistoryToBigQuery(message) {
     var insertObject = {
@@ -2057,7 +2223,7 @@ function addHistoryToBigQuery(message) {
  * updateUserEmail updates a user's email and records the action in the audit table.
  * @param {uuid} user_id
  * @param {string} new_email
- * @return {Promise<>}
+ * @return {Promise<void>}
  */
 function updateUserEmail(user_id, new_email) {
     return db.transaction([
@@ -2073,7 +2239,7 @@ function updateUserEmail(user_id, new_email) {
 /**
  * sendAdapterLogsToPlatform copies a log file from an edge's filesystem into the edge's outbox.
  * This file will be synced to the platform.
- * @return {Promise<>}
+ * @return {Promise<void>}
  */
 function sendAdapterLogsToPlatform() {
     var fs = ClearBladeAsync.FS('myDeployment');
