@@ -1,4 +1,12 @@
-This library allows for the execution of async ClearBlade messaging functions by providing an asynchronous MQTT client. You can connect to ClearBlade's Internal Broker for the same system where the code resides or an external broker (e.g., ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.). Automatic reconnection (i.e. after a broker disconnect) is built into the library and does not have to be implemented by the developer.
+This library allows for the execution of async ClearBlade messaging functions by providing an asynchronous MQTT client. You can connect to ClearBlade's Internal Broker for the same system where the code resides or an external broker (e.g., ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.).
+
+Automatic reconnection (i.e. after a broker disconnect) is built into the library and does not have to be implemented by the developer. Note the following related to auto-reconnections:
+- Exponential backoff is used
+- The default initial backoff delay is 1s
+- The backoff multiplier is 2 (i.e. the second backoff delay is 2s, the third backoff delay is 4s etc.)
+- The maximum backoff delay is 10min
+- The backoff delay is reset to 1s IF a new connection is made AND that connection stays stable until **6s + current backoff delay** since the last failed connection attempt
+
 ## MQTT.Message(payload)
 
 The message represents an MQTT message.
