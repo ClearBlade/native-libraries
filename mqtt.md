@@ -1,4 +1,4 @@
-This library allows for the execution of async ClearBlade messaging functions by providing an asynchronous MQTT client. You can connect to ClearBlade's Internal Broker for the same system where the code resides or an external broker (e.g., ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.)
+This library allows for the execution of async ClearBlade messaging functions by providing an asynchronous MQTT client. You can connect to ClearBlade's Internal Broker for the same system where the code resides or an external broker (e.g., ClearBlade Broker in another system on the same or different instance, Mosquitto Broker, etc.). Automatic reconnection (i.e. after a broker disconnect) is built into the library and does not have to be implemented by the developer.
 ## MQTT.Message(payload)
 
 The message represents an MQTT message.
