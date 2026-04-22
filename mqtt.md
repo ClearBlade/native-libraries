@@ -5,7 +5,7 @@ Automatic reconnection (i.e. after a broker disconnect) is built into the librar
 - The default initial backoff delay is 1s
 - The backoff multiplier is 2 (i.e. the second backoff delay is 2s, the third backoff delay is 4s etc.)
 - The maximum backoff delay is 10min
-- The backoff delay is reset to 1s IF a new connection is made AND that connection stays stable until **6s + current backoff delay** since the last failed connection attempt
+- The backoff delay is reset to 1s IF a new connection is made AND that connection stays stable until **6s + current backoff delay** have elapsed since the last failed connection attempt
 
 ## MQTT.Message(payload)
 
