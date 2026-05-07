@@ -1,4 +1,4 @@
-# metrics
+# Metrics
 
 The metrics library provides an interface for creating and updating custom Prometheus metrics from within code services. Metrics are exposed on the platform's Prometheus endpoint and can be used to monitor and alert on application behavior. Metrics can only be used in long-running services and will be reset if the service is updated.
 
@@ -23,7 +23,7 @@ A Gauge is a metric that represents a single numerical value that can arbitraril
 
 ```javascript
 /**
- * @param {string} name - The name of the gauge. Must be unique across all custom metrics in the service. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
+ * @param {string} name - The name of the gauge. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
  */
 var gauge = new Gauge(name);
 ```
@@ -92,7 +92,7 @@ A Counter is a cumulative metric that can only increase. Use a Counter for thing
 
 ```javascript
 /**
- * @param {string} name - The name of the counter. 
+ * @param {string} name - The name of the counter. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
  */
 var counter = new Counter(name);
 ```
@@ -137,7 +137,7 @@ A Histogram samples observations and counts them in configurable buckets. Use a 
 
 ```javascript
 /**
- * @param {string} name - The name of the histogram. Must be unique across all custom metrics in the service.
+ * @param {string} name - The name of the histogram. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
  * @param {number[]} [buckets] - An array of upper-bound values defining the histogram buckets. Defaults to the Prometheus default buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]. The bucket configuration is fixed on first use and cannot be changed until the service is restarted.
  */
 var histogram = new Histogram(name, buckets);
