@@ -82,6 +82,43 @@ gauge.sub(1, {region: "us-east"}).then(function() {
 });
 ```
 
+## gauge.set
+
+Sets the gauge to the given value.
+
+```javascript
+/**
+ * @param {number} value - The value to set the gauge to
+ * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
+ * @returns {Promise}
+ */
+gauge.sub(value, labels)
+```
+
+## gauge.inc
+
+Increments the gauge by one.
+
+```javascript
+/**
+ * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
+ * @returns {Promise}
+ */
+gauge.inc(labels)
+```
+
+## gauge.dec
+
+Decrements the gauge by one.
+
+```javascript
+/**
+ * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
+ * @returns {Promise}
+ */
+gauge.dec(labels)
+```
+
 ---
 
 # Counter
@@ -103,28 +140,40 @@ var counter = new Counter(name);
 var counter = new Counter("requests_total");
 ```
 
-## counter.inc
+## counter.add
 
-Increments the counter by the given value. The value must be positive.
+Adds a specific value to the counter. The value must be positive.
 
 ```javascript
 /**
- * @param {number} [value=1] - The amount to add to the counter. Must be a positive number.
+ * @param {number} value - The amount to add to the counter. Must be a positive number.
  * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
  * @returns {Promise}
  */
-counter.inc(value, labels)
+counter.add(value, labels)
 ```
 
 ### Example
 
 ```javascript
 var counter = new Counter("requests_total");
-counter.inc(1, {method: "GET", status: "200"}).then(function() {
+counter.add(1, {method: "GET", status: "200"}).then(function() {
     resp.success("counter incremented");
 }).catch(function(err) {
     resp.error("failed to increment counter: " + err);
 });
+```
+
+## counter.inc
+
+Increments the counter by one
+
+```javascript
+/**
+ * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
+ * @returns {Promise}
+ */
+counter.inc(labels)
 ```
 
 ---
