@@ -142,11 +142,11 @@ var counter = new Counter("requests_total");
 
 ## counter.add
 
-Adds a specific value to the counter. The value must be non-negative.
+Adds a specific value to the counter.
 
 ```javascript
 /**
- * @param {number} value - The amount to add to the counter. Must be a positive number.
+ * @param {number} value - The amount to add to the counter. Must be a non-negative number.
  * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
  * @returns {Promise}
  */
