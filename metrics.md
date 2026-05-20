@@ -4,6 +4,8 @@ The metrics library provides an interface for creating and updating custom Prome
 
 Each metric is automatically tagged with `system_key`, `service_name`, and `instance_id` labels. 
 
+Every metric will have a namespace of "clearblade" and subsystem of "custom"
+
 Note: Custom metrics are only available to developers and require Prometheus to be enabled in the platform configuration.
 
 # Usage
