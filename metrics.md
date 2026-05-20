@@ -23,7 +23,7 @@ A Gauge is a metric that represents a single numerical value that can arbitraril
 
 ```javascript
 /**
- * @param {string} name - The name of the gauge. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
+ * @param {string} name - The name of the gauge. Must be unique across all metrics on the platform.
  */
 var gauge = new Gauge(name);
 ```
@@ -92,7 +92,7 @@ Sets the gauge to the given value.
  * @param {Object} [labels] - A map of label key-value pairs to attach to this observation.
  * @returns {Promise}
  */
-gauge.sub(value, labels)
+gauge.set(value, labels)
 ```
 
 ## gauge.inc
@@ -129,7 +129,7 @@ A Counter is a cumulative metric that can only increase. Use a Counter for thing
 
 ```javascript
 /**
- * @param {string} name - The name of the counter. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
+ * @param {string} name - The name of the counter. Must be unique across all metrics on the platform. 
  */
 var counter = new Counter(name);
 ```
@@ -142,7 +142,7 @@ var counter = new Counter("requests_total");
 
 ## counter.add
 
-Adds a specific value to the counter. The value must be positive.
+Adds a specific value to the counter. The value must be non-negative.
 
 ```javascript
 /**
@@ -186,8 +186,8 @@ A Histogram samples observations and counts them in configurable buckets. Use a 
 
 ```javascript
 /**
- * @param {string} name - The name of the histogram. Must be unique across all metrics on the platform. If a CustomMetricPrefix is configured on the platform, it will be prepended automatically.
- * @param {number[]} [buckets] - An array of upper-bound values defining the histogram buckets. Defaults to the Prometheus default buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]. The bucket configuration is fixed on first use and cannot be changed until the service is restarted.
+ * @param {string} name - The name of the histogram. Must be unique across all metrics on the platform.
+ * @param {number[]} [buckets] - An array of upper-bound values defining the histogram buckets. Defaults to the Prometheus default buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]. The bucket configuration is fixed on first use and cannot be changed until the service is restarted. Buckets must be in strictly increasing order.
  */
 var histogram = new Histogram(name, buckets);
 ```
