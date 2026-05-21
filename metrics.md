@@ -6,6 +6,8 @@ Each metric is automatically tagged with `system_key`, `service_name`, and `inst
 
 Every metric will have a namespace of "clearblade" and subsystem of "custom"
 
+See [Prometheus best practices](https://prometheus.io/docs/practices/naming/) for recommended usage.
+
 Note: Custom metrics are only available to developers and require Prometheus to be enabled in the platform configuration.
 
 # Usage
