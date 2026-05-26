@@ -4,7 +4,7 @@ The metrics library provides an interface for creating and updating custom Prome
 
 Each metric is automatically tagged with `system_key`, `service_name`, and `instance_id` labels. 
 
-Every metric will have a namespace of "clearblade" and subsystem of "custom"
+Every metric will have a namespace of "clearblade" and subsystem of "custom". The metric will be exported from the platform after its first use in a code service. If a metric is constructed but no methods are invoked on it, then it will not be visible.
 
 See [Prometheus best practices](https://prometheus.io/docs/practices/naming/) for recommended usage.
 
@@ -56,7 +56,7 @@ gauge.add(value, labels)
 ```javascript
 var gauge = new Gauge("active_connections");
 gauge.add(1, {region: "us-east"}).then(function() {
-    resp.success("gauge updated");
+    console.log("gauge updated");
 }).catch(function(err) {
     resp.error("failed to update gauge: " + err);
 });
@@ -80,7 +80,7 @@ gauge.sub(value, labels)
 ```javascript
 var gauge = new Gauge("active_connections");
 gauge.sub(1, {region: "us-east"}).then(function() {
-    resp.success("gauge decremented");
+    console.log("gauge decremented");
 }).catch(function(err) {
     resp.error("failed to decrement gauge: " + err);
 });
@@ -162,7 +162,7 @@ counter.add(value, labels)
 ```javascript
 var counter = new Counter("requests_total");
 counter.add(1, {method: "GET", status: "200"}).then(function() {
-    resp.success("counter incremented");
+    console.log("counter incremented");
 }).catch(function(err) {
     resp.error("failed to increment counter: " + err);
 });
@@ -225,7 +225,7 @@ var start = Date.now();
 
 var duration = (Date.now() - start) / 1000;
 histogram.observe(duration, {handler: "processData"}).then(function() {
-    resp.success("duration recorded");
+    console.log("duration recorded");
 }).catch(function(err) {
     resp.error("failed to record duration: " + err);
 });
