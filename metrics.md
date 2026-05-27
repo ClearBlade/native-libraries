@@ -1,6 +1,6 @@
 # Metrics
 
-The metrics library provides an interface for creating and updating custom Prometheus metrics from within code services. Metrics are exposed on the platform's Prometheus endpoint and can be used to monitor and alert on application behavior. Metrics can only be used in long-running services and will be reset if the service is updated.
+The metrics library provides an interface for creating and updating custom Prometheus metrics from within code services. Metrics are exposed on the platform's Prometheus endpoint and can be used to monitor and alert on application behavior. Metrics can only be used in stream services and will be reset if the service is updated.
 
 Each metric is automatically tagged with `system_key`, `service_name`, and `instance_id` labels. 
 
