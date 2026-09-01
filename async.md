@@ -616,14 +616,16 @@ File.delete()
 /**
  * Represents a file store.
  *
- * @param {string} name file store name
+ * Note the `new`: unlike ClearBladeAsync.Collection() and ClearBladeAsync.Query(), FileStore
+ * is a constructor. Calling it without `new` fails
  *
- * @returns {FileStore}
+ * @param {string} name file store name
+ * @constructor
  */
-ClearBladeAsync.FileStore(name)
+new ClearBladeAsync.FileStore(name)
 
 /**
- * Reads a the file at the given path or throws an error if the file does not exist.
+ * Reads the file at the given path or throws an error if the file does not exist.
  * @param {string} path 
  * @returns {Promise<Uint8Array>} The file contents
  */
@@ -631,6 +633,11 @@ FileStore.read(path)
 
 /**
  * Creates a read stream for the given path. If the file does not exist, an error is thrown when the stream is read.
+ *
+ *   resp.status(200);
+ *   resp.set({ 'Content-Type': 'application/zip' });
+ *   new ClearBladeAsync.FileStore('myStore').createReadStream('bundle.zip').pipeTo(resp.writable);
+ *
  * @param {string} path 
  * @returns {ReadableStream}
  */
@@ -650,7 +657,7 @@ FileStore.write(path, data)
  * @param {string} path: The path to the file
  * @returns {WritableStream}
  */
-FS.createWriteStream(path)
+FileStore.createWriteStream(path)
 
 /**
  * Deletes the file at the path. 
