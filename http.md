@@ -1,3 +1,5 @@
+> **Deprecated:** The HTTP library is deprecated and may be removed in a future release. Use the [fetch](fetch.md) library instead.
+
 The HTTP library is a library for making HTTP calls to external services. It supports four HTTP verbs (GET,POST,DELETE,PUT).
 
 # Class: Requests
